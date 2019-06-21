@@ -1,0 +1,116 @@
+---
+title: "forcats"
+subtitle: "Fundamentos lenguajes: R"
+author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "macros.js"
+    includes:
+      before_body: mathjax.html
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(stringr)
+library(forcats)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# forcats
+
+## Factores
+
+- Representan variables categóricas, con un número posible de valores:
+    + fijo
+    + *pequeño*
+    + conocido
+
+- Ejemplos: meses del año, provincias, sexo, etc.
+
+- Muchas funciones de R convierten los vectores de cadenas de caracteres a factores automáticamente
+
+- La librería `forcats` implementa funciones para manipular factores
+
+---
+
+## Creando factores
+
+- Función `factor()`
+
+- Necesita dos argumentos:
+    + Datos a convertir (típicamente vector de cadenas)
+    + Valores posibles (**niveles**)
+
+
+```{r}
+x <- c("Primavera", "Verano", "Verano", "Verano", "Otoño")
+f <- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
+f
+```
+
+---
+
+- Si un valor no está en los niveles se convierte a `NA`
+
+```{r}
+x <- c("Primavera", "Verano", "Verano", "Verano", "Otono")
+f1 <- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
+f1
+```
+
+- Si no se indican los niveles, se toman como los valores únicos del vector
+
+```{r}
+unique(x)
+```
+
+```{r}
+factor(x)
+```
+
+---
+
+También se pueden crear a partir de una variable numérica
+
+```{r}
+edad <- c(20, 25, 15, 38)
+cut(edad, breaks = c(10, 20, 30, 40))
+```
+
+---
+
+## Algunas funciones útiles
+
+- `fct_reorder()` para reordenar los niveles (se mueven al principio)
+
+```{r}
+fct_relevel(f, "Invierno", "Primavera")
+```
+
+- `fct_recode()` para cambiar el nombre de los niveles o eliminarlos (asignando el valor `NULL`)
+
+```{r}
+fct_recode(f, Inv = "Invierno", Prim = "Primavera", Ver = "Verano", Oto = "Otoño")
+```
+
+---
+
+- `fct_recode()` también puede colapsar niveles asignando el mismo nombre
+
+```{r}
+fct_recode(f, Frio = "Invierno", Calor = "Primavera", Calor = "Verano", Frio = "Otoño")
+```
+
+- Otra alternativa es `fct_collapse()`
+
+```{r}
+fct_collapse(f, Frio = c("Invierno", "Otoño"), Calor = c("Primavera", "Verano"))
+```

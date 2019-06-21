@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>readr</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Alberto Torres Barrán y Irene Rodríguez Luján" />
+    <meta name="date" content="2019-06-21" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# readr
+## Fundamentos lenguajes: R
+### Alberto Torres Barrán y Irene Rodríguez Luján
+### 2019-06-21
+
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      Xcal: "{\\mathcal{X}}",
+      Xbf: "{\\mathbf{X}}",
+      Qbf: "{\\mathbf{Q}}",
+      Zbf: "{\\mathbf{Z}}",
+      Vbf: "{\\mathbf{V}}",
+      Hbf: "{\\mathbf{H}}",
+      Rbb: "{\\mathbb{R}}"
+    },
+    extensions: ["AMSmath.js","AMSsymbols.js"]
+  }
+});
+</script>
+
+
+
+# readr
+
+## Introducción
+
+- Paquete para importar y exportar ficheros de texto
+- Importar datos:
+    + `read_csv()`, para ficheros CSV
+    + `read_csv2()`, para ficheros CSV separados por ";"
+    + `read_delim()`, para ficheros ASCII delimitados por otros caracteres distintos de "," y ";"
+    + `read_tsv()`, para ficheros ASCII delimitados por tabuladores
+    + `read_table()`, para ficheros ASCII delimitados por espacios
+    + `read_rds()`, formato binario específico de R
+
+- Exportar datos: `write_csv()`. `write_csv2()`, etc.
+
+---
+
+## Ejemplo
+
+
+```r
+write_csv(mpg, "mpg.csv")
+mpg1 &lt;- read_csv("mpg.csv")
+head(mpg1)
+```
+
+```
+## # A tibble: 6 x 11
+##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
+## 1 audi         a4      1.8  1999     4 auto(… f        18    29 p     comp…
+## 2 audi         a4      1.8  1999     4 manua… f        21    29 p     comp…
+## 3 audi         a4      2    2008     4 manua… f        20    31 p     comp…
+## 4 audi         a4      2    2008     4 auto(… f        21    30 p     comp…
+## 5 audi         a4      2.8  1999     6 auto(… f        16    26 p     comp…
+## 6 audi         a4      2.8  1999     6 manua… f        18    26 p     comp…
+```
+
+---
+
+## Directorio de trabajo
+
+- Directorio donde apunta RStudio
+
+
+```r
+getwd()
+```
+
+```
+## [1] "/home/alberto/Desktop/tidyverse-intro/src"
+```
+
+- Se puede cambiar con `setwd()` o en la pestaña `Files` de RStudio
+- Directorio por defecto donde se buscan los ficheros a importar
+- Alternativamente, podemos especificar el path completo o usar la herramienta gráfica de RStudio
+
+---
+
+## Missing values en R
+
+- `NA` es una constante que representa valores que faltan (*missing values*)
+- Puede estar contenida dentro de vectores (columnas) de cualquier tipo
+- `is.na()` devuelve `TRUE` si el valor es `NA` y `FALSE` en caso contrario
+- Muchas funciones de R tienen un parámetro opcional `na.rm` que ignora `NA`s
+
+
+```r
+dia &lt;-
+  diamonds %&gt;% 
+    mutate(y = ifelse(!between(y, 3, 20), NA, y))
+
+dia %&gt;% 
+  summarize(y_na = sum(is.na(y)))
+```
+
+```
+## # A tibble: 1 x 1
+##    y_na
+##   &lt;int&gt;
+## 1     9
+```
+
+---
+
+
+```r
+dia %&gt;%
+  summarize(avg_y = mean(y))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_y
+##   &lt;dbl&gt;
+## 1    NA
+```
+
+
+```r
+dia %&gt;%
+  summarize(avg_y = mean(y, na.rm = TRUE))
+```
+
+```
+## # A tibble: 1 x 1
+##   avg_y
+##   &lt;dbl&gt;
+## 1  5.73
+```
+
+---
+
+## Parámetros opcionales
+
+- `col_names`, si TRUE, la primera fila es el nombre de las variables. También se le puede pasar un vector de cadenas de caracteres con los nombres.
+- `delim`, carácter que separa las columnas (solo en `read_delim()`)
+- `na`, vector con cadenas que se interpretan como missing values. Por defecto `NA` y la cadena vacía.
+- `col_types`, vector de clases para las columnas (ver documentación de `col()`). Por defecto se intenta adivinar el tipo de cada columna a partir de las 1000 primeras líneas.
+- `n_max`, número máximo de líneas a leer del fichero
+- `skip`, número de líneas a ignorar al princpio del fichero.
+- `locale`, parámetro que nos permite cambiar el enconding, separador decimal y formato de fechas (ver documentación de `locale()`)
+- `comment`, una cadena de caracteres que identifica líneas de texto a ignorar (comentarios)
+- `trim_ws`, si vale TRUE, se eliminan los espacios en blanco al principio y al final de cada campo
+
+---
+
+## Otros formatos
+
+- `readr` solo tiene funciones para importar ficheros de texto
+- Para otros formatos, existen librerías específicas:
+    + `haven`, para ficheros de SPSS, Stata y SaS
+    + `readxl`, para ficheros de Excel
+    + `DBI` junto con otro paquete específico dependiendo de la BD (`RMySQL`, `RSQLite`, etc.) nos permite hacer *querys* contra una BD
+    + `jsonlite`, para ficheros JSON
+    + `xml2`, para ficheros XML
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

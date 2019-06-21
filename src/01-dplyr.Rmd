@@ -1,0 +1,323 @@
+---
+title: "dplyr"
+subtitle: "Fundamentos lenguajes: R"
+author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "macros.js"
+    includes:
+      before_body: mathjax.html
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(forcats)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# dplyr
+
+## Introducción
+
+- Implementa una gramática para realizar operaciones básicas con data frames
+- Muy eficiente
+- Operaciones principales: `slice`, `filter`, `select`, `arrange`, `mutate` y `summarize`
+- Estas operaciones se pueden componer para realizar otras más complejas
+
+---
+
+## slice
+
+Selecciona filas por su posición
+
+```{r, echo = TRUE}
+slice(mpg, 1:5)
+```
+
+---
+
+## filter
+
+Selecciona filas por condición
+```{r, echo=T}
+filter(mpg, model == "a4")
+```
+
+---
+
+## Operadores lógicos
+
+- R implementa todos los operadores relacionales habituales `>, <, >=, <=, ==, !=`
+- Los operadores lógicos son la negación `!`, and `&` y or `|`
+- El resultado de todas estas operaciones son valores lógicos `TRUE` (`T`) o `FALSE` (`F`)
+
+---
+
+## filter (cont.)
+
+- Se pueden combinar multiples condiciones separadas por `,` (and lógico)
+```{r, echo=T, eval=F}
+filter(mpg, model == "a4", cyl >= 5)
+```
+
+- También se puede usar explicitamente el operador
+```{r, echo=T, eval=F}
+filter(mpg, model == "a4" & cyl >= 5)
+```
+
+- En el caso del or lógico es obligatorio el uso del operador
+```{r, echo=T, eval=F}
+filter(mpg, model == "a4" | model == "mustang")
+```
+
+---
+
+## select
+
+Seleccionar variables (columnas) de un data frame
+
+```{r, echo=T}
+select(mpg, model, displ, cyl)
+```
+
+---
+
+## Ignorar variables
+
+Con un `-` se ignoran variables
+```{r, echo=T}
+select(mpg, -manufacturer)
+```
+
+---
+
+## Rangos
+
+Puesto que las variables están ordenadas, se puede seleccionar un rango con `:`
+
+```{r, echo=T}
+select(mpg, model:trans)
+```
+
+---
+
+## Funciones auxiliares
+
+Las siguientes funciones se pueden usar dentro de `select()`
+
+- `starts_with()`: empiezan con un prefijo
+- `ends_with()`: terminan con un sufijo
+- `contains()`: contienen una string
+- `matches()`: concuerdan con una expresión regular
+- `num_range()`: rango numérico como "X01", "X02", "X03"
+
+---
+
+## arrange
+
+Ordena las filas de un data frame
+```{r, echo=T}
+arrange(mpg, desc(year), cyl)
+```
+
+---
+
+## mutate
+
+Añade nuevas variables (columnas) al data frame como combinación de las ya existentes
+```{r, echo=T}
+mutate(mpg, avg_mpg = (cty+hwy)/2)
+```
+
+---
+
+## Operadores y funciones aritméticas
+
+- R implementa los operadores aritméticos habituales 
+    + suma `+`
+    + resta `-`
+    + multiplicación `*`
+    + división `/`
+    + exponenciación `^`
+    + división entera `%/%`
+    + módulo (resto) `%%`
+
+- También las funciones aritméticas comunes: `log()`, `exp()`, `sin()`, `cos()`, `tan()`, `cumsum()`, `cumprod()`, `abs()`, `sqrt()`, `round()`, `ceiling()`, `floor()`, `trunc()`, ...
+
+- Operan sobre vectores (columnas de un data frame) elemento a elemento
+
+---
+
+## summarize
+
+Colapsa el data frame a una única fila
+
+```{r, echo=T}
+summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
+```
+
+---
+
+## Funciones de agregación
+
+- Las funciones más comunes para usar dentro de `summarize()` son: 
+    + Aritméticas: `prod()`, `sum()`
+    + Centralidad: `mean()`, `median()`
+    + Dispersión: `sd()`, `var()`, `mad()`
+    + Rango: `max()`, `min()`, `quantile()`
+    + Posición: `first()`, `last()`, `nth()`
+    + Lógicas: `any()`, `all()`
+    + *Conteo*: `n()`, `n_distinct()` (solo se pueden usar dentro de `summarize()`)
+    
+- Todas reducen un vector de números a un único resultado
+
+---
+
+## Concatenación de funciones
+
+- Todas las funciónes de `dplyr` toman como primer argumento un data frame y devuelven otro data frame
+- Se pueden aplicar de manera consecutiva:
+
+```{r, echo=T, eval=F}
+arrange(select(filter(mpg, model == "a4"), model, year), year)
+
+arrange(
+  select(
+    filter(mpg, model == "a4"), 
+    model, year
+  ), 
+  year
+)
+```
+
+---
+
+## Concatenación de funciones (cont.)
+
+-Otra opción:
+```{r, echo=T, eval=F}
+df1 <- filter(mpg, model == "a4")
+df2 <- select(df1, model, year)
+df3 <- arrange(df2, year)
+```
+
+- Habitualmente no nos interesan los valores intermedios, solo el resultado final
+
+---
+
+## Operador "tubería" (*pipe*)
+
+- La sintaxis es `%>%` y permite reescribir el código anterior como
+
+```{r, echo=T, eval=F}
+mpg %>%
+  filter(model == "a4") %>%
+  select(model, year) %>%
+  arrange(year)
+```
+
+- En general el codigo `df %>% foo()` es equivalente a `foo(df)`
+- Esto permite concatenar funciones sin almacenar resultados intermedios y siguiendo el orden lógico
+
+---
+
+## Operaciones agrupadas
+
+- La función `group_by()` convierte un data frame en otro agrupado por una o más variables
+- En los data frames agrupados todas las operaciones anteriores se realizan "por grupo"
+- `ungroup()` elimina la agrupación
+
+---
+
+## Operaciones agrupadas (cont.)
+
+- `slice()` los indices son relativos al grupo
+- `select()` mantiene siempre las variables agrupadas, aunque no se indique explicitamente
+- `arrange()` ordena en primer lugar por las variables agrupadas
+
+---
+
+## summarize con group_by
+
+Un `summarize()` sobre un data frame agrupado devuelve otro con tantas filas como grupos (valores distintos de la/s variable/s usadas para agrupar)
+
+```{r, echo=T}
+mpg %>%
+  group_by(cyl) %>%
+  summarize(avg_cty = mean(cty))
+```
+
+---
+
+## mutate con group_by
+
+Un `mutate()` sobre un data frame agrupado devuelve siempre otro data frame con el mismo número de filas que el original
+
+```{r, echo=T}
+mpg %>%
+  group_by(cyl) %>%
+  mutate(avg_cty = mean(cty))
+```
+
+---
+
+## joins
+
+- La librería `dplyr` implementa funciones para unir data frames: `inner_join()`, `left_join()`, `right_join()` y `full_join()`
+
+- Diagrama de Venn [R for Data Science]
+<center>
+![Diagrama de Venn](join-venn.png)
+</center>
+
+---
+
+## Equivalencia con SQL
+
+| dplyr                       | SQL                                            | 
+|-----------------------------|------------------------------------------------|
+|`inner_join(x, y, by = "z")`	| `SELECT * FROM x INNER JOIN y USING (z)`       |
+|`left_join(x, y, by = "z")`	| `SELECT * FROM x LEFT OUTER JOIN y USING (z)`  |
+|`right_join(x, y, by = "z")` |	`SELECT * FROM x RIGHT OUTER JOIN y USING (z)` |
+|`full_join(x, y, by = "z")`  |	`SELECT * FROM x FULL OUTER JOIN y USING (z)`  |
+
+[R for Data Science]
+
+---
+
+## Ejemplo
+
+```{r}
+t4a <- gather(table4a, key = "year", value = "cases", num_range("", 1999:2000))
+t4b <- gather(table4b, key = "YEAR", value = "population", `1999`:`2000`)
+inner_join(t4a, t4b, by=c("year" = "YEAR", "country"))
+```
+
+---
+
+## Operar en múltiples columnas
+
+- dplyr tiene [variantes](https://dplyr.tidyverse.org/reference/scoped.html) de sus funciones principales que operan sobre múltiples columnas
+- La selección de columnas puede ser:
+    + Todas, funciones que terminan en `_all`
+    + Con un predicado, funciones que terminan en `_if`
+    + Vector con nombres, posiciones o función [`vars()`](https://dplyr.tidyverse.org/reference/vars.html)
+
+---
+
+```{r}
+summarize_all(mpg, funs(sum(is.na(.))))
+```
+
+```{r}
+mutate_if(mpg, is.numeric, log)
+```

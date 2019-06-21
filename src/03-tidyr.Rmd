@@ -1,0 +1,157 @@
+---
+title: "tidyr"
+subtitle: "Fundamentos lenguajes: R"
+author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "macros.js"
+    includes:
+      before_body: mathjax.html
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(forcats)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# tidyr
+
+## Introducción
+
+- El 80% del tiempo de un análisis se emplea limpiando y preparando los datos (Dasu y Johnson, 2003)
+- Importados los datos, es importante estructurarlos para que el análisis sea lo más fácil posible
+- Las librerías del tidyverse están construidas alrededor de los datos ordenados o *tidy data*:
+    + Cada variable forma una columna
+    + Cada observación forma una fila
+    + Cada tipo de observación forma una tabla
+- Datos tabulares/rectangulares no implican datos ordenados!!
+
+---
+
+## Formas de almacenamiento
+
+Distintas formas de almacenar los mismos datos [R for Data Science]:
+
+```{r}
+table1
+```
+
+---
+
+```{r}
+table2
+```
+
+---
+
+```{r}
+table3
+```
+
+---
+
+```{r}
+table4a
+```
+```{r}
+table4b
+```
+
+---
+
+## Operaciones con datos ordenados
+
+```{r}
+table1 %>%
+  mutate(ratio = cases / population * 10000)
+```
+
+---
+
+```{r}
+table1 %>%
+  group_by(year) %>%
+  summarize(total = sum(cases))
+```
+
+---
+
+```{r}
+table1 %>%
+  mutate(ratio = cases / population * 10000,
+         year = as.character(year)) %>%
+  ggplot(mapping = aes(x = country, y = ratio, fill = year)) +
+    geom_bar(stat = "identity", position = "dodge")
+```
+
+---
+
+## spread
+
+```{r}
+head(table2)
+```
+
+```{r}
+spread(table2, type, count)
+```
+
+---
+
+## gather
+
+```{r}
+table4a
+```
+
+```{r}
+gather(table4a, key = "year", value = "cases", -country)
+```
+
+---
+
+## separate
+
+```{r}
+table3
+```
+
+```{r}
+separate(table3, rate, into = c("cases", "population"), sep = "/")
+```
+
+---
+
+- Por defecto `separate()` mantiene el tipo de la columna en las nuevas
+
+```{r}
+separate(table3, rate, into = c("cases", "population"), sep = "/", convert = TRUE)
+```
+
+---
+
+## unite
+
+```{r}
+unite(mpg, make, manufacturer, model, sep = " ")
+```
+
+---
+
+## Otras funciones
+
+tidyr también tiene otras funciones útiles para trabajar con `NA`s:
+
+- `drop_na()`, elimina filas que tengan algún `NA`
+- `fill()`, completa `NA`s con el valor anterior
+- `replace_na()`, reemplaza `NA`s por un valor

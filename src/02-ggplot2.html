@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>ggplot2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Alberto Torres Barrán y Irene Rodríguez Luján" />
+    <meta name="date" content="2019-06-21" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# ggplot2
+## Fundamentos lenguajes: R
+### Alberto Torres Barrán y Irene Rodríguez Luján
+### 2019-06-21
+
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      Xcal: "{\\mathcal{X}}",
+      Xbf: "{\\mathbf{X}}",
+      Qbf: "{\\mathbf{Q}}",
+      Zbf: "{\\mathbf{Z}}",
+      Vbf: "{\\mathbf{V}}",
+      Hbf: "{\\mathbf{H}}",
+      Rbb: "{\\mathbb{R}}"
+    },
+    extensions: ["AMSmath.js","AMSsymbols.js"]
+  }
+});
+</script>
+
+
+
+# ggplot2
+
+## Introducción
+
+- Implementa una gramática de gráficos en R
+- Divide un gráfico en sus componentes esenciales
+- Múltiples ventajas con respecto a los gráficos de R base
+    + Leyenda automática
+    + Facetas
+    + ...
+
+---
+
+## Gramática de gráficos
+
+- *mapping* se define con `aes()` (*aesthetics*) y describe como las variables de un data frame se asignan a propiedades visuales
+- *data* data frame 
+- *geom* objetos geométricos con el que se van a representar los datos
+- *stat* transforman los datos
+- *position* pequeños ajustes en la posición de los elementos
+
+---
+
+## Ejemplo
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+
+---
+
+## Plantilla
+
+- El gráfico más sencillo consta como mínimo de los siguientes componentes [[Fuente](https://r4ds.had.co.nz/data-visualisation.html#introduction-1)]:
+
+```
+ggplot(data = &lt;DATA&gt;) + 
+  &lt;GEOM_FUNCTION&gt;(mapping = aes(&lt;MAPPINGS&gt;))
+```
+- Cambiando las secciones entre `&lt;&gt;` se pueden crear múltiples tipos de gráficos
+- Añadiendo geoms con el operador `+` se pueden crear gráficos compuestos
+
+---
+
+## Aesthetics
+
+- El gráfico anterior representa dos variables, `displ` y `cyl`
+- Variables adicionales se pueden asignar a distintas propiedades del gráfico (*aesthetics*)
+- Algunos ejemplos son `color`, `shape`, `size`, `alpha`, etc.
+- La escala y la leyenda se crean de forma automática
+
+---
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv))
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class, size = cyl))
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+## Apariencia del gráfico
+
+- Para cambiar la apariencia del gráfico, se les asigna un valor manualmente a las propiedades gráficas anteriores
+- No transmiten información sobre una variable
+- Tienen que estar **fuera** de la función `aes()`
+
+---
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue", alpha = 0.8, shape = 2)
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
+
+## Facets
+
+- Otra opción para representar variables adicionales son las facetas
+- Cada faceta es un subgráfico realizado con un subconjunto de los datos
+
+---
+
+## facet_wrap
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv)
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
+---
+
+## facet_grid
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ class)
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+
+---
+
+## Geoms
+
+- Objectos geométricos que se usan para representar la relación entre las variables `x` e `y`
+- Algunos ejemplos son:
+    + `geom_bar()`, barras
+    + `geom_point()`, puntos
+    + `geom_line()`, lineas
+    + `geom_text()`, texto
+    + ...
+    
+- Cada `geom` tiene una serie de propiedades gráficas que se pueden asignar a variables o modificar
+
+---
+
+## Múltiples geoms
+
+Se pueden mostrar múltiples geoms añadiendo nuevas capas al gráfico
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+---
+
+## Ajustes globales
+
+
+```r
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() +
+  geom_smooth()
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() +
+  geom_smooth()
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+---
+
+## Ajustes locales
+
+
+```r
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(color = drv)) +
+  geom_smooth(linetype = 2)
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+
+## Transformaciones estadísticas
+
+- Alunos `geom` calculan nuevas variables a representar a partir de las originales del data frame
+- Un ejemplo es `geom_smooth()`, que ajusta un polinomio a los datos
+- Para ver la transformación estadística de cada `geom` se puede consultar el valor por defecto del parámetro `stat` en la ayuda
+
+---
+
+## Ejemplo geom_bar
+
+
+```r
+ggplot(data = mpg) + 
+  geom_bar(aes(x = class))
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+
+## Cambiar stat por defecto
+
+
+```r
+n_class &lt;- 
+  mpg %&gt;%
+  group_by(class) %&gt;%
+  summarize(n = n())
+
+n_class
+```
+
+```
+## # A tibble: 7 x 2
+##   class          n
+##   &lt;chr&gt;      &lt;int&gt;
+## 1 2seater        5
+## 2 compact       47
+## 3 midsize       41
+## 4 minivan       11
+## 5 pickup        33
+## 6 subcompact    35
+## 7 suv           62
+```
+
+---
+
+
+```r
+ggplot(data = n_class) + 
+  geom_bar(aes(x = class, y = n), stat = "identity")
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+
+## Histograma
+
+- Dada una variable continua:
+    + Ordenar sus valores
+    + Elegir número de intervalos
+    + Contar cuantos valores hay en cada intervalo
+    + Representar con barras
+
+- La transformacion estadística se conoce como *binning*
+
+---
+
+
+```r
+ggplot(data = mpg) + 
+  geom_bar(mapping = aes(x = hwy), stat = "bin")
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+---
+
+## Resultado transformación
+
+Las variables resultado de la transformación son accesibles como `..&lt;NOMBRE&gt;..`
+
+
+```r
+ggplot(data = mpg) + 
+  geom_bar(mapping = aes(x = hwy, y = ..density..), stat = "bin")
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
+
+---
+
+Juntando lo anterior podríamos, por ejemplo, representar un histograma con puntos en vez de barras
+
+
+```r
+ggplot(data = mpg) + 
+  geom_line(mapping = aes(x = hwy, y = ..count..), stat = "bin")
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+
+---
+
+## geom_hist
+
+
+```r
+ggplot(data = mpg) + 
+  geom_histogram(mapping = aes(x = hwy))
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+
+---
+
+## Ajustes de posición
+
+- Ciertos `geom`s tienen un ajuste opcional de posición
+- En `geom_bar()` su valor por defecto es `stack`
+- Otros ajustes posibles son `dodge` y `fill` 
+- En `geom_point()` su valor por defecto es `identity`
+- Otro valor posible es `jitter`
+
+---
+
+
+```r
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color))
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color), position = "dodge")
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color), position = "fill")
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy))
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy), position = "jitter")
+```
+
+![](02-ggplot2_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
+
+---
+
+## Ejercicio ggplot2
+
+Con el conjunto de datos de diamantes, realizar las siguientes operaciones:
+
+1. Ver cuantas filas (diamantes) y columnas (variables) tiene el conjunto de datos.
+2. Hacer un gráfico de barras con la cantidad de diamantes que hay para cada corte (variable cut).
+3. Escoger aleatoriamente 10000 diamantes (función `sample_n()`)
+
+La correlación mide la fuerza de una relación lineal entre dos variables. Toma valores entre 0 y `\(\pm 1\)`, donde 0 es poca dependencia y 1 máxima dependencia (el signo indica la dirección). En R se calcula con la función `cor()`. Sabiendo lo anterior y sobre la muestra reducida de 10000 diamantes:
+
+&lt;!-- 4. Calcular la media y mediana del precio. --&gt;
+4. Hacer un histograma para visualizar la distribución de los precios.
+5. Calcular la correlación entre las variables precio y quilates (carat)
+6. Visualizar dicha correlación haciendo un gráfico de dispersión del precio sobre los quilates.
+7. Repetir el gráfico anterior pero para cada uno de los valores del corte
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

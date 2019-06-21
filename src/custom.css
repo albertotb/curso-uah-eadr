@@ -1,0 +1,62 @@
+/*.title-slide {
+  background-image: url('./img/background.png');
+  background-size: cover;
+}
+
+.title-slide.remark-slide-content:before{
+  position: absolute;
+  content:url('./img/logo.png');
+  top:    605px;
+  right:  600px;
+  transform: scale(0.75, 0.75);
+  -ms-transform: scale(0.75, 0.75);
+  -webkit-transform: scale(0.75, 0.75);
+}*/
+
+/* title */
+.title-slide h1:nth-of-type(1) {
+  color: #FFAA00;
+}
+
+/* author */
+.title-slide h3:nth-of-type(1) {
+  color: white;
+}
+
+/* date */
+.title-slide h3:nth-of-type(2) {
+  color: white;
+}
+
+/* hide slide number */
+.title-slide .remark-slide-number {
+  display: none;
+}
+
+code { /* changes inline code highlighting */
+  background: #F5F5F5; /* lighter */
+  /*background: #e7e8e2; /* darker */
+  border-radius: 3px;
+  padding: 4px;
+}
+
+
+/* Required: Clear floats after the columns */
+.multicolrow:after {
+content: "";
+display: table;
+clear: both;
+}
+
+/*Optional: Color header boxes*/
+.multicolhead {
+background-color:#4B9CD3;
+color: #FFFFFF;
+}
+
+.wordwrap {
+white-space: pre-wrap;      /* CSS3 */
+white-space: -moz-pre-wrap; /* Firefox */
+white-space: -o-pre-wrap;   /* Opera 7 */
+word-wrap: break-word;      /* IE */
+}

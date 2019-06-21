@@ -1,0 +1,335 @@
+---
+title: "ggplot2"
+subtitle: "Fundamentos lenguajes: R"
+author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "macros.js"
+    includes:
+      before_body: mathjax.html
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(forcats)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# ggplot2
+
+## Introducción
+
+- Implementa una gramática de gráficos en R
+- Divide un gráfico en sus componentes esenciales
+- Múltiples ventajas con respecto a los gráficos de R base
+    + Leyenda automática
+    + Facetas
+    + ...
+
+---
+
+## Gramática de gráficos
+
+- *mapping* se define con `aes()` (*aesthetics*) y describe como las variables de un data frame se asignan a propiedades visuales
+- *data* data frame 
+- *geom* objetos geométricos con el que se van a representar los datos
+- *stat* transforman los datos
+- *position* pequeños ajustes en la posición de los elementos
+
+---
+
+## Ejemplo
+
+```{r, echo=T}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+```
+
+---
+
+## Plantilla
+
+- El gráfico más sencillo consta como mínimo de los siguientes componentes [[Fuente](https://r4ds.had.co.nz/data-visualisation.html#introduction-1)]:
+
+```
+ggplot(data = <DATA>) + 
+  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+```
+- Cambiando las secciones entre `<>` se pueden crear múltiples tipos de gráficos
+- Añadiendo geoms con el operador `+` se pueden crear gráficos compuestos
+
+---
+
+## Aesthetics
+
+- El gráfico anterior representa dos variables, `displ` y `cyl`
+- Variables adicionales se pueden asignar a distintas propiedades del gráfico (*aesthetics*)
+- Algunos ejemplos son `color`, `shape`, `size`, `alpha`, etc.
+- La escala y la leyenda se crean de forma automática
+
+---
+
+```{r, echo=T}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = drv))
+```
+
+---
+
+```{r, echo=T}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy, color = class, size = cyl))
+```
+
+---
+
+## Apariencia del gráfico
+
+- Para cambiar la apariencia del gráfico, se les asigna un valor manualmente a las propiedades gráficas anteriores
+- No transmiten información sobre una variable
+- Tienen que estar **fuera** de la función `aes()`
+
+---
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy), color = "blue", alpha = 0.8, shape = 2)
+```
+
+---
+
+## Facets
+
+- Otra opción para representar variables adicionales son las facetas
+- Cada faceta es un subgráfico realizado con un subconjunto de los datos
+
+---
+
+## facet_wrap
+
+```{r, echo=T}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv)
+```
+
+---
+
+## facet_grid
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ class)
+```
+
+---
+
+## Geoms
+
+- Objectos geométricos que se usan para representar la relación entre las variables `x` e `y`
+- Algunos ejemplos son:
+    + `geom_bar()`, barras
+    + `geom_point()`, puntos
+    + `geom_line()`, lineas
+    + `geom_text()`, texto
+    + ...
+    
+- Cada `geom` tiene una serie de propiedades gráficas que se pueden asignar a variables o modificar
+
+---
+
+## Múltiples geoms
+
+Se pueden mostrar múltiples geoms añadiendo nuevas capas al gráfico
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  geom_smooth(mapping = aes(x = displ, y = hwy))
+```
+
+---
+
+## Ajustes globales
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point() +
+  geom_smooth()
+```
+
+---
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() +
+  geom_smooth()
+```
+
+---
+
+## Ajustes locales
+
+```{r}
+ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) + 
+  geom_point(mapping = aes(color = drv)) +
+  geom_smooth(linetype = 2)
+```
+
+---
+
+## Transformaciones estadísticas
+
+- Alunos `geom` calculan nuevas variables a representar a partir de las originales del data frame
+- Un ejemplo es `geom_smooth()`, que ajusta un polinomio a los datos
+- Para ver la transformación estadística de cada `geom` se puede consultar el valor por defecto del parámetro `stat` en la ayuda
+
+---
+
+## Ejemplo geom_bar
+
+```{r}
+ggplot(data = mpg) + 
+  geom_bar(aes(x = class))
+```
+
+---
+
+## Cambiar stat por defecto
+
+```{r}
+n_class <- 
+  mpg %>%
+  group_by(class) %>%
+  summarize(n = n())
+
+n_class
+```
+
+---
+
+```{r}
+ggplot(data = n_class) + 
+  geom_bar(aes(x = class, y = n), stat = "identity")
+```
+
+---
+
+## Histograma
+
+- Dada una variable continua:
+    + Ordenar sus valores
+    + Elegir número de intervalos
+    + Contar cuantos valores hay en cada intervalo
+    + Representar con barras
+
+- La transformacion estadística se conoce como *binning*
+
+---
+
+```{r}
+ggplot(data = mpg) + 
+  geom_bar(mapping = aes(x = hwy), stat = "bin")
+```
+
+---
+
+## Resultado transformación
+
+Las variables resultado de la transformación son accesibles como `..<NOMBRE>..`
+
+```{r}
+ggplot(data = mpg) + 
+  geom_bar(mapping = aes(x = hwy, y = ..density..), stat = "bin")
+```
+
+---
+
+Juntando lo anterior podríamos, por ejemplo, representar un histograma con puntos en vez de barras
+
+```{r}
+ggplot(data = mpg) + 
+  geom_line(mapping = aes(x = hwy, y = ..count..), stat = "bin")
+```
+
+---
+
+## geom_hist
+
+```{r}
+ggplot(data = mpg) + 
+  geom_histogram(mapping = aes(x = hwy))
+```
+
+---
+
+## Ajustes de posición
+
+- Ciertos `geom`s tienen un ajuste opcional de posición
+- En `geom_bar()` su valor por defecto es `stack`
+- Otros ajustes posibles son `dodge` y `fill` 
+- En `geom_point()` su valor por defecto es `identity`
+- Otro valor posible es `jitter`
+
+---
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color))
+```
+
+---
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color), position = "dodge")
+```
+
+---
+
+```{r}
+ggplot(data = diamonds) + 
+  geom_bar(mapping = aes(x = cut, fill = color), position = "fill")
+```
+
+---
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy))
+```
+
+---
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = cty, y = hwy), position = "jitter")
+```
+
+---
+
+## Ejercicio ggplot2
+
+Con el conjunto de datos de diamantes, realizar las siguientes operaciones:
+
+1. Ver cuantas filas (diamantes) y columnas (variables) tiene el conjunto de datos.
+2. Hacer un gráfico de barras con la cantidad de diamantes que hay para cada corte (variable cut).
+3. Escoger aleatoriamente 10000 diamantes (función `sample_n()`)
+
+La correlación mide la fuerza de una relación lineal entre dos variables. Toma valores entre 0 y $\pm 1$, donde 0 es poca dependencia y 1 máxima dependencia (el signo indica la dirección). En R se calcula con la función `cor()`. Sabiendo lo anterior y sobre la muestra reducida de 10000 diamantes:
+
+<!-- 4. Calcular la media y mediana del precio. -->
+4. Hacer un histograma para visualizar la distribución de los precios.
+5. Calcular la correlación entre las variables precio y quilates (carat)
+6. Visualizar dicha correlación haciendo un gráfico de dispersión del precio sobre los quilates.
+7. Repetir el gráfico anterior pero para cada uno de los valores del corte

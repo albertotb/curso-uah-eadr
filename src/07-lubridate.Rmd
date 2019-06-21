@@ -1,0 +1,80 @@
+---
+title: "lubridate"
+subtitle: "Fundamentos lenguajes: R"
+author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "macros.js"
+    includes:
+      before_body: mathjax.html
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(stringr)
+library(forcats)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# lubridate
+
+## Fechas
+
+- El paquete `lubridate` implementa dos tipos principales de fechas/horas:
+    + Fechas, `<date>`
+    + Fecha-hora, `<dttm>` (*timestamps*)
+    
+- Se pueden creara partir de:
+    + cadenas: `ymd()`, `mdy()`, `dmy()`, `ymd_hms()`, etc.
+    + componentes: `make_datetime()`
+    + otros objetos que representan fechas: `as_datetime()`, `as_date()`
+
+---
+
+```{r}
+ymd("20181012")
+```
+
+```{r}
+dmy("1 de Enero de 2017")
+```
+
+```{r}
+make_date(2015, 10, 20)
+```
+
+---
+
+## Operaciones con fechas
+
+- Obtener componentes de una fecha:
+    + `year()`, año
+    + `month()`, mes
+    + `mday()`, dia del mes; `wday()`, dia de la semana; `yday()`, dia del año
+    + `hour()`, hora
+    + `minute()`, minuto
+    + `second()`, segundo
+
+- Redondear a a la unidad de tiempo mas cercana:
+    + `round_date()`
+    + `floor_date()` (hacia abajo) 
+    + `ceiling_date()` (hacia arriba)
+    
+---
+
+```{r}
+fecha <- ymd(c("20181205", "20181208", "20181210", "20181220"))
+mday(fecha)
+```
+
+```{r}
+floor_date(fecha, "week")
+```

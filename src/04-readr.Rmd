@@ -1,0 +1,120 @@
+---
+title: "readr"
+subtitle: "Fundamentos lenguajes: R"
+author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "macros.js"
+    includes:
+      before_body: mathjax.html
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(forcats)
+library(lubridate)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+# readr
+
+## Introducción
+
+- Paquete para importar y exportar ficheros de texto
+- Importar datos:
+    + `read_csv()`, para ficheros CSV
+    + `read_csv2()`, para ficheros CSV separados por ";"
+    + `read_delim()`, para ficheros ASCII delimitados por otros caracteres distintos de "," y ";"
+    + `read_tsv()`, para ficheros ASCII delimitados por tabuladores
+    + `read_table()`, para ficheros ASCII delimitados por espacios
+    + `read_rds()`, formato binario específico de R
+
+- Exportar datos: `write_csv()`. `write_csv2()`, etc.
+
+---
+
+## Ejemplo
+
+```{r}
+write_csv(mpg, "mpg.csv")
+mpg1 <- read_csv("mpg.csv")
+head(mpg1)
+```
+
+---
+
+## Directorio de trabajo
+
+- Directorio donde apunta RStudio
+
+```{r}
+getwd()
+```
+
+- Se puede cambiar con `setwd()` o en la pestaña `Files` de RStudio
+- Directorio por defecto donde se buscan los ficheros a importar
+- Alternativamente, podemos especificar el path completo o usar la herramienta gráfica de RStudio
+
+---
+
+## Missing values en R
+
+- `NA` es una constante que representa valores que faltan (*missing values*)
+- Puede estar contenida dentro de vectores (columnas) de cualquier tipo
+- `is.na()` devuelve `TRUE` si el valor es `NA` y `FALSE` en caso contrario
+- Muchas funciones de R tienen un parámetro opcional `na.rm` que ignora `NA`s
+
+```{r}
+dia <-
+  diamonds %>% 
+    mutate(y = ifelse(!between(y, 3, 20), NA, y))
+
+dia %>% 
+  summarize(y_na = sum(is.na(y)))
+```
+
+---
+
+```{r}
+dia %>%
+  summarize(avg_y = mean(y))
+```
+
+```{r}
+dia %>%
+  summarize(avg_y = mean(y, na.rm = TRUE))
+```
+
+---
+
+## Parámetros opcionales
+
+- `col_names`, si TRUE, la primera fila es el nombre de las variables. También se le puede pasar un vector de cadenas de caracteres con los nombres.
+- `delim`, carácter que separa las columnas (solo en `read_delim()`)
+- `na`, vector con cadenas que se interpretan como missing values. Por defecto `NA` y la cadena vacía.
+- `col_types`, vector de clases para las columnas (ver documentación de `col()`). Por defecto se intenta adivinar el tipo de cada columna a partir de las 1000 primeras líneas.
+- `n_max`, número máximo de líneas a leer del fichero
+- `skip`, número de líneas a ignorar al princpio del fichero.
+- `locale`, parámetro que nos permite cambiar el enconding, separador decimal y formato de fechas (ver documentación de `locale()`)
+- `comment`, una cadena de caracteres que identifica líneas de texto a ignorar (comentarios)
+- `trim_ws`, si vale TRUE, se eliminan los espacios en blanco al principio y al final de cada campo
+
+---
+
+## Otros formatos
+
+- `readr` solo tiene funciones para importar ficheros de texto
+- Para otros formatos, existen librerías específicas:
+    + `haven`, para ficheros de SPSS, Stata y SaS
+    + `readxl`, para ficheros de Excel
+    + `DBI` junto con otro paquete específico dependiendo de la BD (`RMySQL`, `RSQLite`, etc.) nos permite hacer *querys* contra una BD
+    + `jsonlite`, para ficheros JSON
+    + `xml2`, para ficheros XML
