@@ -52,8 +52,8 @@
 10. Programación funcional con `purrr`
 
 
-Enlaces:
-* [Tidyverse](ttps://www.tidyverse.org/)
+## Enlaces:
+* [Tidyverse](https://www.tidyverse.org/)
 * [R for Data Science](http://r4ds.had.co.nz/)
 * [Data Challenge Lab](https://dcl-2019-04.github.io/curriculum/)
 * [Teach hard way](http://varianceexplained.org/r/teach-hard-way/)
