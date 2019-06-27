@@ -58,3 +58,4 @@
 * [Data Challenge Lab](https://dcl-2019-04.github.io/curriculum/)
 * [Teach hard way](http://varianceexplained.org/r/teach-hard-way/)
 * [Teach tidyverse](http://varianceexplained.org/r/teach-tidyverse/)
+* [LearningR workshop](https://nyu-cdsc.github.io/learningr/)
