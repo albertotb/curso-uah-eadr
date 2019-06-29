@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>Introducción</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Alberto Torres Barrán y Irene Rodríguez Luján" />
+    <meta name="date" content="2019-06-29" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Introducción
+## Fundamentos lenguajes: R
+### Alberto Torres Barrán y Irene Rodríguez Luján
+### 2019-06-29
+
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      Xcal: "{\\mathcal{X}}",
+      Xbf: "{\\mathbf{X}}",
+      Qbf: "{\\mathbf{Q}}",
+      Zbf: "{\\mathbf{Z}}",
+      Vbf: "{\\mathbf{V}}",
+      Hbf: "{\\mathbf{H}}",
+      Rbb: "{\\mathbb{R}}"
+    },
+    extensions: ["AMSmath.js","AMSsymbols.js"]
+  }
+});
+</script>
+
+
+
+## Introducción
+
+- R es un lenguaje de programación y un entorno para manipular datos, realizar cálculos y gráficos.
+- Herramienta muy popular para tareas de Data Science (junto con Python)
+- Comparado con herramientas clásicas (Excel, SaS, SPSS)
+    + Más flexible
+    + Curva de aprendizaje inclinada
+    + **Librerías**!
+
+---
+
+## Librerías
+
+- R tiene una colección de más de 12000 librerías o paquetes de terceros
+- La mayoría disponibles en un repositorio centralizado (CRAN)
+- No forman parte del núcleo de R (R base)
+- Se pueden instalar muy facilmente
+  
+---
+  
+## Entorno
+
+- R está disponible para los principales sistemas operativos (Windows, Linux, MacOS): 
+    + [http://cran.r-project.org](http://cran.r-project.org)
+
+- Recomendado el uso del IDE RStudio
+    + [http://www.rstudio.com](http://www.rstudio.com)
+
+
+---
+
+## Tidyverse
+
+- Colección de paquetes diseñados para tareas de Data Science
+
+- No son estrictamente necesarios, pero simplifican las tareas más comunes
+
+- Los principales son: `dplyr`, `ggplot2`, `tidyr`, `readr`, `purrr`, `stringr`, `forcats` y `tibble`
+
+---
+
+## Instalar y cargar librerías
+
+- Podemos instalar nuevas librerías con la sentencia:
+
+
+```r
+install.packages("tidyverse")
+```
+
+- Para usar las librerías tenemos que cargarlas en el entorno:
+
+
+```r
+library(tidyverse)
+```
+
+- También se puede hacer de forma gráfica en RStudio
+
+---
+
+## Operador de asignación
+
+- El resultado de cualquier sentencia de R se pierde si no se asigna a una nueva variable
+
+```r
+# este resultado se muestra y se pierde
+2 + 2
+```
+
+```
+## [1] 4
+```
+
+- El operador de asignación es `&lt;-`
+
+```r
+# el resultado de la operación se almacena en una nueva variable `suma`
+suma &lt;- 2 + 2
+```
+
+---
+
+## Data frames
+
+- Tabla para almacenar datos en R
+- Está compuesto por observaciones (filas) y variables (columnas)
+- Cada variable puede ser de un tipo distinto (texto, categórica, numérica, etc.)
+- Todas las observaciones de una misma variable tienen que ser del mismo tipo
+- Cada variable tiene un nombre
+
+---
+
+## Funciones
+
+- Construcción de R que toma unos argumentos de entrada, realiza un cálculo y devuelve un resultado
+- Elemento básico de cualquier lenguaje de programación
+- Ejemplos de llamadas a funciones:
+
+
+```r
+v &lt;- c(4.6, 8.2, 9.2)
+mean(v)
+```
+
+```
+## [1] 7.333333
+```
+
+
+```r
+# siempre con parentesis, aunque no tengan ningun argumento
+ls()
+```
+
+```
+## [1] "suma" "v"
+```
+
+---
+
+## Referencias y ayuda
+
+- La referencia principal del curso es el libro "[R for Data Science](https://r4ds.had.co.nz/)" de Hadley Wickham y Garret Grolemund (O'Reilly 2017)
+
+- Tiene una versión online gratuita
+
+- Hadley Wickham es además el creador de muchos de los paquetes que componen el [tidyverse](https://www.tidyverse.org/)
+
+- Acceder a la ayuda de R:
+
+```r
+?mean
+help(mean)
+```
+
+---
+
+## Funciones de data frames
+
+Número de filas
+
+```r
+nrow(mpg)
+```
+
+```
+## [1] 234
+```
+
+Número de columnas
+
+```r
+ncol(mpg)
+```
+
+```
+## [1] 11
+```
+
+---
+
+Nombres de las columnas
+
+```r
+colnames(mpg)
+```
+
+```
+##  [1] "manufacturer" "model"        "displ"        "year"        
+##  [5] "cyl"          "trans"        "drv"          "cty"         
+##  [9] "hwy"          "fl"           "class"
+```
+
+Primeras líneas
+
+```r
+head(mpg)
+```
+
+```
+## # A tibble: 6 x 11
+##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
+## 1 audi         a4      1.8  1999     4 auto(~ f        18    29 p     comp~
+## 2 audi         a4      1.8  1999     4 manua~ f        21    29 p     comp~
+## 3 audi         a4      2    2008     4 manua~ f        20    31 p     comp~
+## 4 audi         a4      2    2008     4 auto(~ f        21    30 p     comp~
+## 5 audi         a4      2.8  1999     6 auto(~ f        16    26 p     comp~
+## 6 audi         a4      2.8  1999     6 manua~ f        18    26 p     comp~
+```
+
+---
+
+## str
+
+Estructura del data frame
+
+```r
+str(mpg)
+```
+
+```
+## Classes 'tbl_df', 'tbl' and 'data.frame':	234 obs. of  11 variables:
+##  $ manufacturer: chr  "audi" "audi" "audi" "audi" ...
+##  $ model       : chr  "a4" "a4" "a4" "a4" ...
+##  $ displ       : num  1.8 1.8 2 2 2.8 2.8 3.1 1.8 1.8 2 ...
+##  $ year        : int  1999 1999 2008 2008 1999 1999 2008 1999 1999 2008 ...
+##  $ cyl         : int  4 4 4 4 6 6 6 4 4 4 ...
+##  $ trans       : chr  "auto(l5)" "manual(m5)" "manual(m6)" "auto(av)" ...
+##  $ drv         : chr  "f" "f" "f" "f" ...
+##  $ cty         : int  18 21 20 21 16 18 18 18 16 20 ...
+##  $ hwy         : int  29 29 31 30 26 26 27 26 25 28 ...
+##  $ fl          : chr  "p" "p" "p" "p" ...
+##  $ class       : chr  "compact" "compact" "compact" "compact" ...
+```
+
+---
+
+## summary
+
+Estadísticas de las variables
+
+```r
+summary(mpg)
+```
+
+```
+##  manufacturer          model               displ            year     
+##  Length:234         Length:234         Min.   :1.600   Min.   :1999  
+##  Class :character   Class :character   1st Qu.:2.400   1st Qu.:1999  
+##  Mode  :character   Mode  :character   Median :3.300   Median :2004  
+##                                        Mean   :3.472   Mean   :2004  
+##                                        3rd Qu.:4.600   3rd Qu.:2008  
+##                                        Max.   :7.000   Max.   :2008  
+##       cyl           trans               drv                 cty       
+##  Min.   :4.000   Length:234         Length:234         Min.   : 9.00  
+##  1st Qu.:4.000   Class :character   Class :character   1st Qu.:14.00  
+##  Median :6.000   Mode  :character   Mode  :character   Median :17.00  
+##  Mean   :5.889                                         Mean   :16.86  
+##  3rd Qu.:8.000                                         3rd Qu.:19.00  
+##  Max.   :8.000                                         Max.   :35.00  
+##       hwy             fl               class          
+##  Min.   :12.00   Length:234         Length:234        
+##  1st Qu.:18.00   Class :character   Class :character  
+##  Median :24.00   Mode  :character   Mode  :character  
+##  Mean   :23.44                                        
+##  3rd Qu.:27.00                                        
+##  Max.   :44.00
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

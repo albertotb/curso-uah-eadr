@@ -1,0 +1,184 @@
+---
+title: "Introducción"
+subtitle: "Fundamentos lenguajes: R"
+author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "macros.js"
+    includes:
+      before_body: mathjax.html
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+## Introducción
+
+- R es un lenguaje de programación y un entorno para manipular datos, realizar cálculos y gráficos.
+- Herramienta muy popular para tareas de Data Science (junto con Python)
+- Comparado con herramientas clásicas (Excel, SaS, SPSS)
+    + Más flexible
+    + Curva de aprendizaje inclinada
+    + **Librerías**!
+
+---
+
+## Librerías
+
+- R tiene una colección de más de 12000 librerías o paquetes de terceros
+- La mayoría disponibles en un repositorio centralizado (CRAN)
+- No forman parte del núcleo de R (R base)
+- Se pueden instalar muy facilmente
+  
+---
+  
+## Entorno
+
+- R está disponible para los principales sistemas operativos (Windows, Linux, MacOS): 
+    + [http://cran.r-project.org](http://cran.r-project.org)
+
+- Recomendado el uso del IDE RStudio
+    + [http://www.rstudio.com](http://www.rstudio.com)
+
+
+---
+
+## Tidyverse
+
+- Colección de paquetes diseñados para tareas de Data Science
+
+- No son estrictamente necesarios, pero simplifican las tareas más comunes
+
+- Los principales son: `dplyr`, `ggplot2`, `tidyr`, `readr`, `purrr`, `stringr`, `forcats` y `tibble`
+
+---
+
+## Instalar y cargar librerías
+
+- Podemos instalar nuevas librerías con la sentencia:
+
+```{r install, eval=F}
+install.packages("tidyverse")
+```
+
+- Para usar las librerías tenemos que cargarlas en el entorno:
+
+```{r, eval=F}
+library(tidyverse)
+```
+
+- También se puede hacer de forma gráfica en RStudio
+
+---
+
+## Operador de asignación
+
+- El resultado de cualquier sentencia de R se pierde si no se asigna a una nueva variable
+```{r echo=T}
+# este resultado se muestra y se pierde
+2 + 2
+```
+
+- El operador de asignación es `<-`
+```{r, echo=T}
+# el resultado de la operación se almacena en una nueva variable `suma`
+suma <- 2 + 2
+```
+
+---
+
+## Data frames
+
+- Tabla para almacenar datos en R
+- Está compuesto por observaciones (filas) y variables (columnas)
+- Cada variable puede ser de un tipo distinto (texto, categórica, numérica, etc.)
+- Todas las observaciones de una misma variable tienen que ser del mismo tipo
+- Cada variable tiene un nombre
+
+---
+
+## Funciones
+
+- Construcción de R que toma unos argumentos de entrada, realiza un cálculo y devuelve un resultado
+- Elemento básico de cualquier lenguaje de programación
+- Ejemplos de llamadas a funciones:
+
+```{r, echo=TRUE}
+v <- c(4.6, 8.2, 9.2)
+mean(v)
+```
+
+```{r, echo=TRUE}
+# siempre con parentesis, aunque no tengan ningun argumento
+ls()
+```
+
+---
+
+## Referencias y ayuda
+
+- La referencia principal del curso es el libro "[R for Data Science](https://r4ds.had.co.nz/)" de Hadley Wickham y Garret Grolemund (O'Reilly 2017)
+
+- Tiene una versión online gratuita
+
+- Hadley Wickham es además el creador de muchos de los paquetes que componen el [tidyverse](https://www.tidyverse.org/)
+
+- Acceder a la ayuda de R:
+```{r, echo=T, eval=F}
+?mean
+help(mean)
+```
+
+---
+
+## Funciones de data frames
+
+Número de filas
+```{r}
+nrow(mpg)
+```
+
+Número de columnas
+```{r}
+ncol(mpg)
+```
+
+---
+
+Nombres de las columnas
+```{r}
+colnames(mpg)
+```
+
+Primeras líneas
+```{r}
+head(mpg)
+```
+
+---
+
+## str
+
+Estructura del data frame
+```{r}
+str(mpg)
+```
+
+---
+
+## summary
+
+Estadísticas de las variables
+```{r}
+summary(mpg)
+```
