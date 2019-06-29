@@ -1,6 +1,6 @@
 # Introducción al tidyverso
 
-1. Introducción a R
+1. Introducción a R [[slides]](./src/00-intro.html)
     * IDE RStudio
     * Clase data.frame
     * Introducción a RMarkdown
