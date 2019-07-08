@@ -13,6 +13,10 @@
   -webkit-transform: scale(0.75, 0.75);
 }*/
 
+.remark-code, .remark-inline-code { font-family: 'Source Code Pro', 'Lucida Console', Monaco, monospace;
+                                    font-size: 75%;
+                                  }
+
 /* title */
 .title-slide h1:nth-of-type(1) {
   color: #FFAA00;

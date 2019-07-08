@@ -1,7 +1,7 @@
 ---
 title: "Introducción"
 subtitle: "Fundamentos lenguajes: R"
-author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+author: "Alberto Torres y Irene Rodríguez"
 date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
@@ -19,7 +19,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
 ```
 
 ## Introducción
@@ -91,7 +91,8 @@ library(tidyverse)
 
 - El operador de asignación es `<-`
 ```{r, echo=T}
-# el resultado de la operación se almacena en una nueva variable `suma`
+# el resultado de la operación se almacena en una nueva variable 
+# `suma`
 suma <- 2 + 2
 ```
 

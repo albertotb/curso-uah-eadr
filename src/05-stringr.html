@@ -4,7 +4,7 @@
     <title>stringr</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán y Irene Rodríguez Luján" />
-    <meta name="date" content="2019-06-21" />
+    <meta name="date" content="2019-07-08" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
     <link href="libs/str_view-0.1.0/str_view.css" rel="stylesheet" />
@@ -18,7 +18,7 @@ class: center, middle, inverse, title-slide
 # stringr
 ## Fundamentos lenguajes: R
 ### Alberto Torres Barrán y Irene Rodríguez Luján
-### 2019-06-21
+### 2019-07-08
 
 ---
 
@@ -127,8 +127,8 @@ x &lt;- c("moto", "coche", "autobus")
 str_view(x, "co")
 ```
 
-<div id="htmlwidget-27e2cc3159868bc30b53" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-27e2cc3159868bc30b53">{"x":{"html":"<ul>\n  <li>moto<\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>autobus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-66f8311df5b0f7d05de3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-66f8311df5b0f7d05de3">{"x":{"html":"<ul>\n  <li>moto<\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>autobus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -137,8 +137,8 @@ str_view(x, "co")
 str_view(x, ".o")
 ```
 
-<div id="htmlwidget-c58e678c8d47eeb8cc76" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c58e678c8d47eeb8cc76">{"x":{"html":"<ul>\n  <li><span class='match'>mo<\/span>to<\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>au<span class='match'>to<\/span>bus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-6e72090ad3f59349190d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-6e72090ad3f59349190d">{"x":{"html":"<ul>\n  <li><span class='match'>mo<\/span>to<\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>au<span class='match'>to<\/span>bus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -163,8 +163,8 @@ writeLines("\\.")
 str_view(c("hola.", "adios."), "a\\.")
 ```
 
-<div id="htmlwidget-75bd7bf9870a05df9b15" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-75bd7bf9870a05df9b15">{"x":{"html":"<ul>\n  <li>hol<span class='match'>a.<\/span><\/li>\n  <li>adios.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-b8412f660c3a17621e73" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-b8412f660c3a17621e73">{"x":{"html":"<ul>\n  <li>hol<span class='match'>a.<\/span><\/li>\n  <li>adios.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -182,8 +182,8 @@ writeLines("\\\\")
 str_view("carpeta\\fichero", "\\\\")
 ```
 
-<div id="htmlwidget-43f15b7122233a297f84" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-43f15b7122233a297f84">{"x":{"html":"<ul>\n  <li>carpeta<span class='match'>\\<\/span>fichero<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-18183b10b78067a39be3" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-18183b10b78067a39be3">{"x":{"html":"<ul>\n  <li>carpeta<span class='match'>\\<\/span>fichero<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -196,8 +196,8 @@ str_view("carpeta\\fichero", "\\\\")
 str_view(c("tapar", "destapar"), "^tapar")
 ```
 
-<div id="htmlwidget-d11542e961d41214bc9c" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d11542e961d41214bc9c">{"x":{"html":"<ul>\n  <li><span class='match'>tapar<\/span><\/li>\n  <li>destapar<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ccddbbc353190801e55d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ccddbbc353190801e55d">{"x":{"html":"<ul>\n  <li><span class='match'>tapar<\/span><\/li>\n  <li>destapar<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -234,8 +234,8 @@ str_view(c("test@test.com", "test@test12.com", "test@test",
          ".+@[^\\d\\s]+\\.(com|es)")
 ```
 
-<div id="htmlwidget-bf144b90a5613c998100" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-bf144b90a5613c998100">{"x":{"html":"<ul>\n  <li><span class='match'>test@test.com<\/span><\/li>\n  <li>test@test12.com<\/li>\n  <li>test@test<\/li>\n  <li><span class='match'>test@test.es<\/span><\/li>\n  <li>@test.com<\/li>\n  <li><span class='match'>te st@test.com<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-ca7882340c856f0974f9" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ca7882340c856f0974f9">{"x":{"html":"<ul>\n  <li><span class='match'>test@test.com<\/span><\/li>\n  <li>test@test12.com<\/li>\n  <li>test@test<\/li>\n  <li><span class='match'>test@test.es<\/span><\/li>\n  <li>@test.com<\/li>\n  <li><span class='match'>te st@test.com<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -245,8 +245,8 @@ str_view(c("981945678", "981 945678", "+34 981945678"),
          "(\\+34\\s)?\\d{9}")
 ```
 
-<div id="htmlwidget-226f9e59fd02a39235cc" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-226f9e59fd02a39235cc">{"x":{"html":"<ul>\n  <li><span class='match'>981945678<\/span><\/li>\n  <li>981 945678<\/li>\n  <li><span class='match'>+34 981945678<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-307a273e43fe3b0ffcaa" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-307a273e43fe3b0ffcaa">{"x":{"html":"<ul>\n  <li><span class='match'>981945678<\/span><\/li>\n  <li>981 945678<\/li>\n  <li><span class='match'>+34 981945678<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -256,8 +256,8 @@ str_view(c("981945678", "981 945678", "+34 981945678", "981 94 56 78"),
          "(\\+34\\s)?\\d{3}\\s?\\d{6}")
 ```
 
-<div id="htmlwidget-5ca04dae365375ce132e" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5ca04dae365375ce132e">{"x":{"html":"<ul>\n  <li><span class='match'>981945678<\/span><\/li>\n  <li><span class='match'>981 945678<\/span><\/li>\n  <li><span class='match'>+34 981945678<\/span><\/li>\n  <li>981 94 56 78<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0683869a871665daa1d4" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0683869a871665daa1d4">{"x":{"html":"<ul>\n  <li><span class='match'>981945678<\/span><\/li>\n  <li><span class='match'>981 945678<\/span><\/li>\n  <li><span class='match'>+34 981945678<\/span><\/li>\n  <li>981 94 56 78<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 

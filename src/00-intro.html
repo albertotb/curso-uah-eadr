@@ -3,8 +3,8 @@
   <head>
     <title>Introducción</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Alberto Torres Barrán y Irene Rodríguez Luján" />
-    <meta name="date" content="2019-07-01" />
+    <meta name="author" content="Alberto Torres y Irene Rodríguez" />
+    <meta name="date" content="2019-07-08" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -14,8 +14,8 @@ class: center, middle, inverse, title-slide
 
 # Introducción
 ## Fundamentos lenguajes: R
-### Alberto Torres Barrán y Irene Rodríguez Luján
-### 2019-07-01
+### Alberto Torres y Irene Rodríguez
+### 2019-07-08
 
 ---
 
@@ -106,16 +106,14 @@ library(tidyverse)
 ```r
 # este resultado se muestra y se pierde
 2 + 2
-```
-
-```
 ## [1] 4
 ```
 
 - El operador de asignación es `&lt;-`
 
 ```r
-# el resultado de la operación se almacena en una nueva variable `suma`
+# el resultado de la operación se almacena en una nueva variable 
+# `suma`
 suma &lt;- 2 + 2
 ```
 
@@ -141,9 +139,6 @@ suma &lt;- 2 + 2
 ```r
 v &lt;- c(4.6, 8.2, 9.2)
 mean(v)
-```
-
-```
 ## [1] 7.333333
 ```
 
@@ -151,9 +146,6 @@ mean(v)
 ```r
 # siempre con parentesis, aunque no tengan ningun argumento
 ls()
-```
-
-```
 ## [1] "file"       "input"      "input_dir"  "output"     "output_dir"
 ## [6] "suma"       "target"     "v"
 ```
@@ -183,9 +175,6 @@ Número de filas
 
 ```r
 nrow(mpg)
-```
-
-```
 ## [1] 234
 ```
 
@@ -193,9 +182,6 @@ Número de columnas
 
 ```r
 ncol(mpg)
-```
-
-```
 ## [1] 11
 ```
 
@@ -205,9 +191,6 @@ Nombres de las columnas
 
 ```r
 colnames(mpg)
-```
-
-```
 ##  [1] "manufacturer" "model"        "displ"        "year"        
 ##  [5] "cyl"          "trans"        "drv"          "cty"         
 ##  [9] "hwy"          "fl"           "class"
@@ -217,9 +200,6 @@ Primeras líneas
 
 ```r
 head(mpg)
-```
-
-```
 ## # A tibble: 6 x 11
 ##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
 ##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
@@ -239,9 +219,6 @@ Estructura del data frame
 
 ```r
 str(mpg)
-```
-
-```
 ## Classes 'tbl_df', 'tbl' and 'data.frame':	234 obs. of  11 variables:
 ##  $ manufacturer: chr  "audi" "audi" "audi" "audi" ...
 ##  $ model       : chr  "a4" "a4" "a4" "a4" ...
@@ -264,9 +241,6 @@ Estadísticas de las variables
 
 ```r
 summary(mpg)
-```
-
-```
 ##  manufacturer          model               displ            year     
 ##  Length:234         Length:234         Min.   :1.600   Min.   :1999  
 ##  Class :character   Class :character   1st Qu.:2.400   1st Qu.:1999  

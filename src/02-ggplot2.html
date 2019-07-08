@@ -4,7 +4,7 @@
     <title>ggplot2</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán y Irene Rodríguez Luján" />
-    <meta name="date" content="2019-06-21" />
+    <meta name="date" content="2019-07-08" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # ggplot2
 ## Fundamentos lenguajes: R
 ### Alberto Torres Barrán y Irene Rodríguez Luján
-### 2019-06-21
+### 2019-07-08
 
 ---
 
@@ -406,24 +406,6 @@ ggplot(data = mpg) +
 ```
 
 ![](02-ggplot2_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
-
----
-
-## Ejercicio ggplot2
-
-Con el conjunto de datos de diamantes, realizar las siguientes operaciones:
-
-1. Ver cuantas filas (diamantes) y columnas (variables) tiene el conjunto de datos.
-2. Hacer un gráfico de barras con la cantidad de diamantes que hay para cada corte (variable cut).
-3. Escoger aleatoriamente 10000 diamantes (función `sample_n()`)
-
-La correlación mide la fuerza de una relación lineal entre dos variables. Toma valores entre 0 y `\(\pm 1\)`, donde 0 es poca dependencia y 1 máxima dependencia (el signo indica la dirección). En R se calcula con la función `cor()`. Sabiendo lo anterior y sobre la muestra reducida de 10000 diamantes:
-
-&lt;!-- 4. Calcular la media y mediana del precio. --&gt;
-4. Hacer un histograma para visualizar la distribución de los precios.
-5. Calcular la correlación entre las variables precio y quilates (carat)
-6. Visualizar dicha correlación haciendo un gráfico de dispersión del precio sobre los quilates.
-7. Repetir el gráfico anterior pero para cada uno de los valores del corte
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
