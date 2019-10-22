@@ -53,6 +53,7 @@
 
 
 ## Enlaces:
+* [Mastering the Tidyverse](https://github.com/rstudio/master-the-tidyverse)
 * [Tidyverse](https://www.tidyverse.org/)
 * [R for Data Science](http://r4ds.had.co.nz/)
 * [Data Challenge Lab](https://dcl-2019-04.github.io/curriculum/)
