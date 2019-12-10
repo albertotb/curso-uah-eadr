@@ -1,55 +1,66 @@
-# Introducción al tidyverso
+# Entornos de análisis de datos (R)
 
-1. Introducción a R [[slides]](./src/00-intro.html)
-    * IDE RStudio
-    * Clase data.frame
-    * Introducción a RMarkdown
+En este repositorio se encuentra el material para el curso "Entornos de análisis de datos (R)" del Máster en Business Intelligence y Data Science de la UAH.
 
-2. Manipular datos con `dplyr` [[slides]](./src/01-dplyr.html)
-    * Seleccionar filas con `filter`, `slice`
-    * Seleccionar columnas con `select`
-    * Crear nuevas columnas con `mutate`
-    * Ordenar y realizar cálculos con `arrange` y `summarize`
 
-3. Funciones útiles de R base
-    * Agregaciones: `mean`, `sd`, `sum`, etc.
-    * Vectorizadas y operadores: `is.na`, `%in%`, "==", "+", etc.
-    * Operaciones con conjuntos: `setdiff`, `union`, etc.
+1. Bloque 1: Introducción y manipulación de datos
 
-4. Visualizar datos con `ggplot2` [[slides]](./src/02-ggplot2.html)
+    * Introducción a R [[slides]](./src/00-intro.html)
+        * IDE RStudio
+        * Clase data.frame
+        * Introducción a RMarkdown
+
+    * Manipular datos con `dplyr` [[slides]](./src/01-dplyr.html)
+        * Seleccionar filas con `filter`, `slice`
+        * Seleccionar columnas con `select`
+        * Crear nuevas columnas con `mutate`
+        * Ordenar y realizar cálculos con `arrange` y `summarize`
+
+2. Bloque 2: Visualizar datos con `ggplot2` [[slides]](./src/02-ggplot2.html)
+    
     * Introducción a la gramática de gráficos
     * Gráficos de puntos (`geom_point`)
     * Gráficos de lineas (`geom_line`)
     * Gráficos de barras (`geom_bar`)
     * Transformaciones estadísticas (`geom_hist`)
 
-5. `dplyr` avanzado
-    * Sentencia `group_by`
-    * Operaciones agrupadas
-    * Operaciones en múltiples columnas
-    * Joins
+3. Bloque 3: Importar y transformar datos
 
-6. Transformar data.frames con `tidyr` [[slides]](./src/03-tidyr.html)
-    * Transformar entre formatos ancho y largo (`spread` y `gather`)
-    * Separar o unir columnas (`separate` y `unite`)
+    * Transformar data.frames con `tidyr` [[slides]](./src/03-tidyr.html)
+        * Transformar entre formatos ancho y largo (`spread` y `gather`)
+        * Separar o unir columnas (`separate` y `unite`)
+    
+    * Lectura de datos con `readr` y `readxl` [[slides]](./src/04-readr.html)
+        * Importar archivos CSV
+        * Importar archivos texto plano con delimitadores
+        * Importar Excel
+        * Opciones más comunes
 
-7. Lectura de datos con `readr` y `readxl` [[slides]](./src/04-readr.html)
-    * Importar archivos CSV
-    * Importar archivos texto plano con delimitadores
-    * Importar Excel
-    * Opciones más comunes
+4. Bloque 4: `dplyr` y `ggplot2` avanzado
+    
+    * `dplyr` avanzado
+        * Sentencia `group_by`
+        * Operaciones agrupadas
+        * Operaciones en múltiples columnas
+        * Joins
 
-8. `ggplot2` avanzado
-    * Facetas  (`facet_wrap`, `facet_grid`)
-    * Ejes
-    * Estilos
+    * `ggplot2` avanzado
+        * Facetas  (`facet_wrap`, `facet_grid`)
+        * Ejes
+        * Estilos
 
-9. Tipos de datos avanzados
-    * Cadenas de texto (`stringr`) [[slides]](./src/05-stringr.html)
+5. Bloque 5: Tipos de datos
+    
+    * Texto (`stringr`) [[slides]](./src/05-stringr.html)
     * Factores (`forcats`) [[slides]](./src/06-forcats.html)
     * Fechas (`lubridate`) [[slides]](./src/07-lubridate.html)
 
-10. Programación funcional con `purrr`
+6. Bloque 6: Programación en R
+
+    * Vectores
+    * Listas
+    * Funciones
+    * Iteración con `purrr`
 
 
 ## Enlaces:
