@@ -3,7 +3,7 @@
 En este repositorio se encuentra el material para el curso "Entornos de análisis de datos (R)" del Máster en Business Intelligence y Data Science de la UAH.
 
 
-1. Bloque 1: Introducción y manipulación de datos
+1. **Bloque 1:** Introducción y manipulación de datos
 
     * Introducción a R [[slides]](./src/00-intro.html)
         * IDE RStudio
@@ -16,7 +16,7 @@ En este repositorio se encuentra el material para el curso "Entornos de análisi
         * Crear nuevas columnas con `mutate`
         * Ordenar y realizar cálculos con `arrange` y `summarize`
 
-2. Bloque 2: Visualizar datos con `ggplot2` [[slides]](./src/02-ggplot2.html)
+2. **Bloque 2:** Visualizar datos con `ggplot2` [[slides]](./src/02-ggplot2.html)
     
     * Introducción a la gramática de gráficos
     * Gráficos de puntos (`geom_point`)
@@ -24,7 +24,7 @@ En este repositorio se encuentra el material para el curso "Entornos de análisi
     * Gráficos de barras (`geom_bar`)
     * Transformaciones estadísticas (`geom_hist`)
 
-3. Bloque 3: Importar y transformar datos
+3. **Bloque 3:** Importar y transformar datos
 
     * Transformar data.frames con `tidyr` [[slides]](./src/03-tidyr.html)
         * Transformar entre formatos ancho y largo (`spread` y `gather`)
@@ -36,7 +36,7 @@ En este repositorio se encuentra el material para el curso "Entornos de análisi
         * Importar Excel
         * Opciones más comunes
 
-4. Bloque 4: `dplyr` y `ggplot2` avanzado
+4. **Bloque 4:** `dplyr` y `ggplot2` avanzado
     
     * `dplyr` avanzado
         * Sentencia `group_by`
@@ -49,13 +49,13 @@ En este repositorio se encuentra el material para el curso "Entornos de análisi
         * Ejes
         * Estilos
 
-5. Bloque 5: Tipos de datos
+5. **Bloque 5:** Tipos de datos
     
     * Texto (`stringr`) [[slides]](./src/05-stringr.html)
     * Factores (`forcats`) [[slides]](./src/06-forcats.html)
     * Fechas (`lubridate`) [[slides]](./src/07-lubridate.html)
 
-6. Bloque 6: Programación en R
+6. **Bloque 6:** Programación en R
 
     * Vectores
     * Listas
