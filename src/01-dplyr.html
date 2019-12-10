@@ -3,8 +3,8 @@
   <head>
     <title>dplyr</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Alberto Torres Barrán y Irene Rodríguez Luján" />
-    <meta name="date" content="2019-07-08" />
+    <meta name="author" content="Alberto Torres Barrán" />
+    <meta name="date" content="2019-12-10" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -13,9 +13,9 @@
 class: center, middle, inverse, title-slide
 
 # dplyr
-## Fundamentos lenguajes: R
-### Alberto Torres Barrán y Irene Rodríguez Luján
-### 2019-07-08
+## Entornos de Análisis de Datos: R
+### Alberto Torres Barrán
+### 2019-12-10
 
 ---
 
@@ -60,13 +60,13 @@ slice(mpg, 1:5)
 
 ```
 ## # A tibble: 5 x 11
-##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
-##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-## 1 audi         a4      1.8  1999     4 auto(… f        18    29 p     comp…
-## 2 audi         a4      1.8  1999     4 manua… f        21    29 p     comp…
-## 3 audi         a4      2    2008     4 manua… f        20    31 p     comp…
-## 4 audi         a4      2    2008     4 auto(… f        21    30 p     comp…
-## 5 audi         a4      2.8  1999     6 auto(… f        16    26 p     comp…
+##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class  
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
+## 1 audi         a4      1.8  1999     4 auto(l5)   f        18    29 p     compact
+## 2 audi         a4      1.8  1999     4 manual(m5) f        21    29 p     compact
+## 3 audi         a4      2    2008     4 manual(m6) f        20    31 p     compact
+## 4 audi         a4      2    2008     4 auto(av)   f        21    30 p     compact
+## 5 audi         a4      2.8  1999     6 auto(l5)   f        16    26 p     compact
 ```
 
 ---
@@ -81,15 +81,15 @@ filter(mpg, model == "a4")
 
 ```
 ## # A tibble: 7 x 11
-##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
-##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-## 1 audi         a4      1.8  1999     4 auto(… f        18    29 p     comp…
-## 2 audi         a4      1.8  1999     4 manua… f        21    29 p     comp…
-## 3 audi         a4      2    2008     4 manua… f        20    31 p     comp…
-## 4 audi         a4      2    2008     4 auto(… f        21    30 p     comp…
-## 5 audi         a4      2.8  1999     6 auto(… f        16    26 p     comp…
-## 6 audi         a4      2.8  1999     6 manua… f        18    26 p     comp…
-## 7 audi         a4      3.1  2008     6 auto(… f        18    27 p     comp…
+##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class  
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
+## 1 audi         a4      1.8  1999     4 auto(l5)   f        18    29 p     compact
+## 2 audi         a4      1.8  1999     4 manual(m5) f        21    29 p     compact
+## 3 audi         a4      2    2008     4 manual(m6) f        20    31 p     compact
+## 4 audi         a4      2    2008     4 auto(av)   f        21    30 p     compact
+## 5 audi         a4      2.8  1999     6 auto(l5)   f        16    26 p     compact
+## 6 audi         a4      2.8  1999     6 manual(m5) f        18    26 p     compact
+## 7 audi         a4      3.1  2008     6 auto(av)   f        18    27 p     compact
 ```
 
 ---
@@ -147,7 +147,7 @@ select(mpg, model, displ, cyl)
 ##  8 a4 quattro   1.8     4
 ##  9 a4 quattro   1.8     4
 ## 10 a4 quattro   2       4
-## # … with 224 more rows
+## # ... with 224 more rows
 ```
 
 ---
@@ -174,7 +174,7 @@ select(mpg, -manufacturer)
 ##  8 a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compact
 ##  9 a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compact
 ## 10 a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compact
-## # … with 224 more rows
+## # ... with 224 more rows
 ```
 
 ---
@@ -202,7 +202,7 @@ select(mpg, model:trans)
 ##  8 a4 quattro   1.8  1999     4 manual(m5)
 ##  9 a4 quattro   1.8  1999     4 auto(l5)  
 ## 10 a4 quattro   2    2008     4 manual(m6)
-## # … with 224 more rows
+## # ... with 224 more rows
 ```
 
 ---
@@ -229,19 +229,19 @@ arrange(mpg, desc(year), cyl)
 
 ```
 ## # A tibble: 234 x 11
-##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    class
-##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-##  1 audi         a4      2    2008     4 manu… f        20    31 p     comp…
-##  2 audi         a4      2    2008     4 auto… f        21    30 p     comp…
-##  3 audi         a4 q…   2    2008     4 manu… 4        20    28 p     comp…
-##  4 audi         a4 q…   2    2008     4 auto… 4        19    27 p     comp…
-##  5 chevrolet    mali…   2.4  2008     4 auto… f        22    30 r     mids…
-##  6 honda        civic   1.8  2008     4 manu… f        26    34 r     subc…
-##  7 honda        civic   1.8  2008     4 auto… f        25    36 r     subc…
-##  8 honda        civic   1.8  2008     4 auto… f        24    36 c     subc…
-##  9 honda        civic   2    2008     4 manu… f        21    29 p     subc…
-## 10 hyundai      sona…   2.4  2008     4 auto… f        21    30 r     mids…
-## # … with 224 more rows
+##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class     
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;     
+##  1 audi         a4           2    2008     4 manual(m6) f        20    31 p     compact   
+##  2 audi         a4           2    2008     4 auto(av)   f        21    30 p     compact   
+##  3 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compact   
+##  4 audi         a4 quattro   2    2008     4 auto(s6)   4        19    27 p     compact   
+##  5 chevrolet    malibu       2.4  2008     4 auto(l4)   f        22    30 r     midsize   
+##  6 honda        civic        1.8  2008     4 manual(m5) f        26    34 r     subcompact
+##  7 honda        civic        1.8  2008     4 auto(l5)   f        25    36 r     subcompact
+##  8 honda        civic        1.8  2008     4 auto(l5)   f        24    36 c     subcompact
+##  9 honda        civic        2    2008     4 manual(m6) f        21    29 p     subcompact
+## 10 hyundai      sonata       2.4  2008     4 auto(l4)   f        21    30 r     midsize   
+## # ... with 224 more rows
 ```
 
 ---
@@ -256,19 +256,19 @@ mutate(mpg, avg_mpg = (cty+hwy)/2)
 
 ```
 ## # A tibble: 234 x 12
-##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    class
-##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-##  1 audi         a4      1.8  1999     4 auto… f        18    29 p     comp…
-##  2 audi         a4      1.8  1999     4 manu… f        21    29 p     comp…
-##  3 audi         a4      2    2008     4 manu… f        20    31 p     comp…
-##  4 audi         a4      2    2008     4 auto… f        21    30 p     comp…
-##  5 audi         a4      2.8  1999     6 auto… f        16    26 p     comp…
-##  6 audi         a4      2.8  1999     6 manu… f        18    26 p     comp…
-##  7 audi         a4      3.1  2008     6 auto… f        18    27 p     comp…
-##  8 audi         a4 q…   1.8  1999     4 manu… 4        18    26 p     comp…
-##  9 audi         a4 q…   1.8  1999     4 auto… 4        16    25 p     comp…
-## 10 audi         a4 q…   2    2008     4 manu… 4        20    28 p     comp…
-## # … with 224 more rows, and 1 more variable: avg_mpg &lt;dbl&gt;
+##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class  avg_mpg
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compa~    23.5
+##  2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compa~    25  
+##  3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compa~    25.5
+##  4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compa~    25.5
+##  5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compa~    21  
+##  6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compa~    22  
+##  7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p     compa~    22.5
+##  8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compa~    22  
+##  9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compa~    20.5
+## 10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compa~    24  
+## # ... with 224 more rows
 ```
 
 ---
@@ -427,19 +427,19 @@ mpg %&gt;%
 ```
 ## # A tibble: 234 x 12
 ## # Groups:   cyl [4]
-##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    class
-##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-##  1 audi         a4      1.8  1999     4 auto… f        18    29 p     comp…
-##  2 audi         a4      1.8  1999     4 manu… f        21    29 p     comp…
-##  3 audi         a4      2    2008     4 manu… f        20    31 p     comp…
-##  4 audi         a4      2    2008     4 auto… f        21    30 p     comp…
-##  5 audi         a4      2.8  1999     6 auto… f        16    26 p     comp…
-##  6 audi         a4      2.8  1999     6 manu… f        18    26 p     comp…
-##  7 audi         a4      3.1  2008     6 auto… f        18    27 p     comp…
-##  8 audi         a4 q…   1.8  1999     4 manu… 4        18    26 p     comp…
-##  9 audi         a4 q…   1.8  1999     4 auto… 4        16    25 p     comp…
-## 10 audi         a4 q…   2    2008     4 manu… 4        20    28 p     comp…
-## # … with 224 more rows, and 1 more variable: avg_cty &lt;dbl&gt;
+##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class  avg_cty
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt;
+##  1 audi         a4           1.8  1999     4 auto(l5)   f        18    29 p     compa~    21.0
+##  2 audi         a4           1.8  1999     4 manual(m5) f        21    29 p     compa~    21.0
+##  3 audi         a4           2    2008     4 manual(m6) f        20    31 p     compa~    21.0
+##  4 audi         a4           2    2008     4 auto(av)   f        21    30 p     compa~    21.0
+##  5 audi         a4           2.8  1999     6 auto(l5)   f        16    26 p     compa~    16.2
+##  6 audi         a4           2.8  1999     6 manual(m5) f        18    26 p     compa~    16.2
+##  7 audi         a4           3.1  2008     6 auto(av)   f        18    27 p     compa~    16.2
+##  8 audi         a4 quattro   1.8  1999     4 manual(m5) 4        18    26 p     compa~    21.0
+##  9 audi         a4 quattro   1.8  1999     4 auto(l5)   4        16    25 p     compa~    21.0
+## 10 audi         a4 quattro   2    2008     4 manual(m6) 4        20    28 p     compa~    21.0
+## # ... with 224 more rows
 ```
 
 ---
@@ -520,19 +520,19 @@ mutate_if(mpg, is.numeric, log)
 
 ```
 ## # A tibble: 234 x 11
-##    manufacturer model displ  year   cyl trans drv     cty   hwy fl    class
-##    &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;
-##  1 audi         a4    0.588  7.60  1.39 auto… f      2.89  3.37 p     comp…
-##  2 audi         a4    0.588  7.60  1.39 manu… f      3.04  3.37 p     comp…
-##  3 audi         a4    0.693  7.60  1.39 manu… f      3.00  3.43 p     comp…
-##  4 audi         a4    0.693  7.60  1.39 auto… f      3.04  3.40 p     comp…
-##  5 audi         a4    1.03   7.60  1.79 auto… f      2.77  3.26 p     comp…
-##  6 audi         a4    1.03   7.60  1.79 manu… f      2.89  3.26 p     comp…
-##  7 audi         a4    1.13   7.60  1.79 auto… f      2.89  3.30 p     comp…
-##  8 audi         a4 q… 0.588  7.60  1.39 manu… 4      2.89  3.26 p     comp…
-##  9 audi         a4 q… 0.588  7.60  1.39 auto… 4      2.77  3.22 p     comp…
-## 10 audi         a4 q… 0.693  7.60  1.39 manu… 4      3.00  3.33 p     comp…
-## # … with 224 more rows
+##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class  
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  
+##  1 audi         a4         0.588  7.60  1.39 auto(l5)   f      2.89  3.37 p     compact
+##  2 audi         a4         0.588  7.60  1.39 manual(m5) f      3.04  3.37 p     compact
+##  3 audi         a4         0.693  7.60  1.39 manual(m6) f      3.00  3.43 p     compact
+##  4 audi         a4         0.693  7.60  1.39 auto(av)   f      3.04  3.40 p     compact
+##  5 audi         a4         1.03   7.60  1.79 auto(l5)   f      2.77  3.26 p     compact
+##  6 audi         a4         1.03   7.60  1.79 manual(m5) f      2.89  3.26 p     compact
+##  7 audi         a4         1.13   7.60  1.79 auto(av)   f      2.89  3.30 p     compact
+##  8 audi         a4 quattro 0.588  7.60  1.39 manual(m5) 4      2.89  3.26 p     compact
+##  9 audi         a4 quattro 0.588  7.60  1.39 auto(l5)   4      2.77  3.22 p     compact
+## 10 audi         a4 quattro 0.693  7.60  1.39 manual(m6) 4      3.00  3.33 p     compact
+## # ... with 224 more rows
 ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
@@ -581,7 +581,24 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 (function() {

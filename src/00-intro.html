@@ -3,8 +3,8 @@
   <head>
     <title>Introducción</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Alberto Torres y Irene Rodríguez" />
-    <meta name="date" content="2019-07-09" />
+    <meta name="author" content="Alberto Torres Barrán" />
+    <meta name="date" content="2019-12-10" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -13,9 +13,9 @@
 class: center, middle, inverse, title-slide
 
 # Introducción
-## Fundamentos lenguajes: R
-### Alberto Torres y Irene Rodríguez
-### 2019-07-09
+## Entornos de Análisis de Datos: R
+### Alberto Torres Barrán
+### 2019-12-10
 
 ---
 
@@ -146,7 +146,7 @@ mean(v)
 ```r
 # siempre con parentesis, aunque no tengan ningun argumento
 ls()
-## [1] "suma" "v"
+## [1] "input"      "input_dir"  "output"     "output_dir" "suma"       "target"     "v"
 ```
 
 ---
@@ -190,9 +190,8 @@ Nombres de las columnas
 
 ```r
 colnames(mpg)
-##  [1] "manufacturer" "model"        "displ"        "year"        
-##  [5] "cyl"          "trans"        "drv"          "cty"         
-##  [9] "hwy"          "fl"           "class"
+##  [1] "manufacturer" "model"        "displ"        "year"         "cyl"          "trans"       
+##  [7] "drv"          "cty"          "hwy"          "fl"           "class"
 ```
 
 Primeras líneas
@@ -200,14 +199,14 @@ Primeras líneas
 ```r
 head(mpg)
 ## # A tibble: 6 x 11
-##   manufacturer model displ  year   cyl trans  drv     cty   hwy fl    class
-##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;
-## 1 audi         a4      1.8  1999     4 auto(~ f        18    29 p     comp~
-## 2 audi         a4      1.8  1999     4 manua~ f        21    29 p     comp~
-## 3 audi         a4      2    2008     4 manua~ f        20    31 p     comp~
-## 4 audi         a4      2    2008     4 auto(~ f        21    30 p     comp~
-## 5 audi         a4      2.8  1999     6 auto(~ f        16    26 p     comp~
-## 6 audi         a4      2.8  1999     6 manua~ f        18    26 p     comp~
+##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class  
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
+## 1 audi         a4      1.8  1999     4 auto(l5)   f        18    29 p     compact
+## 2 audi         a4      1.8  1999     4 manual(m5) f        21    29 p     compact
+## 3 audi         a4      2    2008     4 manual(m6) f        20    31 p     compact
+## 4 audi         a4      2    2008     4 auto(av)   f        21    30 p     compact
+## 5 audi         a4      2.8  1999     6 auto(l5)   f        16    26 p     compact
+## 6 audi         a4      2.8  1999     6 manual(m5) f        18    26 p     compact
 ```
 
 ---
@@ -240,27 +239,27 @@ Estadísticas de las variables
 
 ```r
 summary(mpg)
-##  manufacturer          model               displ            year     
-##  Length:234         Length:234         Min.   :1.600   Min.   :1999  
-##  Class :character   Class :character   1st Qu.:2.400   1st Qu.:1999  
-##  Mode  :character   Mode  :character   Median :3.300   Median :2004  
-##                                        Mean   :3.472   Mean   :2004  
-##                                        3rd Qu.:4.600   3rd Qu.:2008  
-##                                        Max.   :7.000   Max.   :2008  
-##       cyl           trans               drv                 cty       
-##  Min.   :4.000   Length:234         Length:234         Min.   : 9.00  
-##  1st Qu.:4.000   Class :character   Class :character   1st Qu.:14.00  
-##  Median :6.000   Mode  :character   Mode  :character   Median :17.00  
-##  Mean   :5.889                                         Mean   :16.86  
-##  3rd Qu.:8.000                                         3rd Qu.:19.00  
-##  Max.   :8.000                                         Max.   :35.00  
-##       hwy             fl               class          
-##  Min.   :12.00   Length:234         Length:234        
-##  1st Qu.:18.00   Class :character   Class :character  
-##  Median :24.00   Mode  :character   Mode  :character  
-##  Mean   :23.44                                        
-##  3rd Qu.:27.00                                        
-##  Max.   :44.00
+##  manufacturer          model               displ            year           cyl       
+##  Length:234         Length:234         Min.   :1.600   Min.   :1999   Min.   :4.000  
+##  Class :character   Class :character   1st Qu.:2.400   1st Qu.:1999   1st Qu.:4.000  
+##  Mode  :character   Mode  :character   Median :3.300   Median :2004   Median :6.000  
+##                                        Mean   :3.472   Mean   :2004   Mean   :5.889  
+##                                        3rd Qu.:4.600   3rd Qu.:2008   3rd Qu.:8.000  
+##                                        Max.   :7.000   Max.   :2008   Max.   :8.000  
+##     trans               drv                 cty             hwy             fl           
+##  Length:234         Length:234         Min.   : 9.00   Min.   :12.00   Length:234        
+##  Class :character   Class :character   1st Qu.:14.00   1st Qu.:18.00   Class :character  
+##  Mode  :character   Mode  :character   Median :17.00   Median :24.00   Mode  :character  
+##                                        Mean   :16.86   Mean   :23.44                     
+##                                        3rd Qu.:19.00   3rd Qu.:27.00                     
+##                                        Max.   :35.00   Max.   :44.00                     
+##     class          
+##  Length:234        
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+## 
 ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
@@ -309,7 +308,24 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     }
     deleted = true;
   });
-})();</script>
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
 
 <script>
 (function() {

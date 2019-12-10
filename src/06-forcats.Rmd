@@ -1,7 +1,7 @@
 ---
 title: "forcats"
-subtitle: "Fundamentos lenguajes: R"
-author: "Alberto Torres Barrán y Irene Rodríguez Luján"
+subtitle: "Entornos de Análisis de Datos: R"
+author: "Alberto Torres Barrán"
 date: "`r Sys.Date()`"
 output:
   xaringan::moon_reader:
