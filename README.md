@@ -1,8 +1,5 @@
 # Entornos de análisis de datos (R)
 
-En este repositorio se encuentra el material para el curso "Entornos de análisis de datos (R)" del Máster en Business Intelligence y Data Science de la UAH.
-
-
 1. **Bloque 1:** Introducción y manipulación de datos
 
     * Introducción a R [[slides]](./src/00-intro.html)
