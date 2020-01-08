@@ -19,9 +19,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-library(forcats)
-library(lubridate)
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE, fig.align='center')
 ```
 
 # readr
@@ -35,7 +33,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
     + `read_delim()`, para ficheros ASCII delimitados por otros caracteres distintos de "," y ";"
     + `read_tsv()`, para ficheros ASCII delimitados por tabuladores
     + `read_table()`, para ficheros ASCII delimitados por espacios
-    + `read_rds()`, formato binario específico de R
 
 - Exportar datos: `write_csv()`. `write_csv2()`, etc.
 
@@ -109,12 +106,43 @@ dia %>%
 
 ---
 
+## Libreria readxl
+
+  * Podemos listar las hojas de un fichero Excel:
+
+```{r}
+library(readxl)
+excel_ex <- readxl_example("datasets.xlsx")
+excel_sheets(excel_ex)
+```
+
+* Leer como tibble/dataframe:
+
+```{r}
+read_excel(excel_ex, sheet = "mtcars")
+```
+
+---
+
+## Parámetros útiles
+
+ - `range`: rango de celdas a importar, en lugar de la hoja completa (por ejemplo: "C3:F14")
+ 
+ - `sheet`: número o nombre de la hoja a leer. Por defecto la primera
+ 
+ - `col_names`: `TRUE` si la primera fila contiene los nombres de las columnas
+
+ - `na`: vector con cadenas que se interpretan como missing values. Por defecto celdas vacias
+ 
+ - `col_types`: tipo de cada columna. Por defecto se intenta inferir de los datos. Posibles valores: "skip", "guess", "logical", "numeric", "date", "text" or "list"
+
+---
+
 ## Otros formatos
 
 - `readr` solo tiene funciones para importar ficheros de texto
 - Para otros formatos, existen librerías específicas:
     + `haven`, para ficheros de SPSS, Stata y SaS
-    + `readxl`, para ficheros de Excel
     + `DBI` junto con otro paquete específico dependiendo de la BD (`RMySQL`, `RSQLite`, etc.) nos permite hacer *querys* contra una BD
     + `jsonlite`, para ficheros JSON
     + `xml2`, para ficheros XML

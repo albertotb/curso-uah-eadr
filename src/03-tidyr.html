@@ -4,7 +4,7 @@
     <title>tidyr</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2019-12-10" />
+    <meta name="date" content="2020-01-08" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # tidyr
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2019-12-10
+### 2020-01-08
 
 ---
 
@@ -38,16 +38,17 @@ MathJax.Hub.Config({
 
 
 
-# tidyr
-
 ## Introducción
 
 - El 80% del tiempo de un análisis se emplea limpiando y preparando los datos (Dasu y Johnson, 2003)
+
 - Importados los datos, es importante estructurarlos para que el análisis sea lo más fácil posible
-- Las librerías del tidyverse están construidas alrededor de los datos ordenados o *tidy data*:
+
+- Las librerías del tidyverse están construidas alrededor del concepto de datos ordenados o *tidy data*:
     + Cada variable forma una columna
     + Cada observación forma una fila
     + Cada tipo de observación forma una tabla
+    
 - Datos tabulares/rectangulares no implican datos ordenados!!
 
 ---
@@ -59,9 +60,6 @@ Distintas formas de almacenar los mismos datos [R for Data Science]:
 
 ```r
 table1
-```
-
-```
 ## # A tibble: 6 x 4
 ##   country      year  cases population
 ##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
@@ -78,9 +76,6 @@ table1
 
 ```r
 table2
-```
-
-```
 ## # A tibble: 12 x 4
 ##    country      year type            count
 ##    &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;           &lt;int&gt;
@@ -103,9 +98,6 @@ table2
 
 ```r
 table3
-```
-
-```
 ## # A tibble: 6 x 3
 ##   country      year rate             
 ## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
@@ -122,9 +114,6 @@ table3
 
 ```r
 table4a
-```
-
-```
 ## # A tibble: 3 x 3
 ##   country     `1999` `2000`
 ## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
@@ -135,9 +124,6 @@ table4a
 
 ```r
 table4b
-```
-
-```
 ## # A tibble: 3 x 3
 ##   country         `1999`     `2000`
 ## * &lt;chr&gt;            &lt;int&gt;      &lt;int&gt;
@@ -148,15 +134,20 @@ table4b
 
 ---
 
+## Formatos "ancho" y "largo"
+
+.center[
+![:scale 90%](img/original-dfs-tidy.png)    
+.footnotesize[Fuente: https://github.com/gadenbuie/tidyexplain]
+]
+---
+
 ## Operaciones con datos ordenados
 
 
 ```r
 table1 %&gt;%
   mutate(ratio = cases / population * 10000)
-```
-
-```
 ## # A tibble: 6 x 5
 ##   country      year  cases population ratio
 ##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt; &lt;dbl&gt;
@@ -175,9 +166,6 @@ table1 %&gt;%
 table1 %&gt;%
   group_by(year) %&gt;%
   summarize(total = sum(cases))
-```
-
-```
 ## # A tibble: 2 x 2
 ##    year  total
 ##   &lt;int&gt;  &lt;int&gt;
@@ -196,18 +184,28 @@ table1 %&gt;%
     geom_bar(stat = "identity", position = "dodge")
 ```
 
-![](03-tidyr_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+&lt;img src="03-tidyr_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+    
+# tidyr 1.0
+
+* Desde la versión 1.0 de tidyr, se han creado versiones más potentes de las antiguas `spread` y `gather`
+
+* En la siguiente tabla podemos ver la equivalencia:
+
+| pandas  | tidyr &lt;1.0 | tidyr 1.0      | data.table | reshape2 |
+|---------|------------|----------------|------------|----------|
+| pivot   | spread     | pivot_wider    | dcast      | cast     |
+| melt    | gather     | pivot_longer   | melt       | melt     |
 
 ---
 
-## spread
+## pivot_wider
 
 
 ```r
 head(table2)
-```
-
-```
 ## # A tibble: 6 x 4
 ##   country      year type           count
 ##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;          &lt;int&gt;
@@ -221,10 +219,7 @@ head(table2)
 
 
 ```r
-spread(table2, type, count)
-```
-
-```
+pivot_wider(table2, names_from = type, values_from = count)
 ## # A tibble: 6 x 4
 ##   country      year  cases population
 ##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
@@ -238,14 +233,11 @@ spread(table2, type, count)
 
 ---
 
-## gather
+## pivot_longer
 
 
 ```r
 table4a
-```
-
-```
 ## # A tibble: 3 x 3
 ##   country     `1999` `2000`
 ## * &lt;chr&gt;        &lt;int&gt;  &lt;int&gt;
@@ -256,21 +248,27 @@ table4a
 
 
 ```r
-gather(table4a, key = "year", value = "cases", -country)
-```
-
-```
+pivot_longer(table4a, names_to = "year", values_to = "cases", -country)
 ## # A tibble: 6 x 3
 ##   country     year   cases
 ##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
 ## 1 Afghanistan 1999     745
-## 2 Brazil      1999   37737
-## 3 China       1999  212258
-## 4 Afghanistan 2000    2666
-## 5 Brazil      2000   80488
+## 2 Afghanistan 2000    2666
+## 3 Brazil      1999   37737
+## 4 Brazil      2000   80488
+## 5 China       1999  212258
 ## 6 China       2000  213766
 ```
 
+---
+
+## Ejemplo
+
+.center[
+&lt;video width="640" height="480" controls&gt;
+  &lt;source src="img/pivot.mp4" type="video/mp4"&gt;
+&lt;/video&gt;
+]
 ---
 
 ## separate
@@ -278,9 +276,6 @@ gather(table4a, key = "year", value = "cases", -country)
 
 ```r
 table3
-```
-
-```
 ## # A tibble: 6 x 3
 ##   country      year rate             
 ## * &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;            
@@ -295,9 +290,6 @@ table3
 
 ```r
 separate(table3, rate, into = c("cases", "population"), sep = "/")
-```
-
-```
 ## # A tibble: 6 x 4
 ##   country      year cases  population
 ##   &lt;chr&gt;       &lt;int&gt; &lt;chr&gt;  &lt;chr&gt;     
@@ -316,9 +308,6 @@ separate(table3, rate, into = c("cases", "population"), sep = "/")
 
 ```r
 separate(table3, rate, into = c("cases", "population"), sep = "/", convert = TRUE)
-```
-
-```
 ## # A tibble: 6 x 4
 ##   country      year  cases population
 ##   &lt;chr&gt;       &lt;int&gt;  &lt;int&gt;      &lt;int&gt;
@@ -337,9 +326,6 @@ separate(table3, rate, into = c("cases", "population"), sep = "/", convert = TRU
 
 ```r
 unite(mpg, make, manufacturer, model, sep = " ")
-```
-
-```
 ## # A tibble: 234 x 10
 ##    make            displ  year   cyl trans      drv     cty   hwy fl    class  
 ##    &lt;chr&gt;           &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  

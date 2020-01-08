@@ -4,7 +4,7 @@
     <title>readr</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2019-12-10" />
+    <meta name="date" content="2020-01-08" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # readr
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2019-12-10
+### 2020-01-08
 
 ---
 
@@ -49,7 +49,6 @@ MathJax.Hub.Config({
     + `read_delim()`, para ficheros ASCII delimitados por otros caracteres distintos de "," y ";"
     + `read_tsv()`, para ficheros ASCII delimitados por tabuladores
     + `read_table()`, para ficheros ASCII delimitados por espacios
-    + `read_rds()`, formato binario específico de R
 
 - Exportar datos: `write_csv()`. `write_csv2()`, etc.
 
@@ -62,18 +61,15 @@ MathJax.Hub.Config({
 write_csv(mpg, "mpg.csv")
 mpg1 &lt;- read_csv("mpg.csv")
 head(mpg1)
-```
-
-```
 ## # A tibble: 6 x 11
-##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class  
-##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  
-## 1 audi         a4      1.8  1999     4 auto(l5)   f        18    29 p     compact
-## 2 audi         a4      1.8  1999     4 manual(m5) f        21    29 p     compact
-## 3 audi         a4      2    2008     4 manual(m6) f        20    31 p     compact
-## 4 audi         a4      2    2008     4 auto(av)   f        21    30 p     compact
-## 5 audi         a4      2.8  1999     6 auto(l5)   f        16    26 p     compact
-## 6 audi         a4      2.8  1999     6 manual(m5) f        18    26 p     compact
+##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class 
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+## 1 audi         a4      1.8  1999     4 auto(l5)   f        18    29 p     compa~
+## 2 audi         a4      1.8  1999     4 manual(m5) f        21    29 p     compa~
+## 3 audi         a4      2    2008     4 manual(m6) f        20    31 p     compa~
+## 4 audi         a4      2    2008     4 auto(av)   f        21    30 p     compa~
+## 5 audi         a4      2.8  1999     6 auto(l5)   f        16    26 p     compa~
+## 6 audi         a4      2.8  1999     6 manual(m5) f        18    26 p     compa~
 ```
 
 ---
@@ -85,9 +81,6 @@ head(mpg1)
 
 ```r
 getwd()
-```
-
-```
 ## [1] "C:/Users/alberto/Desktop/curso-uah-eadr/src"
 ```
 
@@ -112,9 +105,6 @@ dia &lt;-
 
 dia %&gt;% 
   summarize(y_na = sum(is.na(y)))
-```
-
-```
 ## # A tibble: 1 x 1
 ##    y_na
 ##   &lt;int&gt;
@@ -127,9 +117,6 @@ dia %&gt;%
 ```r
 dia %&gt;%
   summarize(avg_y = mean(y))
-```
-
-```
 ## # A tibble: 1 x 1
 ##   avg_y
 ##   &lt;dbl&gt;
@@ -140,9 +127,6 @@ dia %&gt;%
 ```r
 dia %&gt;%
   summarize(avg_y = mean(y, na.rm = TRUE))
-```
-
-```
 ## # A tibble: 1 x 1
 ##   avg_y
 ##   &lt;dbl&gt;
@@ -165,12 +149,60 @@ dia %&gt;%
 
 ---
 
+## Libreria readxl
+
+  * Podemos listar las hojas de un fichero Excel:
+
+
+```r
+library(readxl)
+excel_ex &lt;- readxl_example("datasets.xlsx")
+excel_sheets(excel_ex)
+## [1] "iris"     "mtcars"   "chickwts" "quakes"
+```
+
+* Leer como tibble/dataframe:
+
+
+```r
+read_excel(excel_ex, sheet = "mtcars")
+## # A tibble: 32 x 11
+##      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
+##  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4
+##  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
+##  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
+##  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
+##  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
+##  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
+##  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
+##  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
+## 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
+## # ... with 22 more rows
+```
+
+---
+
+## Parámetros útiles
+
+ - `range`: rango de celdas a importar, en lugar de la hoja completa (por ejemplo: "C3:F14")
+ 
+ - `sheet`: número o nombre de la hoja a leer. Por defecto la primera
+ 
+ - `col_names`: `TRUE` si la primera fila contiene los nombres de las columnas
+
+ - `na`: vector con cadenas que se interpretan como missing values. Por defecto celdas vacias
+ 
+ - `col_types`: tipo de cada columna. Por defecto se intenta inferir de los datos. Posibles valores: "skip", "guess", "logical", "numeric", "date", "text" or "list"
+
+---
+
 ## Otros formatos
 
 - `readr` solo tiene funciones para importar ficheros de texto
 - Para otros formatos, existen librerías específicas:
     + `haven`, para ficheros de SPSS, Stata y SaS
-    + `readxl`, para ficheros de Excel
     + `DBI` junto con otro paquete específico dependiendo de la BD (`RMySQL`, `RSQLite`, etc.) nos permite hacer *querys* contra una BD
     + `jsonlite`, para ficheros JSON
     + `xml2`, para ficheros XML

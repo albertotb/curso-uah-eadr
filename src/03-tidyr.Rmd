@@ -19,21 +19,20 @@ output:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
-library(forcats)
-library(lubridate)
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE, fig.align='center')
 ```
-
-# tidyr
 
 ## Introducción
 
 - El 80% del tiempo de un análisis se emplea limpiando y preparando los datos (Dasu y Johnson, 2003)
+
 - Importados los datos, es importante estructurarlos para que el análisis sea lo más fácil posible
-- Las librerías del tidyverse están construidas alrededor de los datos ordenados o *tidy data*:
+
+- Las librerías del tidyverse están construidas alrededor del concepto de datos ordenados o *tidy data*:
     + Cada variable forma una columna
     + Cada observación forma una fila
     + Cada tipo de observación forma una tabla
+    
 - Datos tabulares/rectangulares no implican datos ordenados!!
 
 ---
@@ -69,6 +68,14 @@ table4b
 
 ---
 
+## Formatos "ancho" y "largo"
+
+.center[
+![:scale 90%](img/original-dfs-tidy.png)    
+.footnotesize[Fuente: https://github.com/gadenbuie/tidyexplain]
+]
+---
+
 ## Operaciones con datos ordenados
 
 ```{r}
@@ -95,29 +102,51 @@ table1 %>%
 ```
 
 ---
+    
+# tidyr 1.0
 
-## spread
+* Desde la versión 1.0 de tidyr, se han creado versiones más potentes de las antiguas `spread` y `gather`
+
+* En la siguiente tabla podemos ver la equivalencia:
+
+| pandas  | tidyr <1.0 | tidyr 1.0      | data.table | reshape2 |
+|---------|------------|----------------|------------|----------|
+| pivot   | spread     | pivot_wider    | dcast      | cast     |
+| melt    | gather     | pivot_longer   | melt       | melt     |
+
+---
+
+## pivot_wider
 
 ```{r}
 head(table2)
 ```
 
 ```{r}
-spread(table2, type, count)
+pivot_wider(table2, names_from = type, values_from = count)
 ```
 
 ---
 
-## gather
+## pivot_longer
 
 ```{r}
 table4a
 ```
 
 ```{r}
-gather(table4a, key = "year", value = "cases", -country)
+pivot_longer(table4a, names_to = "year", values_to = "cases", -country)
 ```
 
+---
+
+## Ejemplo
+
+.center[
+<video width="640" height="480" controls>
+  <source src="img/pivot.mp4" type="video/mp4">
+</video>
+]
 ---
 
 ## separate
