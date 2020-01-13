@@ -35,13 +35,13 @@
 
 4. **Bloque 4:** `dplyr` y `ggplot2` avanzado
     
-    * `dplyr` avanzado
+    * `dplyr` avanzado [[slides]](./src/10-dplyr_cont.html)
         * Sentencia `group_by`
         * Operaciones agrupadas
         * Operaciones en múltiples columnas
         * Joins
 
-    * `ggplot2` avanzado
+    * `ggplot2` avanzado [[slides]](./src/09-ggplot2_cont.html)
         * Facetas  (`facet_wrap`, `facet_grid`)
         * Ejes
         * Estilos
@@ -52,7 +52,7 @@
     * Factores (`forcats`) [[slides]](./src/06-forcats.html)
     * Fechas (`lubridate`) [[slides]](./src/07-lubridate.html)
 
-6. **Bloque 6:** Programación en R
+6. **Bloque 6:** Programación en R [[slides]](./src/08-purrr.html)
 
     * Vectores
     * Listas

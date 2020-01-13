@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+  <head>
+    <title>dplyr (continuación)</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Alberto Torres" />
+    <meta name="date" content="2020-01-13" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link rel="stylesheet" href="custom.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# dplyr (continuación)
+## Entornos de Análisis de Datos: R
+### Alberto Torres
+### 2020-01-13
+
+---
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: {
+    Macros: {
+      Xcal: "{\\mathcal{X}}",
+      Xbf: "{\\mathbf{X}}",
+      Qbf: "{\\mathbf{Q}}",
+      Zbf: "{\\mathbf{Z}}",
+      Vbf: "{\\mathbf{V}}",
+      Hbf: "{\\mathbf{H}}",
+      Rbb: "{\\mathbb{R}}"
+    },
+    extensions: ["AMSmath.js","AMSsymbols.js"]
+  }
+});
+</script>
+
+
+
+## Operaciones agrupadas
+
+- La función `group_by()` convierte un data frame en otro agrupado por una o más variables.
+- En los data frames agrupados todas las operaciones anteriores se realizan "por grupo".
+- `ungroup()` elimina la agrupación.
+
+---
+
+## Slice con group_by
+
+- Los indices son relativos al grupo.
+
+```r
+mpg %&gt;%
+  group_by(cyl) %&gt;%
+  slice(1:2)
+## # A tibble: 8 x 11
+## # Groups:   cyl [4]
+##   manufacturer model              displ  year   cyl trans      drv     cty   hwy fl    class  
+##   &lt;chr&gt;        &lt;chr&gt;              &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt;      &lt;chr&gt; &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt;  
+## 1 audi         a4                   1.8  1999     4 auto(l5)   f        18    29 p     compact
+## 2 audi         a4                   1.8  1999     4 manual(m5) f        21    29 p     compact
+## 3 volkswagen   jetta                2.5  2008     5 auto(s6)   f        21    29 r     compact
+## 4 volkswagen   jetta                2.5  2008     5 manual(m5) f        21    29 r     compact
+## 5 audi         a4                   2.8  1999     6 auto(l5)   f        16    26 p     compact
+## 6 audi         a4                   2.8  1999     6 manual(m5) f        18    26 p     compact
+## 7 audi         a6 quattro           4.2  2008     8 auto(s6)   4        16    23 p     midsize
+## 8 chevrolet    c1500 suburban 2wd   5.3  2008     8 auto(l4)   r        14    20 r     suv
+```
+---
+
+## Select con group_by
+
+- `select()` mantiene siempre las variables agrupadas, aunque no se indique explicitamente.
+
+```r
+dim(mpg)
+data &lt;- mpg %&gt;%
+  group_by(cyl) %&gt;%
+  select(cty)
+dim(data)
+```
+
+```r
+data &lt;- mpg %&gt;%
+  group_by(cyl) %&gt;%
+  select(cty)
+glimpse(data)
+## Observations: 234
+## Variables: 2
+## Groups: cyl [4]
+## $ cyl &lt;int&gt; 4, 4, 4, 4, 6, 6, 6, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,...
+## $ cty &lt;int&gt; 18, 21, 20, 21, 16, 18, 18, 18, 16, 20, 19, 15, 17, 17, 15, 15, 17, 16, 14, 11, ...
+```
+---
+
+## arrange con group_by
+
+- `arrange()` ordena por la(s) variable(s) especificadas como parámetros.
+
+
+```r
+data &lt;- mpg %&gt;%
+  group_by(cyl) %&gt;%
+  arrange(manufacturer)
+glimpse(data)
+## Observations: 234
+## Variables: 11
+## Groups: cyl [4]
+## $ manufacturer &lt;chr&gt; "audi", "audi", "audi", "audi", "audi", "audi", "audi", "audi", "audi",...
+## $ model        &lt;chr&gt; "a4", "a4", "a4", "a4", "a4", "a4", "a4", "a4 quattro", "a4 quattro", "...
+## $ displ        &lt;dbl&gt; 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 3...
+## $ year         &lt;int&gt; 1999, 1999, 2008, 2008, 1999, 1999, 2008, 1999, 1999, 2008, 2008, 1999,...
+## $ cyl          &lt;int&gt; 4, 4, 4, 4, 6, 6, 6, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 8, 8, 8, 8, 8, 8, 8,...
+## $ trans        &lt;chr&gt; "auto(l5)", "manual(m5)", "manual(m6)", "auto(av)", "auto(l5)", "manual...
+## $ drv          &lt;chr&gt; "f", "f", "f", "f", "f", "f", "f", "4", "4", "4", "4", "4", "4", "4", "...
+## $ cty          &lt;int&gt; 18, 21, 20, 21, 16, 18, 18, 18, 16, 20, 19, 15, 17, 17, 15, 15, 17, 16,...
+## $ hwy          &lt;int&gt; 29, 29, 31, 30, 26, 26, 27, 26, 25, 28, 27, 25, 25, 25, 25, 24, 25, 23,...
+## $ fl           &lt;chr&gt; "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "...
+## $ class        &lt;chr&gt; "compact", "compact", "compact", "compact", "compact", "compact", "comp...
+```
+
+
+---
+## summarize con group_by
+
+Un `summarize()` sobre un data frame agrupado devuelve otro con tantas filas como grupos (valores distintos de la/s variable/s usadas para agrupar).
+
+
+```r
+mpg %&gt;%
+  group_by(cyl) %&gt;%
+  summarize(avg_cty = mean(cty))
+## # A tibble: 4 x 2
+##     cyl avg_cty
+##   &lt;int&gt;   &lt;dbl&gt;
+## 1     4    21.0
+## 2     5    20.5
+## 3     6    16.2
+## 4     8    12.6
+```
+
+---
+
+## mutate con group_by
+
+Un `mutate()` sobre un data frame agrupado devuelve siempre otro data frame con el mismo número de filas que el original.
+
+
+```r
+data &lt;- mpg %&gt;%
+  group_by(cyl) %&gt;%
+  mutate(avg_cty = mean(cty))
+glimpse(data)
+## Observations: 234
+## Variables: 12
+## Groups: cyl [4]
+## $ manufacturer &lt;chr&gt; "audi", "audi", "audi", "audi", "audi", "audi", "audi", "audi", "audi",...
+## $ model        &lt;chr&gt; "a4", "a4", "a4", "a4", "a4", "a4", "a4", "a4 quattro", "a4 quattro", "...
+## $ displ        &lt;dbl&gt; 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 1.8, 1.8, 2.0, 2.0, 2.8, 2.8, 3.1, 3...
+## $ year         &lt;int&gt; 1999, 1999, 2008, 2008, 1999, 1999, 2008, 1999, 1999, 2008, 2008, 1999,...
+## $ cyl          &lt;int&gt; 4, 4, 4, 4, 6, 6, 6, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 8, 8, 8, 8, 8, 8, 8,...
+## $ trans        &lt;chr&gt; "auto(l5)", "manual(m5)", "manual(m6)", "auto(av)", "auto(l5)", "manual...
+## $ drv          &lt;chr&gt; "f", "f", "f", "f", "f", "f", "f", "4", "4", "4", "4", "4", "4", "4", "...
+## $ cty          &lt;int&gt; 18, 21, 20, 21, 16, 18, 18, 18, 16, 20, 19, 15, 17, 17, 15, 15, 17, 16,...
+## $ hwy          &lt;int&gt; 29, 29, 31, 30, 26, 26, 27, 26, 25, 28, 27, 25, 25, 25, 25, 24, 25, 23,...
+## $ fl           &lt;chr&gt; "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "p", "...
+## $ class        &lt;chr&gt; "compact", "compact", "compact", "compact", "compact", "compact", "comp...
+## $ avg_cty      &lt;dbl&gt; 21.01235, 21.01235, 21.01235, 21.01235, 16.21519, 16.21519, 16.21519, 2...
+```
+
+
+---
+
+
+## joins
+
+- La librería `dplyr` implementa funciones para unir data frames: 
+  + `inner_join(x,y)`: Devuelve las filas que crucen tant en x como en y.
+  + `left_join(x,y)`: Devuelve todas, las filas en x y las que crucen en y (completa con NA)
+  + `right_join(x,y)`: Devuelve todas las filas en y y las que crucen en x (completa con NA).
+  + `full_join(x,y)`: Devuelve todas las filas de x e y (completa con NA).
+  + `semi_join(x,y)`: Devuelve solo las filas de x que crucen con y (pero no y).
+  + `anti_join(x,y)`: Devuelve solo las filas de x que NO crucen con y.
+
+- Diagrama de Venn [R for Data Science]
+&lt;center&gt;
+&lt;img src="img/join-venn.png" width="80%" style="display: block; margin: auto;" /&gt;
+&lt;/center&gt;
+
+---
+
+## Equivalencia con SQL
+
+| dplyr                       | SQL                                            | 
+|-----------------------------|------------------------------------------------|
+|`inner_join(x, y, by = "z")`	| `SELECT * FROM x INNER JOIN y USING (z)`       |
+|`left_join(x, y, by = "z")`	| `SELECT * FROM x LEFT OUTER JOIN y USING (z)`  |
+|`right_join(x, y, by = "z")` |	`SELECT * FROM x RIGHT OUTER JOIN y USING (z)` |
+|`full_join(x, y, by = "z")`  |	`SELECT * FROM x FULL OUTER JOIN y USING (z)`  |
+
+[R for Data Science]
+
+---
+
+## Ejemplo
+
+
+```r
+t4a &lt;- gather(table4a, key = "year", value = "cases", num_range("", 1999:2000))
+head(t4a,4)
+## # A tibble: 4 x 3
+##   country     year   cases
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
+## 1 Afghanistan 1999     745
+## 2 Brazil      1999   37737
+## 3 China       1999  212258
+## 4 Afghanistan 2000    2666
+t4b &lt;- gather(table4b, key = "YEAR", value = "population", `1999`:`2000`)
+head(t4b,4)
+## # A tibble: 4 x 3
+##   country     YEAR  population
+##   &lt;chr&gt;       &lt;chr&gt;      &lt;int&gt;
+## 1 Afghanistan 1999    19987071
+## 2 Brazil      1999   172006362
+## 3 China       1999  1272915272
+## 4 Afghanistan 2000    20595360
+```
+
+---
+
+## Ejemplo (cont.)
+
+```r
+inner_join(t4a, t4b, by=c("year" = "YEAR", "country"))
+## # A tibble: 6 x 4
+##   country     year   cases population
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;      &lt;int&gt;
+## 1 Afghanistan 1999     745   19987071
+## 2 Brazil      1999   37737  172006362
+## 3 China       1999  212258 1272915272
+## 4 Afghanistan 2000    2666   20595360
+## 5 Brazil      2000   80488  174504898
+## 6 China       2000  213766 1280428583
+```
+---
+
+
+## Operaciones de conjuntos con dplyr
+
+- `dplyr` implementa la lógica de operaciones con conjuntos sobre tibbles.
+  + `intersect(x,y)`: Filas que aparecen tanto en x como en y.
+  + `union(x,y)`: Filas que aparecen en x, en y, o en ambos.
+  + `setdiff(x,y)`: Filas que aparecen en x, pero no en y.
+  
+
+```r
+x &lt;- tibble(
+  x1=c("A","B","C"),
+  x2=1:3
+)
+y &lt;- tibble(
+  x1=c("B","C","D"),
+  x2=2:4
+)
+dplyr::intersect(x,y)
+dplyr::union(x,y)
+dplyr::setdiff(x,y)
+```
+
+
+---
+
+
+## Añadir filas y/o columnas en dplyr
+
+- `dplyr` implementa las funciones `bind_rows` y `bind_cols` para añadir filas o columnas a un tibble, respectivamente.
+- Las funciones de `dplyr` son **más eficientes** que las funciones `rbind` y `cbind` de R base. 
+- En `bind_rows` las columnas se combinan por nombre y las columnas que no están en alguno de los dataframes se rellenan con NAs.
+
+
+```r
+bind_rows(
+  c(a = 1, b = 2),
+  tibble(saludo="hola", a = 3:4, b = 5:6),
+  c(a = 7, b = 8)
+)
+## # A tibble: 4 x 3
+##       a     b saludo
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; 
+## 1     1     2 &lt;NA&gt;  
+## 2     3     5 hola  
+## 3     4     6 hola  
+## 4     7     8 &lt;NA&gt;
+```
+---
+
+## Añadir filas y/o columnas en dplyr (cont.)
+
+- En `bind_cols` se unen las subtablas por posición -&gt; todos los dataframes deben tener el mismo número de filas.
+  + Para unir por valores, usar `join`.
+
+
+```r
+  
+# Both have to be tibbles
+bind_cols(
+  tibble(a = 3:4, b = c("a", "b")),
+  tibble(logical = c(T, F))
+)
+## # A tibble: 2 x 3
+##       a b     logical
+##   &lt;int&gt; &lt;chr&gt; &lt;lgl&gt;  
+## 1     3 a     TRUE   
+## 2     4 b     FALSE
+```
+
+---
+
+## Operar en múltiples columnas
+
+- dplyr tiene [variantes](https://dplyr.tidyverse.org/reference/scoped.html) de sus funciones principales que operan sobre múltiples columnas
+- La selección de columnas puede ser:
+    + Todas, funciones que terminan en `_all`
+    + Con un predicado, funciones que terminan en `_if`
+    + Vector con nombres, posiciones o función [`vars()`](https://dplyr.tidyverse.org/reference/vars.html)
+
+---
+
+
+```r
+summarize_all(mpg, funs(sum(is.na(.))))
+## # A tibble: 1 x 11
+##   manufacturer model displ  year   cyl trans   drv   cty   hwy    fl class
+##          &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;
+## 1            0     0     0     0     0     0     0     0     0     0     0
+```
+
+
+```r
+mutate_if(mpg, is.numeric, log)
+## # A tibble: 234 x 11
+##    manufacturer model      displ  year   cyl trans      drv     cty   hwy fl    class  
+##    &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  
+##  1 audi         a4         0.588  7.60  1.39 auto(l5)   f      2.89  3.37 p     compact
+##  2 audi         a4         0.588  7.60  1.39 manual(m5) f      3.04  3.37 p     compact
+##  3 audi         a4         0.693  7.60  1.39 manual(m6) f      3.00  3.43 p     compact
+##  4 audi         a4         0.693  7.60  1.39 auto(av)   f      3.04  3.40 p     compact
+##  5 audi         a4         1.03   7.60  1.79 auto(l5)   f      2.77  3.26 p     compact
+##  6 audi         a4         1.03   7.60  1.79 manual(m5) f      2.89  3.26 p     compact
+##  7 audi         a4         1.13   7.60  1.79 auto(av)   f      2.89  3.30 p     compact
+##  8 audi         a4 quattro 0.588  7.60  1.39 manual(m5) 4      2.89  3.26 p     compact
+##  9 audi         a4 quattro 0.588  7.60  1.39 auto(l5)   4      2.77  3.22 p     compact
+## 10 audi         a4 quattro 0.693  7.60  1.39 manual(m6) 4      3.00  3.33 p     compact
+## # ... with 224 more rows
+```
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="macros.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

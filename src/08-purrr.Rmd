@@ -1,0 +1,84 @@
+---
+title: "purrr"
+subtitle: "Entornos de Análisis de Datos: R"
+author: "Alberto Torres Barrán"
+date: "`r Sys.Date()`"
+output:
+  xaringan::moon_reader:
+    css: ["default", "custom.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      beforeInit: "macros.js"
+    includes:
+      before_body: mathjax.html
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(purrr)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
+```
+
+## Iteración
+
+* Se utiliza para aplicar el mismo código a varias entradas
+
+* La forma más conocida son los bucles:
+
+    - for
+    
+    - while
+      
+```{r eval=FALSE}
+output <- vector("double", ncol(df))  
+for (i in seq_along(df)) {            
+  output[[i]] <- median(df[[i]])  
+}
+```
+    
+   
+```{r eval=FALSE}
+i <- 1
+while (i <= length(df)) {
+  i <- i + 1 
+}
+```
+    
+* Hemos visto otra forma "oculta" de iteración, las funciones `summarize_all()` y `summarize_if()`
+
+---
+
+## purrr
+
+* La librería proporciona funciones que sustituyen a los bucles en la mayoría de los casos más comunes:
+
+    - `map()`, crea una lista
+    
+    - `map_lgl()`, crea un vector lógico
+    
+    - `map_int()`, crea una vector de enteros
+    
+    - `map_dbl()`, crea un vector de dobles
+    
+    - `map_chr()`, crea un vector de cadenas de caracteres
+    
+    - `map_df()`, crea un data frame
+    
+---
+
+```{r}
+df <- select_if(mpg, is.numeric)
+map_dbl(df, mean, na.rm = TRUE)
+```
+
+---
+
+`map_*()` acepta functiones definidas por el usuario y tiene una sintáxis especial para declarar funciones anónimas
+
+```{r}
+map_df(df, ~(. - min(.) / (max(.) - min(.))))
+```
