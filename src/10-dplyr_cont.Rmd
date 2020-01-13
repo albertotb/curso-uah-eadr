@@ -83,6 +83,14 @@ mpg %>%
 
 ---
 
+## Metodología split-apply-combine
+
+.center[
+![:scale 90%](./img/split-apply-combine.svg)
+]
+
+---
+
 ## mutate con group_by
 
 Un `mutate()` sobre un data frame agrupado devuelve siempre otro data frame con el mismo número de filas que el original.
