@@ -4,7 +4,7 @@
     <title>forcats</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2019-12-10" />
+    <meta name="date" content="2020-01-14" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # forcats
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2019-12-10
+### 2020-01-14
 
 ---
 
@@ -69,9 +69,6 @@ MathJax.Hub.Config({
 x &lt;- c("Primavera", "Verano", "Verano", "Verano", "Otoño")
 f &lt;- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
 f
-```
-
-```
 ## [1] Primavera Verano    Verano    Verano    Otoño    
 ## Levels: Primavera Verano Otoño Invierno
 ```
@@ -85,9 +82,6 @@ f
 x &lt;- c("Primavera", "Verano", "Verano", "Verano", "Otono")
 f1 &lt;- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
 f1
-```
-
-```
 ## [1] Primavera Verano    Verano    Verano    &lt;NA&gt;     
 ## Levels: Primavera Verano Otoño Invierno
 ```
@@ -97,18 +91,12 @@ f1
 
 ```r
 unique(x)
-```
-
-```
 ## [1] "Primavera" "Verano"    "Otono"
 ```
 
 
 ```r
 factor(x)
-```
-
-```
 ## [1] Primavera Verano    Verano    Verano    Otono    
 ## Levels: Otono Primavera Verano
 ```
@@ -121,9 +109,6 @@ También se pueden crear a partir de una variable numérica
 ```r
 edad &lt;- c(20, 25, 15, 38)
 cut(edad, breaks = c(10, 20, 30, 40))
-```
-
-```
 ## [1] (10,20] (20,30] (10,20] (30,40]
 ## Levels: (10,20] (20,30] (30,40]
 ```
@@ -137,9 +122,6 @@ cut(edad, breaks = c(10, 20, 30, 40))
 
 ```r
 fct_relevel(f, "Invierno", "Primavera")
-```
-
-```
 ## [1] Primavera Verano    Verano    Verano    Otoño    
 ## Levels: Invierno Primavera Verano Otoño
 ```
@@ -149,9 +131,6 @@ fct_relevel(f, "Invierno", "Primavera")
 
 ```r
 fct_recode(f, Inv = "Invierno", Prim = "Primavera", Ver = "Verano", Oto = "Otoño")
-```
-
-```
 ## [1] Prim Ver  Ver  Ver  Oto 
 ## Levels: Prim Ver Oto Inv
 ```
@@ -163,9 +142,6 @@ fct_recode(f, Inv = "Invierno", Prim = "Primavera", Ver = "Verano", Oto = "Otoñ
 
 ```r
 fct_recode(f, Frio = "Invierno", Calor = "Primavera", Calor = "Verano", Frio = "Otoño")
-```
-
-```
 ## [1] Calor Calor Calor Calor Frio 
 ## Levels: Calor Frio
 ```
@@ -175,9 +151,6 @@ fct_recode(f, Frio = "Invierno", Calor = "Primavera", Calor = "Verano", Frio = "
 
 ```r
 fct_collapse(f, Frio = c("Invierno", "Otoño"), Calor = c("Primavera", "Verano"))
-```
-
-```
 ## [1] Calor Calor Calor Calor Frio 
 ## Levels: Calor Frio
 ```

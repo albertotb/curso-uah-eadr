@@ -4,7 +4,7 @@
     <title>lubridate</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2019-12-10" />
+    <meta name="date" content="2020-01-14" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # lubridate
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2019-12-10
+### 2020-01-14
 
 ---
 
@@ -56,27 +56,18 @@ MathJax.Hub.Config({
 
 ```r
 ymd("20181012")
-```
-
-```
 ## [1] "2018-10-12"
 ```
 
 
 ```r
 dmy("1 de Enero de 2017")
-```
-
-```
 ## [1] "2017-01-01"
 ```
 
 
 ```r
 make_date(2015, 10, 20)
-```
-
-```
 ## [1] "2015-10-20"
 ```
 
@@ -103,18 +94,12 @@ make_date(2015, 10, 20)
 ```r
 fecha &lt;- ymd(c("20181205", "20181208", "20181210", "20181220"))
 mday(fecha)
-```
-
-```
 ## [1]  5  8 10 20
 ```
 
 
 ```r
 floor_date(fecha, "week")
-```
-
-```
 ## [1] "2018-12-02" "2018-12-02" "2018-12-09" "2018-12-16"
 ```
     </textarea>

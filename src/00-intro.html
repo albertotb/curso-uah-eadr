@@ -4,7 +4,7 @@
     <title>Introducción</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2019-12-10" />
+    <meta name="date" content="2020-01-14" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # Introducción
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2019-12-10
+### 2020-01-14
 
 ---
 
@@ -146,7 +146,8 @@ mean(v)
 ```r
 # siempre con parentesis, aunque no tengan ningun argumento
 ls()
-## [1] "input"      "input_dir"  "output"     "output_dir" "suma"       "target"     "v"
+##  [1] "a"          "count_na"   "input"      "input_dir"  "l"          "output"    
+##  [7] "output_dir" "suma"       "target"     "v"
 ```
 
 ---
@@ -190,8 +191,9 @@ Nombres de las columnas
 
 ```r
 colnames(mpg)
-##  [1] "manufacturer" "model"        "displ"        "year"         "cyl"          "trans"       
-##  [7] "drv"          "cty"          "hwy"          "fl"           "class"
+##  [1] "manufacturer" "model"        "displ"        "year"         "cyl"         
+##  [6] "trans"        "drv"          "cty"          "hwy"          "fl"          
+## [11] "class"
 ```
 
 Primeras líneas
@@ -239,27 +241,27 @@ Estadísticas de las variables
 
 ```r
 summary(mpg)
-##  manufacturer          model               displ            year           cyl       
-##  Length:234         Length:234         Min.   :1.600   Min.   :1999   Min.   :4.000  
-##  Class :character   Class :character   1st Qu.:2.400   1st Qu.:1999   1st Qu.:4.000  
-##  Mode  :character   Mode  :character   Median :3.300   Median :2004   Median :6.000  
-##                                        Mean   :3.472   Mean   :2004   Mean   :5.889  
-##                                        3rd Qu.:4.600   3rd Qu.:2008   3rd Qu.:8.000  
-##                                        Max.   :7.000   Max.   :2008   Max.   :8.000  
-##     trans               drv                 cty             hwy             fl           
-##  Length:234         Length:234         Min.   : 9.00   Min.   :12.00   Length:234        
-##  Class :character   Class :character   1st Qu.:14.00   1st Qu.:18.00   Class :character  
-##  Mode  :character   Mode  :character   Median :17.00   Median :24.00   Mode  :character  
-##                                        Mean   :16.86   Mean   :23.44                     
-##                                        3rd Qu.:19.00   3rd Qu.:27.00                     
-##                                        Max.   :35.00   Max.   :44.00                     
-##     class          
-##  Length:234        
-##  Class :character  
-##  Mode  :character  
-##                    
-##                    
-## 
+##  manufacturer          model               displ            year     
+##  Length:234         Length:234         Min.   :1.600   Min.   :1999  
+##  Class :character   Class :character   1st Qu.:2.400   1st Qu.:1999  
+##  Mode  :character   Mode  :character   Median :3.300   Median :2004  
+##                                        Mean   :3.472   Mean   :2004  
+##                                        3rd Qu.:4.600   3rd Qu.:2008  
+##                                        Max.   :7.000   Max.   :2008  
+##       cyl           trans               drv                 cty       
+##  Min.   :4.000   Length:234         Length:234         Min.   : 9.00  
+##  1st Qu.:4.000   Class :character   Class :character   1st Qu.:14.00  
+##  Median :6.000   Mode  :character   Mode  :character   Median :17.00  
+##  Mean   :5.889                                         Mean   :16.86  
+##  3rd Qu.:8.000                                         3rd Qu.:19.00  
+##  Max.   :8.000                                         Max.   :35.00  
+##       hwy             fl               class          
+##  Min.   :12.00   Length:234         Length:234        
+##  1st Qu.:18.00   Class :character   Class :character  
+##  Median :24.00   Mode  :character   Mode  :character  
+##  Mean   :23.44                                        
+##  3rd Qu.:27.00                                        
+##  Max.   :44.00
 ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>

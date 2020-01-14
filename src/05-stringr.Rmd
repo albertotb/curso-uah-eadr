@@ -21,7 +21,7 @@ output:
 library(stringr)
 library(forcats)
 library(lubridate)
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
 ```
 
 # stringr

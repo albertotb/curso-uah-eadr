@@ -23,6 +23,208 @@ library(purrr)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
 ```
 
+## Vectores
+
+  * Dos tipos de vectores:
+
+    1. vectores **atomic**, 6 tipos distintos: `logical`, `integer`, `double`, `character`, `complex` y `raw`
+  
+    2. listas, que son vectores recursivos (pueden contener otras listas)
+  
+  * Dos propiedades principales:
+ 
+    * tipo, función `typeof()`
+    
+    * longitud, función `length()`
+    
+  * Los elementos de un vector pueden tener nombre
+  
+```{r}
+c(a = 1, b = 2, c = 3)
+```
+
+---
+
+## Vectores atómicos
+
+  * Comprobar el tipo: `is.logical()`, `is.integer()`, `is.double()`, `is.character()`
+
+  * Convertir de un tipo a otro: `as.logical()`, `as.integer()`, `as.double()`, `as.character()`
+  
+  * Cuando combinamos elementos de distinto tipo, existe una conversión implícita al tipo más genérico
+  
+```{r}
+5 + TRUE
+
+c(4.5, "hola")
+```
+
+---
+
+## Listas
+
+  * Pueden contener elementos de distinto tipo, incluido otras listas
+  
+```{r}
+l <- list(a = "a", b = 10.2, c = TRUE, d = 1:10, e = list(1, 2))
+str(l)
+```
+
+---
+
+## Indexado
+
+Distintas formas de indexar elementos:
+
+  1. `[` extrae una sub-lista
+  
+```{r}
+l[1:3]
+```
+  
+  2. `[[` extrae un elemento
+
+```{r}
+l[[4]]
+    
+l[["d"]]
+```
+
+ 
+  3. `$` similar a `[[` pero solo se puede usar con la etiqueta del elemento (no posicion)
+
+```{r}
+l$d
+```
+
+---
+
+## Vectores aumentados
+
+  * Los vectores pueden contener atributos arbitrarios (metadatos)
+
+  * Usando estos atributos se construyen vectores aumentados:
+
+    * *Factors*, a partir de vectores de enteros
+    * *Dates* y *Date-times*, a partir de vectores numéricos
+    * *Tibbles* y *data.frames*, a partir de listas
+
+  * Podemos comprobar estos tipos aumentados con la función `class()`
+  
+```{r}
+class(mpg)
+    
+typeof(mpg)
+```
+  
+---
+
+## Funciones
+
+* Las funciones evitan la repetición de código
+
+* Al igual que las funciones de R, tienen argumentos de entrada y un valor de retorno
+
+* Útiles cuando copiamos y pegamos el **mismo** código para usarlo con distintas variables
+
+---
+
+```{r}
+# Función que cuenta el número de valores NA en un vector
+count_na <- function(x) {
+  sum(is.na(x))
+}
+
+count_na(c(4, 6, NA, 3))
+```
+
+---
+
+## Ejecución condicional
+
+La sentencia `if` permite ejecutar código dependiendo de una condición
+
+```{r eval=FALSE}
+if (condicion) {
+  # codigo que se ejecuta si condicion es TRUE
+} else {
+  # codigo que se ejecuta si condicion es FALSE
+}
+```
+
+Se puede usar `&&` (AND lógico) y `||` (OR lógico) para combinar múltiples expresiones
+
+---
+
+## Múltiples condiciones
+
+```{r eval=FALSE}
+if (condicion1) {
+  # condigo a ejecutar si condicion1 es TRUE
+} else if (condicion2) {
+  # codigo a ejecutar si condicion1 es FALSE pero condicion2 es TRUE
+} else {
+  # si ambas son FALSE
+}
+```
+
+---
+
+## Sentencia ifelse()
+
+Es una sentencia condicional vectorizada
+
+```{r}
+mpg %>%
+  mutate(consumo = ifelse(cty < 20, "bajo", "alto")) %>%
+  select(cty, consumo)
+
+```
+
+---
+
+## Valores por defecto
+
+```{r}
+# Función que cuenta el número de valores NA en un vector
+count_na <- function(x, normalize = FALSE) {
+  if (normalize) {
+    mean(is.na(x))
+  } else {
+    sum(is.na(x))
+  }
+}
+
+count_na(c(NA, NA, 3, 5, NA, 2), normalize = TRUE)
+```
+
+---
+
+## Valores de retorno
+
+ * Por defecto, las funciones devuelven el resultado de la última linea de código
+ 
+ * También se puede usar la sentencia `return()`
+ 
+```{r}
+# Función que cuenta el número de valores NA en un vector
+count_na <- function(x, normalize = FALSE) {
+  if (!is.atomic(x)) {
+    return(NA)
+  }
+  
+  if (normalize) {
+    mean(is.na(x))
+  } else {
+    sum(is.na(x))
+  }
+}
+
+count_na(mpg)
+```
+
+---
+
 ## Iteración
 
 * Se utiliza para aplicar el mismo código a varias entradas

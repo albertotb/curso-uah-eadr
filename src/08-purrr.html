@@ -4,7 +4,7 @@
     <title>purrr</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2020-01-13" />
+    <meta name="date" content="2020-01-14" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # purrr
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2020-01-13
+### 2020-01-14
 
 ---
 
@@ -37,6 +37,262 @@ MathJax.Hub.Config({
 </script>
 
 
+
+## Vectores
+
+  * Dos tipos de vectores:
+
+    1. vectores **atomic**, 6 tipos distintos: `logical`, `integer`, `double`, `character`, `complex` y `raw`
+  
+    2. listas, que son vectores recursivos (pueden contener otras listas)
+  
+  * Dos propiedades principales:
+ 
+    * tipo, función `typeof()`
+    
+    * longitud, función `length()`
+    
+  * Los elementos de un vector pueden tener nombre
+  
+
+```r
+c(a = 1, b = 2, c = 3)
+## a b c 
+## 1 2 3
+```
+
+---
+
+## Vectores atómicos
+
+  * Comprobar el tipo: `is.logical()`, `is.integer()`, `is.double()`, `is.character()`
+
+  * Convertir de un tipo a otro: `as.logical()`, `as.integer()`, `as.double()`, `as.character()`
+  
+  * Cuando combinamos elementos de distinto tipo, existe una conversión implícita al tipo más genérico
+  
+
+```r
+5 + TRUE
+## [1] 6
+
+c(4.5, "hola")
+## [1] "4.5"  "hola"
+```
+
+---
+
+## Listas
+
+  * Pueden contener elementos de distinto tipo, incluido otras listas
+  
+
+```r
+l &lt;- list(a = "a", b = 10.2, c = TRUE, d = 1:10, e = list(1, 2))
+str(l)
+## List of 5
+##  $ a: chr "a"
+##  $ b: num 10.2
+##  $ c: logi TRUE
+##  $ d: int [1:10] 1 2 3 4 5 6 7 8 9 10
+##  $ e:List of 2
+##   ..$ : num 1
+##   ..$ : num 2
+```
+
+---
+
+## Indexado
+
+Distintas formas de indexar elementos:
+
+  1. `[` extrae una sub-lista
+  
+
+```r
+l[1:3]
+## $a
+## [1] "a"
+## 
+## $b
+## [1] 10.2
+## 
+## $c
+## [1] TRUE
+```
+  
+  2. `[[` extrae un elemento
+
+
+```r
+l[[4]]
+##  [1]  1  2  3  4  5  6  7  8  9 10
+    
+l[["d"]]
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+ 
+  3. `$` similar a `[[` pero solo se puede usar con la etiqueta del elemento (no posicion)
+
+
+```r
+l$d
+##  [1]  1  2  3  4  5  6  7  8  9 10
+```
+
+---
+
+## Vectores aumentados
+
+  * Los vectores pueden contener atributos arbitrarios (metadatos)
+
+  * Usando estos atributos se construyen vectores aumentados:
+
+    * *Factors*, a partir de vectores de enteros
+    * *Dates* y *Date-times*, a partir de vectores numéricos
+    * *Tibbles* y *data.frames*, a partir de listas
+
+  * Podemos comprobar estos tipos aumentados con la función `class()`
+  
+
+```r
+class(mpg)
+## [1] "tbl_df"     "tbl"        "data.frame"
+    
+typeof(mpg)
+## [1] "list"
+```
+  
+---
+
+## Funciones
+
+* Las funciones evitan la repetición de código
+
+* Al igual que las funciones de R, tienen argumentos de entrada y un valor de retorno
+
+* Útiles cuando copiamos y pegamos el **mismo** código para usarlo con distintas variables
+
+---
+
+
+```r
+# Función que cuenta el número de valores NA en un vector
+count_na &lt;- function(x) {
+  sum(is.na(x))
+}
+
+count_na(c(4, 6, NA, 3))
+## [1] 1
+```
+
+---
+
+## Ejecución condicional
+
+La sentencia `if` permite ejecutar código dependiendo de una condición
+
+
+```r
+if (condicion) {
+  # codigo que se ejecuta si condicion es TRUE
+} else {
+  # codigo que se ejecuta si condicion es FALSE
+}
+```
+
+Se puede usar `&amp;&amp;` (AND lógico) y `||` (OR lógico) para combinar múltiples expresiones
+
+---
+
+## Múltiples condiciones
+
+
+```r
+if (condicion1) {
+  # condigo a ejecutar si condicion1 es TRUE
+} else if (condicion2) {
+  # codigo a ejecutar si condicion1 es FALSE pero condicion2 es TRUE
+} else {
+  # si ambas son FALSE
+}
+```
+
+---
+
+## Sentencia ifelse()
+
+Es una sentencia condicional vectorizada
+
+
+```r
+mpg %&gt;%
+  mutate(consumo = ifelse(cty &lt; 20, "bajo", "alto")) %&gt;%
+  select(cty, consumo)
+## # A tibble: 234 x 2
+##      cty consumo
+##    &lt;int&gt; &lt;chr&gt;  
+##  1    18 bajo   
+##  2    21 alto   
+##  3    20 alto   
+##  4    21 alto   
+##  5    16 bajo   
+##  6    18 bajo   
+##  7    18 bajo   
+##  8    18 bajo   
+##  9    16 bajo   
+## 10    20 alto   
+## # ... with 224 more rows
+```
+
+---
+
+## Valores por defecto
+
+
+```r
+# Función que cuenta el número de valores NA en un vector
+count_na &lt;- function(x, normalize = FALSE) {
+  if (normalize) {
+    mean(is.na(x))
+  } else {
+    sum(is.na(x))
+  }
+}
+
+count_na(c(NA, NA, 3, 5, NA, 2), normalize = TRUE)
+## [1] 0.5
+```
+
+---
+
+## Valores de retorno
+
+ * Por defecto, las funciones devuelven el resultado de la última linea de código
+ 
+ * También se puede usar la sentencia `return()`
+ 
+
+```r
+# Función que cuenta el número de valores NA en un vector
+count_na &lt;- function(x, normalize = FALSE) {
+  if (!is.atomic(x)) {
+    return(NA)
+  }
+  
+  if (normalize) {
+    mean(is.na(x))
+  } else {
+    sum(is.na(x))
+  }
+}
+
+count_na(mpg)
+## [1] NA
+```
+
+---
 
 ## Iteración
 
