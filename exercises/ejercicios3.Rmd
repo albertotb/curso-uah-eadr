@@ -1,0 +1,165 @@
+---
+title: "Ejercicios sesión 3"
+author: "Alberto Torres Barrán"
+date: "`r Sys.Date()`"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, include = FALSE)
+```
+
+## diamonds
+
+Con el conjunto de datos diamonds:
+
+  1. Ver el tipo de cada una de las variables.
+
+  2. Realizar un análisis estadístico de las variables numéricas: calcular la media, varianza, mediana y rangos ¿Tienen las distintas variables rangos muy diferentes?.
+
+  3. Hacer un gráfico de cajas de la variable price para cada uno de los distintos valores de color.
+  
+  4. Hacer el mismo gráfico del punto anterior pero con un gráfico de cajas para cada uno de los valores de la variable cut.
+  
+  5. Calcular la correlación de todas las variables numéricas con la variable
+price.
+
+  6. Crear un histograma de la variable carat para cada uno de los distintos valores de color. ¿Son muy diferentes las distribuciones?.
+
+
+  
+  7. Realizar un gráfico de dispersión para las variables que tienen más y
+menos correlación con price y comentar los resultados. ¿Como seria el gráfico de dispersión entre dos vectores con correlación 1?.
+
+  8. Definimos los outliers como los elementos (filas) de los datos para los que cualquiera de las variables (numéricas) está por encima o por debajo de la mediana más/menos 3 veces el MAD (Median Absolute Deviation). Identificar estos outliers y quitarlos.
+  
+  9. Separar el conjunto de datos en dos subconjuntos disjuntos de forma
+aleatoria, el primero conteniendo un 70% de los datos y el segundo un 30%.
+
+  10. Escalar los datos para que tengan media 0 y varianza 1, es decir, restar
+a cada variable numérica su media y dividir por la desviación típica. Calcular la media y desviación en el conjunto de train, y utilizar esa misma media y desviación para escalar el conjunto de test.
+
+
+```{r eval=FALSE, include=FALSE}
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+# Ejercicio 1
+str(diamonds)
+
+# Ejercicio 2
+summary(diamonds)
+
+# indice de las variables numericas
+idx_num <- sapply(diamonds, is.numeric)
+
+# la varianza solo tiene sentido para las variables numericas
+# y no la proporciona summary
+diag(var(diamonds[idx_num]))
+
+#Ejercicio 3
+# ggplot2
+ggplot(diamonds, aes(x=color, y=price)) + geom_boxplot()
+
+# R base
+boxplot(price ~ color, data=diamonds)
+
+# Ejercicio 4
+# ggplot2
+ggplot(diamonds, aes(x=cut, y=price)) + geom_boxplot()
+
+# R base
+boxplot(price ~ cut, data=diamonds)
+
+# Ejercicio 5
+cor_y <- cor(diamonds$price, diamonds[idx_num & names(diamonds) != "price"])
+
+# Ejercicio 6
+n <- 3
+# ggplot2
+ggplot(diamonds, aes(x=carat)) + geom_histogram() + facet_wrap(~color, ncol=n)
+
+# base R
+colors <- unique(diamonds$color)
+par(mfcol=c(ceiling(length(colors)/n), n))
+for (color in colors) hist(diamonds$carat[diamonds$color == color], xlab="carat", main=color)
+
+# Ejercicio 7
+# de los nombres de las variables escogemos las de mayor y menor valor absoluto
+vars <- colnames(cor_y)[c(which.min(abs(cor_y)), which.max(abs(cor_y)))]
+
+# ggplot2
+diamonds %>%
+  select(vars, price) %>%
+  gather("Var", "X", -price) %>%
+  ggplot(aes(x=X, y=price)) + geom_point() + facet_wrap(~ Var, scales="free")
+
+# R base
+par(mfcol=c(1,2))
+for (var in vars) plot(pull(diamonds, var), diamonds$price, xlab=var, ylab="price", pch=20)
+
+# Ejercicio 8
+# hay mas formas, una posible
+is_outlier <- function(x, const=3) {
+  x < median(x) - const*mad(x) | x > median(x) + const*mad(x)
+}
+
+mask <- sapply(diamonds[idx_num], is_outlier)
+outliers <- apply(mask, 1, any)
+d_no_out <- diamonds[!outliers, ]
+
+# Ejercicio 9
+idx <- sample(nrow(d_no_out), 0.7*nrow(d_no_out))
+d_big   <- d_no_out[ idx, ]
+d_small <- d_no_out[-idx, ]
+
+# Ejercicio 10
+# tambien varias formas, esta es una de ellas:
+mean_d <- lapply(d_big[idx_num], mean)
+sd_d   <- lapply(d_big[idx_num], sd)
+
+d_big[idx_num]   <- (  d_big[idx_num] - mean_d) / sd_d
+d_small[idx_num] <- (d_small[idx_num] - mean_d) / sd_d
+
+# otra forma concisa es usar la funcion scale 
+```
+
+## gapminder
+
+  1. Instalar el paquete `gapminder`
+  
+  2. Calcular cuantos niveles distintos tienen las columnas `country` y `continent`
+  
+  3. ¿Cuántas filas del data.frame hay para cada una de las columnas anteriores?
+  
+  4. Crea un data.frame con las continentes que empiezan por "A"
+  
+  5. Realiza un gráfico de barras **ordenadas** de mayor a menos, donde el eje x representa los continentes y el eje y el número de paises (registros)
+  
+  6. Representa en un gráfico de puntos la esperanza de vida (`lifeExp`) en el eje x para cada uno de los paises de Asia (eje y). Usa los datos de 2007 y ordena los puntos de menor a mayor.
+
+  7. Representa la evolución de la esperanza de vida para los paises "Egypt", "Haiti", "Romania", "Thailand" y "Venezuela". Realizar un único gráfico con una línea de un color distinto para cada país. Ordenar la leyenda para que el país con más esperanza de vida esté de primero (usar `fct_reorder2()`).
+  
+  8. Cálcula la longitud media de los nombres de los países en los datos.
+  
+  9. Contar cuantas veces aparece cada vocal en los nombres de los paises (columna "country")
+  
+## Puerto Rico
+
+El fichero `mortality_report.csv` contiene datos diarios de mortalidad en Puerto Rico desde el 1 de Enero de 2015 al 31 de Mayo de 2018 (ejercicio adaptado de [Introduction to Data Science](https://rafalab.github.io/dsbook/parsing-dates-and-times.html#exercises-42):
+
+  1. Leer los datos en R
+
+  2. Convertir la columna "month" a su valor numérico
+  
+  3. Crear una columna con la fecha (tipo `date`) a partir de las columnas "day", "month" y "year"
+  
+  4. Realizar un gráfico de líneas de las muertes (eje y) frente a la fechas (eje x)
+  
+  5. Repetir el gráfico anterior pero ahora representar en el eje x el día del año
+  
+  6. Repetir el gráfico anterior pero usar dos colores distintos para antes y después del 20 de septiembre de 2017
+  
+  7. Repetir el mismo gráfico del ejercicio 4 pero representar ahora medias mensuales (pista: `round_date()`)
+  
