@@ -1,0 +1,22 @@
+"id","nom","nom_comptage","Etat","Type","Annee_implante","coord_X","coord_Y"
+"1","St-Urbain_1","Saint-Urbain","Existant","compteur","2014",-73.588882,45.519549
+"2","Brebeuf_1","Brébeuf","Existant","compteur","2009",-73.573984,45.527411
+"4","Maisonneuve_1","Maisonneuve_1","À réinstaller","compteur","2008",-73.561591,45.514785
+"5","Maisonneuve_2","Maisonneuve_2","Existant","compteur","2008",-73.575078,45.500544
+"6","Rachel/Papineau","Rachel/Papineau","Existant","compteur","2007",-73.569649,45.530355
+"7","University_1","University","Existant","compteur","2013",-73.575117,45.505742
+"8","Cote-Ste-Catherine_1","CSC","Existant","compteur","2010",-73.607832,45.514955
+"10","Jacques-Cartier_1","Pont Jacques-Cartier","Existant","compteur","2011",-73.554576,45.525601
+"12","Pierre-Dupuy_1","PierDup","Existant","compteur","2010",-73.544546,45.499662
+"14","St-Antoine_1","Saint-Antoine","Existant","compteur","2013",-73.557787,45.506247
+"15","Viger_1","Viger","Existant","compteur","2013",-73.559086,45.507138
+"17","Maisonneuve_3","Maisonneuve_3","Existant","compteur","2013",-73.585229,45.490563
+"19","Piste_Notre-Dame","Notre-Dame","Existant","compteur","2013",-73.544038,45.531402
+"22","Parc_1","Parc","Existant","compteur","2010",-73.581714,45.513462
+"23","Rachel/Hôtel-de-Ville","Rachel/Hôtel de Ville","Existant","compteur","2013",-73.580251,45.519577
+"29","Boyer_1","Boyer","Existant","compteur","2013",-73.605235,45.538402
+"36","René-Lévesque_2","René-Lévesque","Existant","compteur","2013",-73.55404,45.516968
+"37","Totem_Laurier","Totem_Laurier","Existant","totem","2013",-73.588832,45.527772
+"3","Berri_1","Berri1","Existant","compteur","2008",-73.562845,45.516126
+"38","Parc_2","Parc U-Zelt Test","Existant","Projet-pilot","2015",-73.58221,45.5137
+"39","St-Laurent","Saint-Laurent U-Zelt Test","Existant","Projet-pilot","2015",-73.60311,45.52782
