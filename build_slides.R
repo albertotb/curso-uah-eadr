@@ -1,8 +1,8 @@
 library(pagedown)
 library(tools)
 
-input_dir  <- c("./src", "./exercises")
-output_dir <- "./slides"
+input_dir  <- c("./src", "./ejercicios")
+output_dir <- "./pdf"
 
 # 1. Take all .Rmd files from `input_dir`
 # 2. Convert them to PDF using `chrome_print()`

@@ -141,7 +141,7 @@ d_small[idx_num] <- (d_small[idx_num] - mean_d) / sd_d
 
   7. Representa la evolución de la esperanza de vida para los paises "Egypt", "Haiti", "Romania", "Thailand" y "Venezuela". Realizar un único gráfico con una línea de un color distinto para cada país. Ordenar la leyenda para que el país con más esperanza de vida esté de primero (usar `fct_reorder2()`).
   
-  8. Cálcula la longitud media de los nombres de los países en los datos.
+  8. Cálcula la longitud media de los nombres de los países en los datos para cada continente.
   
   9. Contar cuantas veces aparece cada vocal en los nombres de los paises (columna "country")
   
@@ -157,9 +157,11 @@ El fichero `mortality_report.csv` contiene datos diarios de mortalidad en Puerto
   
   4. Realizar un gráfico de líneas de las muertes (eje y) frente a la fechas (eje x)
   
-  5. Repetir el gráfico anterior pero ahora representar en el eje x el día del año
+  5. Ignorar fechas posteriores al 1 de Mayo de 2018 
   
-  6. Repetir el gráfico anterior pero usar dos colores distintos para antes y después del 20 de septiembre de 2017
+  6. Repetir un gráfico de barras pero ahora representar en el eje x el día del año.
   
-  7. Repetir el mismo gráfico del ejercicio 4 pero representar ahora medias mensuales (pista: `round_date()`)
+  7. Repetir el gráfico del ej 4 pero usar dos colores distintos para antes y después del 20 de septiembre de 2017 (no poner ninguna leyenda)
+  
+  8. Repetir el mismo gráfico del ejercicio 6 pero representar ahora medias mensuales (pista: `round_date()`)
   

@@ -6,7 +6,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Alberto Torres Barrán" />
-  <meta name="date" content="2020-01-25" />
+  <meta name="date" content="2020-01-29" />
   <title>Ejercicios sesión 3</title>
   <style type="text/css">code{white-space: pre;}</style>
   <style type="text/css">
@@ -378,7 +378,7 @@ list-style-type: none;
   <p class="author">
 Alberto Torres Barrán
   </p>
-  <p class="date">2020-01-25</p>
+  <p class="date">2020-01-29</p>
 </div>
 <div id="diamonds" class="slide section level2">
 <h1>diamonds</h1>
@@ -406,7 +406,7 @@ Alberto Torres Barrán
 <li><p>Realiza un gráfico de barras <strong>ordenadas</strong> de mayor a menos, donde el eje x representa los continentes y el eje y el número de paises (registros)</p></li>
 <li><p>Representa en un gráfico de puntos la esperanza de vida (<code>lifeExp</code>) en el eje x para cada uno de los paises de Asia (eje y). Usa los datos de 2007 y ordena los puntos de menor a mayor.</p></li>
 <li><p>Representa la evolución de la esperanza de vida para los paises “Egypt”, “Haiti”, “Romania”, “Thailand” y “Venezuela”. Realizar un único gráfico con una línea de un color distinto para cada país. Ordenar la leyenda para que el país con más esperanza de vida esté de primero (usar <code>fct_reorder2()</code>).</p></li>
-<li><p>Cálcula la longitud media de los nombres de los países en los datos.</p></li>
+<li><p>Cálcula la longitud media de los nombres de los países en los datos para cada continente.</p></li>
 <li><p>Contar cuantas veces aparece cada vocal en los nombres de los paises (columna “country”)</p></li>
 </ol>
 </div>
@@ -418,9 +418,10 @@ Alberto Torres Barrán
 <li><p>Convertir la columna “month” a su valor numérico</p></li>
 <li><p>Crear una columna con la fecha (tipo <code>date</code>) a partir de las columnas “day”, “month” y “year”</p></li>
 <li><p>Realizar un gráfico de líneas de las muertes (eje y) frente a la fechas (eje x)</p></li>
-<li><p>Repetir el gráfico anterior pero ahora representar en el eje x el día del año</p></li>
-<li><p>Repetir el gráfico anterior pero usar dos colores distintos para antes y después del 20 de septiembre de 2017</p></li>
-<li><p>Repetir el mismo gráfico del ejercicio 4 pero representar ahora medias mensuales (pista: <code>round_date()</code>)</p></li>
+<li><p>Ignorar fechas posteriores al 1 de Mayo de 2018</p></li>
+<li><p>Repetir un gráfico de barras pero ahora representar en el eje x el día del año.</p></li>
+<li><p>Repetir el gráfico del ej 4 pero usar dos colores distintos para antes y después del 20 de septiembre de 2017 (no poner ninguna leyenda)</p></li>
+<li><p>Repetir el mismo gráfico del ejercicio 6 pero representar ahora medias mensuales (pista: <code>round_date()</code>)</p></li>
 </ol>
 </div>
 
