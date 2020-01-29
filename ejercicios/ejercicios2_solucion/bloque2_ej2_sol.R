@@ -4,7 +4,7 @@ library(ggplot2)
 library(forcats)
 
 pew <- read_tsv('pew.txt')
-pew_tidy <- gather(data, income, frequency, -religion)
+pew_tidy <- gather(pew, income, frequency, -religion)
 
 # varias opciones para hacer el grafico, por ejemplo...
 ggplot(pew_tidy, aes(x = income, y = frequency, fill = religion)) +
