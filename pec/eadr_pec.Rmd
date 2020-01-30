@@ -6,48 +6,111 @@ output:
   html_document: default
 ---
 
+```{r include = FALSE}
+knitr::opts_chunk$set(eval=FALSE, include=FALSE)
+```
+
 ## Enunciado
 
 Vamos a trabajar con los ficheros "Estaciones.txt" y "Precios_2017_04_02.txt" ([fuente](https://geoportalgasolineras.es/#/Descargas)), que contienen información sobre el precio de distintos carburantes el día 2 de Abril de 2017 en estaciones de toda España:
 
   1. Lee fichero de precios. Asegúrate de que todas las variables de precios son numéricas.
+```{r}
+# añadir codigo aqui
+```
   
   2. Cambia los espacios en los nombres de las columnas por '_'.
+```{r}
+# añadir codigo aqui
+```
   
   3. Mira los tipos de datos del dataset de precios. Observa que la fecha no ha sido interpretada como tal. Conviértela a tipo fecha.
+```{r}
+# añadir codigo aqui
+```
   
   4. Calcula el porcentaje de NAs de cada columna para la del dataframe de precios.
+```{r}
+# añadir codigo aqui
+```
   
   5. Elimina las columnas que no tengan ningún valor distinto de NA.
+```{r}
+# añadir codigo aqui
+```
   
   6. Crea un dataframe con la media, máximo y mínimo de las columnas numéricas.
+```{r}
+# añadir codigo aqui
+```
   
   7. Habrás visto que el máximo del precio para gasolina 95 es un valor extredemadante alto. Para la variable precio de la gasolina 95, cambia todos los valores mayores a 3 (valores anómalos) por NA. Utiliza el data.frame resultado del ejercicio 5.
+```{r}
+# añadir codigo aqui
+```
   
-  8. Selecciona las gasolineras que vendan gasolina 95 o 98 utilizano el dataframe resultado.
+  8. Selecciona las gasolineras que vendan gasolina 95 o 98 utilizano el dataframe resultado del ejercicio 7.
+```{r}
+# añadir codigo aqui
+```
   
   9. Selecciona las columnas que representan variables de precios usando el dataframe resultado del ejercicio 7.
+```{r}
+# añadir codigo aqui
+```
   
-  10. Selecciona las 5 gasolineras con el precio de gasóleo B más barato.
+  10. Selecciona las 5 gasolineras con el precio de gasóleo B más barato usando el dataframe del ejercicio 7.
+```{r}
+# añadir codigo aqui
+```
   
   11. Añade dos nuevas variables con los litros por euro de gasolina 95 y 98 usando el dataframe del ejercicio 7.
+```{r}
+# añadir codigo aqui
+```
   
-  12. Crea un nuevo dataframe a partir del resultado del ejercicio 7 con las columnas `ID_estacion`, `fecha`, `tipo_gasolina` y `precio` y guarda el resultado en la variable `precios_long`. La variable `tipo_gasolina` tendrá los valores: "Precio gasolina 95", "Precio gasóleo A", "Precio gasóleo B", "Precio bioetanol", "Precio nuevo gasóleo A", "Precio biodiesel", "Precio gasolina 98", "Precio gas natural comprimido", "Precio gas natural licuado" y "Precio gases licuados del petróleo".
+  12. Crea un nuevo dataframe a partir del resultado del ejercicio 7 con las columnas `ID_estacion`, `fecha`, `tipo_gasolina` y `precio` y guarda el resultado en la variable `precios_long`. La variable `tipo_gasolina` tendrá los valores: "Precio_gasolina_95", "Precio_gasóleo_A", "Precio_gasóleo_B", "Precio_bioetanol", "Precio_nuevo_gasóleo_A", "Precio_biodiesel", "Precio_gasolina_98", "Precio_gas_natural_comprimido", "Precio_gas_natural_licuado" y "Precio_gases_licuados_del_petróleo".
+```{r}
+# añadir codigo aqui
+```
   
-  13. En la variable `tipo_gasolina` del ejercicio anterior, elimina el texto "Precio ".
+  13. En la variable `tipo_gasolina` del ejercicio anterior, elimina el texto "Precio_".
+```{r}
+# añadir codigo aqui
+```
   
   14. Haz un histograma de todas las variables de precio **usando facetas** de ggplot.
+```{r}
+# añadir codigo aqui
+```
   
   15. Lee el fichero de estaciones y júntalo con el dataframe resultado del ejercicio 7 utilizando como clave el `ID_ESTACION`. Considerar únicamente las gasolineras presentes en las dos tablas.
+```{r}
+# añadir codigo aqui
+```
   
   16. Calcula el precio medio de gasolina 95 por provincia.
+```{r}
+# añadir codigo aqui
+```
   
   17. Añade una variable de tipo lógico con nombre `ind_24H`, indicando si la gasolinera es 24H.
+```{r}
+# añadir codigo aqui
+```
   
   18. Convierte la variable rótulo en un factor que tenga 6 niveles: los 5 rótulos más frecuentes y un nivel "Otros" con el resto.
+```{r}
+# añadir codigo aqui
+```
   
   19. Realiza un gráfico de barras con el conteo de estaciones por cada tipo de rótulo.
+```{r}
+# añadir codigo aqui
+```
   
   20. Representa cada gasolinera de Repsol o Cepsa como un punto en función de su longitud y latitud. Cada punto debe debe de estar coloreado de acuerdo al Rótulo.
-
+```{r}
+# añadir codigo aqui
+```
 
