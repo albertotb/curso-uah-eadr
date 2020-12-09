@@ -1,4 +1,4 @@
-# Entornos de análisis de datos (R)
+# Herramientas de análisis: R
 
 1. **Bloque 1:** Introducción y manipulación de datos
 
