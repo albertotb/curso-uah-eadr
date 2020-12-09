@@ -1,4 +1,4 @@
-# Herramientas de análisis: R
+## Contenidos:
 
 1. **Bloque 1:** Introducción y manipulación de datos
 
