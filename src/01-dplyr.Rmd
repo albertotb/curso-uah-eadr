@@ -24,13 +24,14 @@ library(lubridate)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
 ```
 
-# dplyr
-
 ## Introducción
 
 - Implementa una gramática para realizar operaciones básicas con data frames
+
 - Muy eficiente
+
 - Operaciones principales: `slice`, `filter`, `select`, `arrange`, `mutate` y `summarize`
+
 - Estas operaciones se pueden componer para realizar otras más complejas
 
 ---
@@ -38,7 +39,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 ## slice
 
 Selecciona filas por su posición
-
 ```{r, echo = TRUE}
 slice(mpg, 1:5)
 ```
@@ -57,7 +57,9 @@ filter(mpg, model == "a4")
 ## Operadores lógicos
 
 - R implementa todos los operadores relacionales habituales `>, <, >=, <=, ==, !=`
+
 - Los operadores lógicos son la negación `!`, and `&` y or `|`
+
 - El resultado de todas estas operaciones son valores lógicos `TRUE` (`T`) o `FALSE` (`F`)
 
 ---
@@ -65,26 +67,42 @@ filter(mpg, model == "a4")
 ## filter (cont.)
 
 - Se pueden combinar multiples condiciones separadas por `,` (and lógico)
-```{r, echo=T, eval=F}
-filter(mpg, model == "a4", cyl >= 5)
-```
+    ```{r, echo=T, eval=F}
+    filter(mpg, model == "a4", cyl >= 5)
+    ```
 
 - También se puede usar explicitamente el operador
-```{r, echo=T, eval=F}
-filter(mpg, model == "a4" & cyl >= 5)
-```
+    ```{r, echo=T, eval=F}
+    filter(mpg, model == "a4" & cyl >= 5)
+    ```
 
 - En el caso del or lógico es obligatorio el uso del operador
-```{r, echo=T, eval=F}
-filter(mpg, model == "a4" | model == "mustang")
-```
+    ```{r, echo=T, eval=F}
+    filter(mpg, model == "a4" | model == "mustang")
+    ```
+
+---
+
+## Variantes de slice
+
+- [Referencia](https://dplyr.tidyverse.org/reference/slice.html)
+
+- Seleccionar las 5 primeras filas
+    ```{r}
+    slice_head(mpg, n = 5)
+    ```
+    
+- Seleccionar el top n de acuerdo al valor de una columna
+    ```{r}
+    slice_max(mpg, hwy, n = 1)
+    ```
+
 
 ---
 
 ## select
 
 Seleccionar variables (columnas) de un data frame
-
 ```{r, echo=T}
 select(mpg, model, displ, cyl)
 ```
@@ -110,6 +128,15 @@ select(mpg, model:trans)
 
 ---
 
+## Predicados lógicos en select
+
+- A partir de la versión 1.0 de dplyr, [`select`](https://dplyr.tidyverse.org/dev/reference/select.html) también acepta predicados lógicos
+    ```{r}
+    select(mpg, is.numeric)
+    ```
+
+---
+
 ## Funciones auxiliares
 
 Las siguientes funciones se pueden usar dentro de `select()`
@@ -119,6 +146,35 @@ Las siguientes funciones se pueden usar dentro de `select()`
 - `contains()`: contienen una string
 - `matches()`: concuerdan con una expresión regular
 - `num_range()`: rango numérico como "X01", "X02", "X03"
+- `any_of`, selecciona las variables contenidas en un vector de cadenas
+- `all_of`, igual que la anterior pero da un error si no están todas las variables
+
+```{r}
+vars <- c("cyl", "cty", "mpg")
+select(mpg, any_of(vars)) %>%
+  head(5)
+```
+
+
+```{r, error=TRUE}
+select(mpg, all_of(vars))
+```
+
+---
+
+## Combinar múltiples selecciones
+
+* Se pueden utilizar los operadores `&`, `|` y `!` para combinar múltiples selecciones:
+    ```{r}
+    # Variables numéricas excepto cyl y year
+    select(mpg, is.numeric & !c(cyl, year)) %>%
+      head(5)
+    ```
+    ```{r}
+    # Contienen "y" o empiezan por "f"
+    select(mpg, contains("y") | starts_with("f")) %>%
+      head(5)
+    ```
 
 ---
 
@@ -157,13 +213,29 @@ mutate(mpg, avg_mpg = (cty+hwy)/2)
 
 ---
 
+## Funciones vectoriales
+
+.center[
+![:scale 70%](img/mutate_funciones2.png)
+]
+
+---
+
 ## summarize
 
-Colapsa el data frame a una única fila
+- Reduce (resume) los valores de una columna en un único valor.
 
-```{r, echo=T}
-summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
-```
+- Se pueden realizar múltiples operaciones separadas por ','
+    ```{r, echo=T}
+    summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
+    ```
+
+- Algunas de las funciones de agregacion pueden operar sobre varias columnas
+    ```{r}
+    summarize(mpg, pares_distintos = n_distinct(cyl, cty), maxim = max(cyl, cty))
+    ```
+
+- El resultado es siempre un dataframe
 
 ---
 
@@ -176,39 +248,81 @@ summarize(mpg, max_cyl = max(cyl), avg_cty = mean(cty), min_year = min(year))
     + Rango: `max()`, `min()`, `quantile()`
     + Posición: `first()`, `last()`, `nth()`
     + Lógicas: `any()`, `all()`
-    + *Conteo*: `n()`, `n_distinct()` (solo se pueden usar dentro de `summarize()`)
+    + *Conteo*: `n()`, `n_distinct()`
+      - Solo se pueden usar dentro de `summarize()`
+      - `n()` no recibe argumentos, `n_distinct()` el nombre de la(s) columna(s).
     
-- Todas reducen un vector de números a un único resultado
+- Todas reducen un vector de números a un único resultado.
+
+.center[
+![](img/summary_function.png)
+]
+
+---
+
+## Comprobar versión paquetes
+
+.center[
+![:scale 90%](img/dplyr_version.png)
+
+]
+
+---
+
+## Funciones que devuelven múltiples valores
+
+- Desde la versión 1.0 de dplyr, `summarize` acepta funciones que devuelven más de un valor
+    ```{r}
+    summarize(mpg, rango = range(cty), cuant = quantile(displ, c(0.25, 0.75)))
+    ```
+
+- Se crean tantas filas como valores devuelven las operaciones y tantas columnas como operaciones
+
+- No confundir con las funciones vectoriales que se usan principalmente dentro de `mutate`
+
+---
+
+## Errores comunes
+
+- Se pueden mezclar funciones que devuelven un valor con funciones que devuelven varios
+    ```{r}     
+    summarize(mpg, min = min(cyl), qs = quantile(displ, c(0.25, 0.5, 0.75)))
+    ```
+    
+- Ojo con mezclar funciones que devuelven distinto número de valores (aparte de 1)
+    ```{r, error=TRUE}
+    summarize(mpg, rango = range(cyl), qs = quantile(displ, c(0.25, 0.5, 0.75)))
+    ```
 
 ---
 
 ## Concatenación de funciones
 
 - Todas las funciónes de `dplyr` toman como primer argumento un data frame y devuelven otro data frame
+
 - Se pueden aplicar de manera consecutiva:
-
-```{r, echo=T, eval=F}
-arrange(select(filter(mpg, model == "a4"), model, year), year)
-
-arrange(
-  select(
-    filter(mpg, model == "a4"), 
-    model, year
-  ), 
-  year
-)
-```
+    ```{r, echo=T, eval=F}
+    arrange(select(filter(mpg, model == "a4"), model, year), year)
+    
+    arrange(
+      select(
+        filter(mpg, model == "a4"), 
+        model, year
+      ), 
+      year
+    )
+    ```
 
 ---
 
 ## Concatenación de funciones (cont.)
 
--Otra opción:
-```{r, echo=T, eval=F}
-df1 <- filter(mpg, model == "a4")
-df2 <- select(df1, model, year)
-df3 <- arrange(df2, year)
-```
+- Otra opción:
+    ```{r, echo=T, eval=F}
+    df1 <- filter(mpg, model == "a4")
+    df2 <- select(df1, model, year)
+    df3 <- arrange(df2, year)
+    ```
 
 - Habitualmente no nos interesan los valores intermedios, solo el resultado final
 
@@ -216,14 +330,37 @@ df3 <- arrange(df2, year)
 
 ## Operador "tubería" (*pipe*)
 
-- La sintaxis es `%>%` y permite reescribir el código anterior como
+- La sintaxis es `%>%`
 
-```{r, echo=T, eval=F}
-mpg %>%
-  filter(model == "a4") %>%
-  select(model, year) %>%
-  arrange(year)
-```
+- El codigo `df %>% foo()` es equivalente a `foo(df)`
 
-- En general el codigo `df %>% foo()` es equivalente a `foo(df)`
 - Esto permite concatenar funciones sin almacenar resultados intermedios y siguiendo el orden lógico
+
+- Comparación:
+
+.pull-left[
+```{r, eval=FALSE}
+# Opción 1
+arrange(
+  select(
+    filter(mpg, model == "a4"), 
+    model, year
+  ), 
+  year
+)
+
+# Opción 2
+df1 <- filter(mpg, model == "a4")
+df2 <- select(df1, model, year)
+df3 <- arrange(df2, year)
+```
+]
+.pull-right[
+    ```{r, echo=T, eval=F}
+    # Operador tuberia
+    mpg %>%
+      filter(model == "a4") %>%
+      select(model, year) %>%
+      arrange(year)
+    ```
+]

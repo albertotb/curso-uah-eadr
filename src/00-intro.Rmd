@@ -24,8 +24,10 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 
 ## Introducción
 
-- R es un lenguaje de programación y un entorno para manipular datos, realizar cálculos y gráficos.
+- R es un lenguaje de programación y un entorno para manipular datos, realizar cálculos y gráfico
+
 - Herramienta muy popular para tareas de Data Science (junto con Python)
+
 - Comparado con herramientas clásicas (Excel, SaS, SPSS)
     + Más flexible
     + Curva de aprendizaje inclinada
@@ -33,15 +35,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 
 ---
 
-## Librerías
-
-- R tiene una colección de más de 12000 librerías o paquetes de terceros
-- La mayoría disponibles en un repositorio centralizado (CRAN)
-- No forman parte del núcleo de R (R base)
-- Se pueden instalar muy facilmente
-  
----
-  
 ## Entorno
 
 - R está disponible para los principales sistemas operativos (Windows, Linux, MacOS): 
@@ -50,6 +43,17 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 - Recomendado el uso del IDE RStudio
     + [http://www.rstudio.com](http://www.rstudio.com)
 
+---
+
+## Librerías
+
+- R tiene una colección de más de 16,000 librerías o paquetes de terceros
+
+- La mayoría disponibles en un repositorio centralizado ([CRAN](https://cran.r-project.org/))
+
+- No forman parte del núcleo de R (R base) y extienden su funcionalidad
+
+- Se pueden instalar muy facilmente
 
 ---
 
@@ -66,16 +70,14 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 ## Instalar y cargar librerías
 
 - Podemos instalar nuevas librerías con la sentencia:
-
-```{r install, eval=F}
-install.packages("tidyverse")
-```
+    ```{r install, eval=F}
+    install.packages("tidyverse")
+    ```
 
 - Para usar las librerías tenemos que cargarlas en el entorno:
-
-```{r, eval=F}
-library(tidyverse)
-```
+    ```{r, eval=F}
+    library(tidyverse)
+    ```
 
 - También se puede hacer de forma gráfica en RStudio
 
@@ -84,61 +86,71 @@ library(tidyverse)
 ## Operador de asignación
 
 - El resultado de cualquier sentencia de R se pierde si no se asigna a una nueva variable
-```{r echo=T}
-# este resultado se muestra y se pierde
-2 + 2
-```
+    ```{r echo=T}
+    # este resultado se muestra y se pierde
+    2 + 2
+    ```
 
 - El operador de asignación es `<-`
-```{r, echo=T}
-# el resultado de la operación se almacena en una nueva variable 
-# `suma`
-suma <- 2 + 2
-```
-
----
-
-## Data frames
-
-- Tabla para almacenar datos en R
-- Está compuesto por observaciones (filas) y variables (columnas)
-- Cada variable puede ser de un tipo distinto (texto, categórica, numérica, etc.)
-- Todas las observaciones de una misma variable tienen que ser del mismo tipo
-- Cada variable tiene un nombre
+    ```{r, echo=T}
+    # el resultado de la operación se almacena en una nueva variable 
+    # `suma`
+    suma <- 2 + 2
+    ```
 
 ---
 
 ## Funciones
 
 - Construcción de R que toma unos argumentos de entrada, realiza un cálculo y devuelve un resultado
+
 - Elemento básico de cualquier lenguaje de programación
+
 - Ejemplos de llamadas a funciones:
-
-```{r, echo=TRUE}
-v <- c(4.6, 8.2, 9.2)
-mean(v)
-```
-
-```{r, echo=TRUE}
-# siempre con parentesis, aunque no tengan ningun argumento
-ls()
-```
+    ```{r, echo=TRUE}
+    v <- c(4.6, 8.2, 9.2)
+    mean(v)
+    ```
+    ```{r, echo=TRUE}
+    # siempre con parentesis, aunque no tengan ningun argumento
+    ls()
+    ```
 
 ---
 
-## Referencias y ayuda
+## Data frames
 
-- La referencia principal del curso es el libro "[R for Data Science](https://r4ds.had.co.nz/)" de Hadley Wickham y Garret Grolemund (O'Reilly 2017)
+- Tabla para almacenar datos en R
 
-- Tiene una versión online gratuita
+- Está compuesto por observaciones (filas) y variables (columnas)
 
-- Hadley Wickham es además el creador de muchos de los paquetes que componen el [tidyverse](https://www.tidyverse.org/)
+- Cada variable puede ser de un tipo distinto (texto, categórica, numérica, etc.)
 
-- Acceder a la ayuda de R:
-```{r, echo=T, eval=F}
-?mean
-help(mean)
+- Todas las observaciones de una misma variable tienen que ser del mismo tipo
+
+- Cada variable tiene un nombre
+
+---
+
+## Dataframes vs tibbles
+
+- Los tibbles (abreviado `tbl`) son una reimplementación de los dataframes
+
+- Todas las funciones que aceptan un tibble también aceptan un dataframe y viceversa
+
+- Iremos viendo las (pocas) diferencias a lo largo del curso
+
+- Las más destacadas son principalmente cosméticas:
+    ```{r}
+    as.tibble(iris)
+    ```
+
+---
+
+```{r}
+iris
 ```
+
 
 ---
 
@@ -183,3 +195,69 @@ Estadísticas de las variables
 ```{r}
 summary(mpg)
 ```
+
+---
+
+## R base vs tidyverse
+
+- Las librerias del tidyverse simplifican considerablemente la sintáxis de las tareas relacionadas con datos
+
+- Nueva forma de programar en R "orientada a dataframes": las funciones aceptan y devuelven dataframes 
+   
+- Otras ventajas:
+   - comunidad extensa, creciendo muy rápido
+   
+   - las librerías tienen detrás desarrolladores de RStudio
+   
+- Principales desventajas: 
+
+   - distinguir soluciones/código de R base vs tidyverse, sobre todo cuando se está empezando
+   
+   - múltiples formas de realizar una operación, todas (potencialmente) correctas
+
+- En este curso veremos principalmente las librerías del tidyverse
+
+
+---
+
+# R Markdown
+
+- Los [R Markdown](https://rmarkdown.rstudio.com/) son similares a los notebooks de Python, y permiten tener en un único documento partes de texto (markdown) y partes de código
+
+- R Markdown soporta decenas de formatos de salida: HTML, PDF, MS Word, etc.
+
+- Permite también generar el output en forma de diapositivas (¡como éstas!)
+
+- Más información sobre R Markdown en [R for Data Science](https://r4ds.had.co.nz/r-markdown.html)
+
+---
+
+## Referencias y ayuda
+
+- La referencia principal del curso es el libro "[R for Data Science](https://r4ds.had.co.nz/)" de Hadley Wickham y Garret Grolemund (O'Reilly 2017)
+
+- Tiene una versión online gratuita
+
+- Hadley Wickham es además el creador de muchos de los paquetes que componen el [tidyverse](https://www.tidyverse.org/)
+
+- Referencia [RMarkdown](https://rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf)
+
+- [Hojas resumen](https://rstudio.com/resources/cheatsheets/)
+
+- Acceder a la ayuda de R:
+    ```{r, echo=T, eval=F}
+    ?mean
+    help(mean)
+    ```
+
+---
+
+## Comunidades
+
+- [StackOverflow](https://stackoverflow.com/questions/tagged/r). Las preguntas con el **tag R** contienen mucha información y problemas resueltos. Además, las nuevas preguntas se responden en cuestión de horas
+
+- [CrossValidated](https://stats.stackexchange.com/). No es una comunidad específica de R (más bien estadística), pero hay mucha información acerca de cómo realizar procedimientos concretos de análisis de datos y aprendizaje automático en R
+
+- [@RLangTip](https://twitter.com/RLangTip). Cuenta de Twitter que publica consejos y trucos diarios
+
+- [*Hashtag* #rstats](https://twitter.com/hashtag/rstats) en Twitter
