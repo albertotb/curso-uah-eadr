@@ -53,6 +53,10 @@
     * Funciones
     * Iteración con `purrr`
 
+## Actividades
+
+1. [Bloque 1](actividades.md)
+
 
 ## Enlaces:
 * [Mastering the Tidyverse](https://github.com/rstudio/master-the-tidyverse)
