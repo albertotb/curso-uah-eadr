@@ -45,7 +45,7 @@ Soluciones
       geom_line(aes(y = unemploy), color = "red")
    ```
 
-## Transformaciones estadísticas: geom_bar y geom_col
+## Transformaciones estadísticas
 
 Soluciones
 

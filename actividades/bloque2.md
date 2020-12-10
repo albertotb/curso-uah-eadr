@@ -20,7 +20,7 @@ Actividades
 1. Representa la evolución temporal de la columna población (“pop”) contenida en el data.frame economics (incluído en ggplot2)
 2. Representa en una misma gráfica la evolución temporal de la columna población (“pop”) en negro y la evolución temporal de la columna de desempleo (“unemploy”) en rojo. Utiliza ajustes globales de ggplot siempre que sea posible.
 
-## Transformaciones estadísticas: geom_bar y geom_col
+## Transformaciones estadísticas
 
 Actividades
 
