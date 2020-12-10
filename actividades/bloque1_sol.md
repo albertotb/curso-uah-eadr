@@ -100,11 +100,12 @@ Soluciones
 
 ```{r}
 library(dplyr)
-df <- starwars %>%
-filter(birth_year > 100 | skin_color == "green") %>%
-select(name, height, mass) %>%
-mutate(imc = mass / (height/100)^2) %>%
-arrange(height, desc(mass))
+df <-
+starwars %>%
+   filter(birth_year > 100 | skin_color == "green") %>%
+   select(name, height, mass) %>%
+   mutate(imc = mass / (height/100)^2) %>%
+   arrange(height, desc(mass))
 ```
 
 ## summarize
