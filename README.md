@@ -66,6 +66,12 @@
 1. Bloque 1: [actividades](actividades/bloque1.md) ([soluciones](actividades/bloque1_sol.md))
 2. Bloque 2: [actividades](actividades/bloque2.md) ([soluciones](actividades/bloque2_sol.md))
 
+## Ejercicios
+
+1. [dplyr y ggplot2](ejercicios/ejercicios1.html)
+2. [tidyr y readr](ejercicios/ejercicios2.html)
+3. [stringr, lubridate y forcats](ejercicios/ejercicios3.html)
+
 ## Enlaces
 
 - [R for Data Science](http://r4ds.had.co.nz/)
