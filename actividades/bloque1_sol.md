@@ -116,3 +116,18 @@ Soluciones
    `library(dplyr)`
 2. `?cor`
 3. `summarize(mpg, cor(hwy, cty))`
+
+## dplyr
+
+Soluciones
+
+1. `select(airquality, Temp)`
+2. `select(airquality, -Month, -Day)`
+3. `filter(airquality, Month == 8)`
+4. Código
+
+   ```{r}
+   airquality %>%
+      filter(Month == 8) %>%
+      select(Wind, Temp)
+   ```
