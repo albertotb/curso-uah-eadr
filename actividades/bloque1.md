@@ -77,7 +77,7 @@ Con el data.frame starwars (viene incluido en la librería dplyr)
 
 1. Seleccionar las columnas name, height y mass
 2. Seleccionar todas las columnas menos films, vehicles y starships
-3. Seleccionar todas las columnas que terminan en “\_color”
+3. Seleccionar todas las columnas que terminan en "\_color"
 
 ## Variantes slice y select
 
@@ -86,7 +86,7 @@ Actividades
 El conjunto de datos starwars (incluido en dplyr) contiene información sobre los personajes de la saga de Star Wars. Utilizando ese conjunto de datos:
 
 1. Seleccionar las columnas `name` y aquellas que contienen la palabra `color`
-2. ¿Cuáles son los 5 personajes más bajos? ¿Qué le ocurre a las funciones slice_min y slice_max cuándo hay empates?
+2. ¿Cuáles son los 5 personajes más bajos? ¿Qué le ocurre a las funciones `slice_min` y `slice_max` cuándo hay empates?
 
 ## arrange
 
@@ -129,7 +129,7 @@ Actividades
 
 Actividades
 
-Con el data.frame “airquality” que viene incluido en R:
+Con el data.frame "airquality" que viene incluido en R:
 
 1. Obtén la columna de temperatura.
 2. Obtén el dataframe resultado de eliminar las columnas con información de fecha.

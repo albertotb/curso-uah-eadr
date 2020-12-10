@@ -24,7 +24,7 @@ Actividades
 
 Actividades
 
-1. Consultar la ayuda para ver la diferencia entre geom_col y geom_bar
+1. Consultar la ayuda para ver la diferencia entre `geom_col` y `geom_bar`
 2. Realizar un gráfico de barras con el número de filas para cada uno de los valores de la columna “sex” en el data.frame starwars (incluido en la librería dplyr)
 3. Crear un histograma de la variable “carat” del data.frame diamonds (incluído en la librería ggplot2).
 4. ¿Qué significa el aviso que devuelve la función?. Probar con varios valores del parámetro “bins”
