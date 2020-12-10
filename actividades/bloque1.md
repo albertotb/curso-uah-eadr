@@ -62,6 +62,7 @@ Actividades
 ## filter y slice
 
 Actividades
+
 Con el data.frame starwars (viene incluido en la librería dplyr)
 
 1. Seleccionar las filas 5 y de las 10 a la 20.
@@ -107,14 +108,14 @@ Actividades
 
 Reescribir la secuencia de operaciones siguiente usando el operación tuberia (%>%)
 
-    ```{r}
-    library(dplyr)
+```{r}
+library(dplyr)
 
-    df1 <- filter(starwars, birth_year > 100 | skin_color == "green")
-    df2 <- select(df1, name, height, mass)
-    df3 <- mutate(df2, imc = mass / (height/100)^2)
-    df4 <- arrange(df3, height, desc(mass))
-    ```
+df1 <- filter(starwars, birth_year > 100 | skin_color == "green")
+df2 <- select(df1, name, height, mass)
+df3 <- mutate(df2, imc = mass / (height/100)^2)
+df4 <- arrange(df3, height, desc(mass))
+```
 
 ## summarize
 
