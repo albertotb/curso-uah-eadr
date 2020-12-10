@@ -29,7 +29,9 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width =
 ## Introducción
 
 - Implementa una gramática de gráficos en R
+
 - Divide un gráfico en sus componentes esenciales
+
 - Múltiples ventajas con respecto a los gráficos de R base
     + Leyenda automática
     + Facetas
@@ -40,9 +42,13 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width =
 ## Gramática de gráficos
 
 - *mapping* se define con `aes()` (*aesthetics*) y describe como las variables de un data frame se asignan a propiedades visuales
+
 - *data* data frame 
+
 - *geom* objetos geométricos con el que se van a representar los datos
+
 - *stat* transforman los datos
+
 - *position* pequeños ajustes en la posición de los elementos
 
 ---
@@ -59,12 +65,13 @@ ggplot(data = mpg) +
 ## Plantilla
 
 - El gráfico más sencillo consta como mínimo de los siguientes componentes [[Fuente](https://r4ds.had.co.nz/data-visualisation.html#introduction-1)]:
+    ```{r, eval=F}
+    ggplot(data = <DATA>) + 
+      <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
+    ```
 
-```
-ggplot(data = <DATA>) + 
-  <GEOM_FUNCTION>(mapping = aes(<MAPPINGS>))
-```
 - Cambiando las secciones entre `<>` se pueden crear múltiples tipos de gráficos
+
 - Añadiendo geoms con el operador `+` se pueden crear gráficos compuestos
 
 ---
@@ -72,8 +79,11 @@ ggplot(data = <DATA>) +
 ## Aesthetics
 
 - El gráfico anterior representa dos variables, `displ` y `cyl`
+
 - Variables adicionales se pueden asignar a distintas propiedades del gráfico (*aesthetics*)
+
 - Algunos ejemplos son `color`, `shape`, `size`, `alpha`, etc.
+
 - La escala y la leyenda se crean de forma automática
 
 ---
@@ -95,7 +105,9 @@ ggplot(data = mpg) +
 ## Apariencia del gráfico
 
 - Para cambiar la apariencia del gráfico, se les asigna un valor manualmente a las propiedades gráficas anteriores
+
 - No transmiten información sobre una variable
+
 - Tienen que estar **fuera** de la función `aes()`
 
 ---
@@ -107,36 +119,10 @@ ggplot(data = mpg) +
 
 ---
 
-## Facets
-
-- Otra opción para representar variables adicionales son las facetas
-- Cada faceta es un subgráfico realizado con un subconjunto de los datos
-
----
-
-## facet_wrap
-
-```{r, echo=T}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) +
-  facet_wrap(~drv)
-```
-
----
-
-## facet_grid
-
-```{r}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) +
-  facet_grid(drv ~ class)
-```
-
----
-
 ## Geoms
 
 - Objectos geométricos que se usan para representar la relación entre las variables `x` e `y`
+
 - Algunos ejemplos son:
     + `geom_bar()`, barras
     + `geom_point()`, puntos
@@ -191,7 +177,9 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy)) +
 ## Transformaciones estadísticas
 
 - Alunos `geom` calculan nuevas variables a representar a partir de las originales del data frame
+
 - Un ejemplo es `geom_smooth()`, que ajusta un polinomio a los datos
+
 - Para ver la transformación estadística de cada `geom` se puede consultar el valor por defecto del parámetro `stat` en la ayuda
 
 ---
@@ -314,4 +302,32 @@ ggplot(data = mpg) +
 ```{r}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = cty, y = hwy), position = "jitter")
+```
+
+---
+
+## Facets
+
+- Otra opción para representar variables adicionales son las facetas
+
+- Cada faceta es un subgráfico realizado con un subconjunto de los datos
+
+---
+
+## facet_wrap
+
+```{r, echo=T}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv)
+```
+
+---
+
+## facet_grid
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ class)
 ```
