@@ -60,6 +60,8 @@
 
 ## Actividades
 
+[Ficheros de datos](https://github.com/albertotb/curso-uah-eadr/tree/master/data)
+
 1. Bloque 1: [actividades](actividades/bloque1.md) ([soluciones](actividades/bloque1_sol.md))
 2. Bloque 2: [actividades](actividades/bloque2.md) ([soluciones](actividades/bloque2_sol.md))
 3. Bloque 3: [actividades](actividades/bloque3.md) ([soluciones](actividades/bloque3_sol.md))
