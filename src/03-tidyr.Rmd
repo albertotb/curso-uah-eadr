@@ -525,7 +525,6 @@ airquality %>%
 ```
 
 <!--
----
 
 ## Reemplazo agrupado
 
