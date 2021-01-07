@@ -21,10 +21,10 @@ output:
 library(stringr)
 library(forcats)
 library(lubridate)
+library(ggplot2)
+library(dplyr)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
 ```
-
-# forcats
 
 ## Factores
 
@@ -33,7 +33,7 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
     + *pequeño*
     + conocido
 
-- Ejemplos: meses del año, provincias, sexo, etc.
+- Ejemplos: meses del año, provincias, paises de la Unión Europea, etc.
 
 - Muchas funciones de R convierten los vectores de cadenas de caracteres a factores automáticamente
 
@@ -46,71 +46,191 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 - Función `factor()`
 
 - Necesita dos argumentos:
+
     + Datos a convertir (típicamente vector de cadenas)
-    + Valores posibles (**niveles**)
+    
+    + Opcionalmente también los valores posibles (**niveles**)
+    ```{r}
+    x <- c("Primavera", "Verano", "Verano", "Verano", "Otoño")
+    f <- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
+    f
+    ```
 
+- Los niveles se pueden ver con la función `levels`
+    ```{r}
+    levels(f)
+    ```
 
-```{r}
-x <- c("Primavera", "Verano", "Verano", "Verano", "Otoño")
-f <- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
-f
-```
 
 ---
 
 - Si un valor no está en los niveles se convierte a `NA`
-
-```{r}
-x <- c("Primavera", "Verano", "Verano", "Verano", "Otono")
-f1 <- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
-f1
-```
+    ```{r}
+    x <- c("Primavera", "Verano", "Verano", "Verano", "Otono")
+    f1 <- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
+    f1
+    ```
 
 - Si no se indican los niveles, se toman como los valores únicos del vector
+    ```{r}
+    unique(x)
+    ```
+    ```{r}
+    factor(x)
+    ```
+
+---
+
+## Orden de los niveles
+
+- Por defecto los niveles están en orden creciente:
+    ```{r}
+    sort(unique(x))
+    ```
+    
+- En la mayoría de los casos el orden de los factores es irrelevante
+
+- Dos ejemplos donde importa el orden:
+
+  1. realizar gráficos, el orden de las escalas es el orden de los niveles del factor
+  
+  2. realizar modelos, donde el primer nivel se considera el nivel de referencia
+
+
+---
+
+## Función cut
+
+* Crea un factor a partir de una variable numérica
+    ```{r}
+    edad <- c(10, 15, 20, 25, 38)  
+    cut(edad, breaks = c(10, 20, 30, 40))
+    ```
+
+* Incluir el valor de la izquierda del primer intervalo
+    ```{r}
+    cut(edad, breaks = c(10, 20, 30, 40), include.lowest = TRUE)
+    ```
+
+* Cerrar los intervalos por la izquierda, no la derecha
+    ```{r}
+    cut(edad, breaks = c(10, 20, 30, 40), right = FALSE)
+    ```
+    
+---
+
+* Cambiar nombre de los niveles
+    ```{r}
+    cut(edad, breaks = c(10, 20, 30, 40), labels = c("10-20", "20-30", "30-40"))
+    ```
+    
+---
+
+## Creación factor de ejemplo
+
+- Creamos un factor de ejemplo con los tipos de coche de `mpg`
+    ```{r}  
+    f <- factor(mpg$class)
+    length(f)
+    ```
+
+- Niveles:
+    ```{r}
+    levels(f)
+    ```
+
+- Frecuencia de cada uno de los niveles
+    ```{r}
+    fct_count(f) %>% arrange(desc(n))
+    ```
+
+---
+
+## Reordenar niveles de un factor
+
+- `fct_relevel()`, para reordenar los niveles a mano (se mueven al principio)
+    ```{r}
+    f1 <- fct_relevel(f, "minivan", "compact") 
+    levels(f1)
+    ```
+
+- `fct_infreq()`, para reordenar los niveles de acuerdo a su frecuencia
+    ```{r}
+    f2 <- fct_infreq(f)
+    levels(f2)
+    ```
+
+---
+
+## Reordenar de acuerdo a otra variable
+
+- `fct_reorder()`, para reordenar los niveles de acuerdo a otra variable
+    ```{r}
+    f3 <- fct_reorder(f, .x = mpg$cty, .fun = mean)
+    levels(f3)
+    ```
+
+- El orden de los niveles es creciente en `.fun(.x)`
+    ```{r}
+    consumo_medio <-
+      mpg %>%
+        group_by(class) %>%
+        summarize(avg_cty = mean(cty))
+      
+    arrange(consumo_medio, avg_cty)
+    ```
+
+---
+
+La función `fct_reorder` es útil para ordenar los ejes en gráficos
 
 ```{r}
-unique(x)
-```
-
-```{r}
-factor(x)
+ggplot(consumo_medio, aes(x = class, y = avg_cty)) + geom_col()
 ```
 
 ---
 
-También se pueden crear a partir de una variable numérica
-
 ```{r}
-edad <- c(20, 25, 15, 38)
-cut(edad, breaks = c(10, 20, 30, 40))
+ggplot(consumo_medio, aes(x = fct_reorder(class, avg_cty), y = avg_cty)) +
+  geom_col() +
+  xlab("class")
 ```
 
 ---
 
-## Algunas funciones útiles
+## Renombrar niveles
 
-- `fct_reorder()` para reordenar los niveles (se mueven al principio)
-
-```{r}
-fct_relevel(f, "Invierno", "Primavera")
-```
-
-- `fct_recode()` para cambiar el nombre de los niveles o eliminarlos (asignando el valor `NULL`)
-
-```{r}
-fct_recode(f, Inv = "Invierno", Prim = "Primavera", Ver = "Verano", Oto = "Otoño")
-```
-
----
+- `fct_recode()` cambia el nombre de los niveles o los elimina (asignando el valor `NULL`)
+    ```{r}
+    f4 <- fct_recode(f, todoterreno = "suv", `2plazas` = "2seater", 
+                        NULL = "pickup")
+    levels(f4)
+    ```
 
 - `fct_recode()` también puede colapsar niveles asignando el mismo nombre
+    ```{r}
+    f5 <- fct_recode(f, `4seater` = "compact", `4seater` = "subcompact", 
+                        `4seater` = "midsize")
+    levels(f5)
+    ```
 
-```{r}
-fct_recode(f, Frio = "Invierno", Calor = "Primavera", Calor = "Verano", Frio = "Otoño")
-```
+---
 
-- Otra alternativa es `fct_collapse()`
+## Otras funciones
 
-```{r}
-fct_collapse(f, Frio = c("Invierno", "Otoño"), Calor = c("Primavera", "Verano"))
-```
+- Otra alternativa es `fct_collapse`
+    ```{r}
+    f6 <- fct_collapse(f, `4seater` = c("compact", "subcompact", "midsize"),
+                          `2seater` = c("2seater",   "pickup"))
+    levels(f6)
+    ```
+
+- O `fct_lump`, que colapsa los niveles menos frecuentes
+    ```{r}
+    fct_count(f) %>% arrange(desc(n))
+    ```
+    ```{r}
+    f7 <- fct_lump(f, n = 3)
+    levels(f7)
+    ```
+    

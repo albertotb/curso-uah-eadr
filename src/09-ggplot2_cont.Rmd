@@ -22,6 +22,59 @@ library(tidyverse)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, fig.width = 8, fig.height = 6, collapse = TRUE)
 ```
 
+## Facetas
+
+- Otra opción para representar variables adicionales
+
+- Cada faceta es un gráfico realizado con un subconjunto de los datos
+
+---
+
+## facet_wrap
+
+```{r, echo=T, fig.asp=1/2}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv)
+```
+
+---
+
+## Ejes independientes
+
+* Valores posibles:
+
+   - `"free"`
+   - `"free_x"`
+   - `"free_y"`
+
+```{r, echo=T, fig.asp=1/2}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv, scales = "free_y")
+```
+
+---
+
+## Número de columnas
+
+```{r, echo=T, fig.asp=2/3}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv, scales = "free_y", ncol = 2)
+```
+
+---
+
+## facet_grid
+
+```{r}
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ class)
+```
+
+---
 
 ## Etiquetas
 
@@ -129,15 +182,17 @@ ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
 
 * Para personalizar los colores del gráfico se puede usar una de las múltiples escalas predefinidas en [http://colorbrewer2.org/](http://colorbrewer2.org/)
 
-   - `scale_color_brewer()` para escalas discretas
+   - `scale_color_brewer()`, `scale_fill_brewer()` para escalas discretas
    
-   - `scale_color_distiller()` para escalas continuas
+   - `scale_color_distiller()`, `scale_fill_distiller()` para escalas continuas
    
 * También se puede establecer la escala de forma manual
 
-   - `scale_color_manual()` para escalas discretas
+   - `scale_color_manual()`, `scale_fill_manual()` para escalas discretas
    
-   - `scale_color_gradient()` o `scale_color_gradient2()` para escalas continuas
+   - `scale_color_gradient()`,  `scale_fill_gradient()` para escalas continuas secuenciales
+   
+   - `scale_color_gradient2()`,  `scale_fill_gradient2()` para escalas continuas divergentes
 
 
 ---
@@ -158,7 +213,9 @@ ggplot(mpg, aes(x = displ, y = hwy, color = cty)) +
 
 ---
 
-```{r}
+## viridis (continua)
+
+```{r, fig.asp=2/3}
 library(viridis)
 
 ggplot(mpg, aes(x = displ, y = hwy, color = cty)) + 
@@ -168,39 +225,23 @@ ggplot(mpg, aes(x = displ, y = hwy, color = cty)) +
 
 ---
 
-## Facetas
+## viridis (discreta)
 
-- Otra opción para representar variables adicionales son las facetas
-- Cada faceta es un subgráfico realizado con un subconjunto de los datos
+```{r, fig.asp=2/3}
+library(viridis)
 
----
-
-## facet_wrap
-
-```{r, echo=T}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) +
-  facet_wrap(~drv)
-```
-
----
-
-
-## facet_grid
-
-```{r}
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) +
-  facet_grid(drv ~ class)
+ggplot(mpg, aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  scale_color_viridis(discrete = TRUE)
 ```
 
 ---
 
 ## Temas
 
-* Función `theme()`
+* Permiten personalizar casi todos los componentes de un gráfico: títulos, etiquetas, fuentes, fondos, leyendas, etc...
 
-* Personalizar los componentes de un gráfico: títulos, etiquetas, fuentes, fondos, leyendas, etc...
+* Función `theme()`
 
 * Ver [documentación](https://ggplot2.tidyverse.org/reference/theme.html)
 
@@ -213,6 +254,18 @@ ggplot(data = mpg) +
     - `+ theme(legend.position = "bottom")`
 
 ---
+
+## Ejemplo: etiquetas de las facetas
+
+```{r, fig.asp=3/5}
+ggplot(economics_long, aes(date, value)) +
+  geom_line() +
+  facet_wrap(~variable, scales = "free_y", nrow = 2, strip.position = "bottom") +
+  theme(strip.background = element_blank(), strip.placement = "outside")
+```
+
+---
+
 
 ## Temas por defecto y exportar gráficos
 
@@ -230,4 +283,3 @@ ggplot(data = mpg) +
 
 
 * [Resumen](https://ggplot2.tidyverse.org/reference/) de todas las funciones de ggplot2
-

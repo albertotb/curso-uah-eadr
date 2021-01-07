@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>ggplot2 (continuación)</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres" />
-    <meta name="date" content="2020-01-14" />
+    <meta name="date" content="2021-01-07" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # ggplot2 (continuación)
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres
-### 2020-01-14
+### 2021-01-07
 
 ---
 
@@ -38,6 +38,71 @@ MathJax.Hub.Config({
 
 
 
+## Facetas
+
+- Otra opción para representar variables adicionales
+
+- Cada faceta es un gráfico realizado con un subconjunto de los datos
+
+---
+
+## facet_wrap
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv)
+```
+
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+
+---
+
+## Ejes independientes
+
+* Valores posibles:
+
+   - `"free"`
+   - `"free_x"`
+   - `"free_y"`
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv, scales = "free_y")
+```
+
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+
+---
+
+## Número de columnas
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_wrap(~drv, scales = "free_y", ncol = 2)
+```
+
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+
+---
+
+## facet_grid
+
+
+```r
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy)) +
+  facet_grid(drv ~ class)
+```
+
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+
+---
 
 ## Etiquetas
 
@@ -64,7 +129,7 @@ ggplot(diamonds, aes(x = price, y = carat)) +
   )
 ```
 
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-1-1.png)&lt;!-- --&gt;
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -76,7 +141,7 @@ ggplot(diamonds, aes(x = price, y = carat)) +
   ylab("Quilates")
 ```
 
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -112,7 +177,7 @@ ggplot(economics, aes(x = date, y = unemploy)) +
            color = "red", shape = 21, fill = "transparent", size = 5)
 ```
 
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-3-1.png)&lt;!-- --&gt;
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -148,7 +213,7 @@ ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
   scale_color_discrete(name = "Tipo")
 ```
 
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-4-1.png)&lt;!-- --&gt;
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -157,15 +222,17 @@ ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
 
 * Para personalizar los colores del gráfico se puede usar una de las múltiples escalas predefinidas en [http://colorbrewer2.org/](http://colorbrewer2.org/)
 
-   - `scale_color_brewer()` para escalas discretas
+   - `scale_color_brewer()`, `scale_fill_brewer()` para escalas discretas
    
-   - `scale_color_distiller()` para escalas continuas
+   - `scale_color_distiller()`, `scale_fill_distiller()` para escalas continuas
    
 * También se puede establecer la escala de forma manual
 
-   - `scale_color_manual()` para escalas discretas
+   - `scale_color_manual()`, `scale_fill_manual()` para escalas discretas
    
-   - `scale_color_gradient()` o `scale_color_gradient2()` para escalas continuas
+   - `scale_color_gradient()`,  `scale_fill_gradient()` para escalas continuas secuenciales
+   
+   - `scale_color_gradient2()`,  `scale_fill_gradient2()` para escalas continuas divergentes
 
 
 ---
@@ -177,7 +244,7 @@ ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
   scale_color_brewer(palette = "Pastel1")
 ```
 
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -188,9 +255,11 @@ ggplot(mpg, aes(x = displ, y = hwy, color = cty)) +
   scale_color_distiller(palette = "YlOrRd")
 ```
 
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-6-1.png)&lt;!-- --&gt;
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
 
 ---
+
+## viridis (continua)
 
 
 ```r
@@ -201,49 +270,30 @@ ggplot(mpg, aes(x = displ, y = hwy, color = cty)) +
   scale_color_viridis()
 ```
 
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 
 ---
 
-## Facetas
-
-- Otra opción para representar variables adicionales son las facetas
-- Cada faceta es un subgráfico realizado con un subconjunto de los datos
-
----
-
-## facet_wrap
+## viridis (discreta)
 
 
 ```r
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) +
-  facet_wrap(~drv)
+library(viridis)
+
+ggplot(mpg, aes(x = displ, y = hwy, color = drv)) + 
+  geom_point() + 
+  scale_color_viridis(discrete = TRUE)
 ```
 
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
-
----
-
-
-## facet_grid
-
-
-```r
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy)) +
-  facet_grid(drv ~ class)
-```
-
-![](09-ggplot2_cont_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
 
 ---
 
 ## Temas
 
-* Función `theme()`
+* Permiten personalizar casi todos los componentes de un gráfico: títulos, etiquetas, fuentes, fondos, leyendas, etc...
 
-* Personalizar los componentes de un gráfico: títulos, etiquetas, fuentes, fondos, leyendas, etc...
+* Función `theme()`
 
 * Ver [documentación](https://ggplot2.tidyverse.org/reference/theme.html)
 
@@ -256,6 +306,21 @@ ggplot(data = mpg) +
     - `+ theme(legend.position = "bottom")`
 
 ---
+
+## Ejemplo: etiquetas de las facetas
+
+
+```r
+ggplot(economics_long, aes(date, value)) +
+  geom_line() +
+  facet_wrap(~variable, scales = "free_y", nrow = 2, strip.position = "bottom") +
+  theme(strip.background = element_blank(), strip.placement = "outside")
+```
+
+![](09-ggplot2_cont_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+
 
 ## Temas por defecto y exportar gráficos
 
@@ -321,6 +386,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -338,17 +429,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

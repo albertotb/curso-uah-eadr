@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
-    <title>purrr</title>
+    <title>Programación en R</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2020-01-14" />
+    <meta name="date" content="2021-01-07" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -12,10 +12,10 @@
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
-# purrr
+# Programación en R
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2020-01-14
+### 2021-01-07
 
 ---
 
@@ -53,13 +53,12 @@ MathJax.Hub.Config({
     * longitud, función `length()`
     
   * Los elementos de un vector pueden tener nombre
-  
-
-```r
-c(a = 1, b = 2, c = 3)
-## a b c 
-## 1 2 3
-```
+    
+    ```r
+    c(a = 1, b = 2, c = 3) 
+    ## a b c 
+    ## 1 2 3
+    ```
 
 ---
 
@@ -70,22 +69,20 @@ c(a = 1, b = 2, c = 3)
   * Convertir de un tipo a otro: `as.logical()`, `as.integer()`, `as.double()`, `as.character()`
   
   * Cuando combinamos elementos de distinto tipo, existe una conversión implícita al tipo más genérico
-  
-
-```r
-5 + TRUE
-## [1] 6
-
-c(4.5, "hola")
-## [1] "4.5"  "hola"
-```
+    
+    ```r
+    5 + TRUE 
+    ## [1] 6
+    c(4.5, "hola")
+    ## [1] "4.5"  "hola"
+    ```
 
 ---
 
 ## Listas
 
-  * Pueden contener elementos de distinto tipo, incluido otras listas
-  
+Pueden contener elementos de distinto tipo, incluido otras listas
+
 
 ```r
 l &lt;- list(a = "a", b = 10.2, c = TRUE, d = 1:10, e = list(1, 2))
@@ -107,39 +104,36 @@ str(l)
 Distintas formas de indexar elementos:
 
   1. `[` extrae una sub-lista
-  
-
-```r
-l[1:3]
-## $a
-## [1] "a"
-## 
-## $b
-## [1] 10.2
-## 
-## $c
-## [1] TRUE
-```
+    
+    ```r
+    l[1:3]
+    ## $a
+    ## [1] "a"
+    ## 
+    ## $b
+    ## [1] 10.2
+    ## 
+    ## $c
+    ## [1] TRUE
+    ```
   
   2. `[[` extrae un elemento
-
-
-```r
-l[[4]]
-##  [1]  1  2  3  4  5  6  7  8  9 10
     
-l[["d"]]
-##  [1]  1  2  3  4  5  6  7  8  9 10
-```
+    ```r
+    l[[4]]
+    ##  [1]  1  2  3  4  5  6  7  8  9 10
+    
+    l[["d"]]
+    ##  [1]  1  2  3  4  5  6  7  8  9 10
+    ```
 
  
   3. `$` similar a `[[` pero solo se puede usar con la etiqueta del elemento (no posicion)
-
-
-```r
-l$d
-##  [1]  1  2  3  4  5  6  7  8  9 10
-```
+    
+    ```r
+    l$d
+    ##  [1]  1  2  3  4  5  6  7  8  9 10
+    ```
 
 ---
 
@@ -154,81 +148,90 @@ l$d
     * *Tibbles* y *data.frames*, a partir de listas
 
   * Podemos comprobar estos tipos aumentados con la función `class()`
-  
-
-```r
-class(mpg)
-## [1] "tbl_df"     "tbl"        "data.frame"
     
-typeof(mpg)
-## [1] "list"
-```
+    ```r
+    class(mpg)
+    ## [1] "tbl_df"     "tbl"        "data.frame"
+     
+    typeof(mpg)
+    ## [1] "list"
+    ```
   
 ---
 
 ## Funciones
 
-* Las funciones evitan la repetición de código
+* Escribir funciones evita la repetición de código
 
-* Al igual que las funciones de R, tienen argumentos de entrada y un valor de retorno
+* Al igual que las funciones incluidas en R, tienen argumentos de entrada y un valor de retorno
 
 * Útiles cuando copiamos y pegamos el **mismo** código para usarlo con distintas variables
 
----
-
-
-```r
-# Función que cuenta el número de valores NA en un vector
-count_na &lt;- function(x) {
-  sum(is.na(x))
-}
-
-count_na(c(4, 6, NA, 3))
-## [1] 1
-```
+* Ejemplo: función que cuenta el número de valores NA en un vector
+    
+    ```r
+    count_na &lt;- function(x) {
+      sum(is.na(x))
+    }
+    
+    count_na(c(4, 6, NA, 3))
+    ## [1] 1
+    ```
 
 ---
 
 ## Ejecución condicional
 
-La sentencia `if` permite ejecutar código dependiendo de una condición
+* La sentencia `if` permite ejecutar código dependiendo de una condición (la parte del `else` es opcional)
+    
+    ```r
+    if (condicion) {
+      # codigo que se ejecuta si condicion es TRUE
+    } else {
+      # codigo que se ejecuta si condicion es FALSE
+    }
+    ```
 
+* Es común usar los operadores lógicos: 
 
-```r
-if (condicion) {
-  # codigo que se ejecuta si condicion es TRUE
-} else {
-  # codigo que se ejecuta si condicion es FALSE
-}
-```
-
-Se puede usar `&amp;&amp;` (AND lógico) y `||` (OR lógico) para combinar múltiples expresiones
+| Operador | Descripción       |
+|----------|-------------------|
+| `&lt;`      | menor que         |
+| `&lt;=`     | menor o igual     |
+| `&gt;`      | mayor que         |
+| `&gt;=`     | mayor o igual     |
+| `==`     | igual             |
+| `!=`     | distinto          |
+| `!x`     | negación (no `x`) |
 
 ---
 
 ## Múltiples condiciones
 
+* Primero se comprueba la primera condición, y solo si es falsa se comprueba la segunda
+    
+    ```r
+    if (condicion1) {
+      # condigo a ejecutar si condicion1 es TRUE
+    } else if (condicion2) {
+      # codigo a ejecutar si condicion1 es FALSE pero condicion2 es TRUE
+    } else {
+      # si ambas son FALSE
+    }
+    ```
 
-```r
-if (condicion1) {
-  # condigo a ejecutar si condicion1 es TRUE
-} else if (condicion2) {
-  # codigo a ejecutar si condicion1 es FALSE pero condicion2 es TRUE
-} else {
-  # si ambas son FALSE
-}
-```
+* También podemos usar `&amp;&amp;` (AND lógico) y `||` (OR lógico) para combinar múltiples condiciones en una
 
 ---
 
-## Sentencia ifelse()
+## Sentencia if_else()
 
-Es una sentencia condicional vectorizada
+Sentencia condicional vectorizada (librería `dplyr`)
 
 
 ```r
 mpg %&gt;%
-  mutate(consumo = ifelse(cty &lt; 20, "bajo", "alto")) %&gt;%
+  mutate(consumo = if_else(cty &lt; 20, "bajo", "alto")) %&gt;%
   select(cty, consumo)
 ## # A tibble: 234 x 2
 ##      cty consumo
@@ -248,22 +251,35 @@ mpg %&gt;%
 
 ---
 
-## Valores por defecto
+## Argumentos opcionales
+
+* Podemos añadir argumentos opcionales asignándoles un valor por defecto
+    
+    ```r
+    count_na &lt;- function(x, normalize = FALSE) {
+      if (normalize) {
+        mean(is.na(x))
+      } else {
+        sum(is.na(x))
+      }
+    }
+    ```
+
+* Ejemplo:
+    
+    ```r
+    count_na(c(NA, NA, 3, 5, NA, 2), normalize = TRUE)
+    ## [1] 0.5
+    ```
 
 
-```r
-# Función que cuenta el número de valores NA en un vector
-count_na &lt;- function(x, normalize = FALSE) {
-  if (normalize) {
-    mean(is.na(x))
-  } else {
-    sum(is.na(x))
-  }
-}
+* Si falta un argumento no opcional, R devuelve un error
+    
+    ```r
+    count_na()
+    ## Error in count_na(): el argumento "x" está ausente, sin valor por omisión
+    ```
 
-count_na(c(NA, NA, 3, 5, NA, 2), normalize = TRUE)
-## [1] 0.5
-```
 
 ---
 
@@ -272,62 +288,140 @@ count_na(c(NA, NA, 3, 5, NA, 2), normalize = TRUE)
  * Por defecto, las funciones devuelven el resultado de la última linea de código
  
  * También se puede usar la sentencia `return()`
- 
-
-```r
-# Función que cuenta el número de valores NA en un vector
-count_na &lt;- function(x, normalize = FALSE) {
-  if (!is.atomic(x)) {
-    return(NA)
-  }
-  
-  if (normalize) {
-    mean(is.na(x))
-  } else {
-    sum(is.na(x))
-  }
-}
-
-count_na(mpg)
-## [1] NA
-```
+    
+    ```r
+    # Función que cuenta el número de valores NA en un vector
+    count_na &lt;- function(x, normalize = FALSE) {
+      if (!is.vector(x)) {
+        return(NA)
+      }
+      
+      if (normalize) {
+        mean(is.na(x))
+      } else {
+        sum(is.na(x))
+      }
+    }
+    ```
+    
+    ```r
+    count_na(mpg)
+    ## [1] NA
+    ```
+    
+    ```r
+    count_na(list(1, 2, 3, NA))
+    ## [1] 1
+    ```
 
 ---
 
 ## Iteración
 
-* Se utiliza para aplicar el mismo código a varias entradas
+* Repetir el mismo código con varios elementos de un vector o lista
 
-* La forma más conocida son los bucles:
+* Existen dos tipos principales de bucles en R:
 
-    - for
+    - `for` (número predeterminado de repeticiones)
     
-    - while
-      
+    - `while` (número variable de repeticiones)
 
-```r
-output &lt;- vector("double", ncol(df))  
-for (i in seq_along(df)) {            
-  output[[i]] &lt;- median(df[[i]])  
-}
-```
-    
-   
-
-```r
-i &lt;- 1
-while (i &lt;= length(df)) {
-  i &lt;- i + 1 
-}
-```
-    
-* Hemos visto otra forma "oculta" de iteración, las funciones `summarize_all()` y `summarize_if()`
+* Hemos visto otra forma "oculta" de iteración, la función `across` de la librería `dplyr`
 
 ---
 
-## purrr
+## Bucle for
 
-* La librería proporciona funciones que sustituyen a los bucles en la mayoría de los casos más comunes:
+Los bucles for tienen 3 partes:
+
+  1. **Salida**: el número de repeticiones es conocido, con lo que podemos crear de antemano el vector que almacena los resultados
+  
+  2. **Secuencia**: determina el número de repeticiones y el valor de `i` en cada una de ellas
+  
+  3. **Cuerpo**: entre corchetes (`{}`), es el código que se va a repetir para cada uno de los valores de `i`
+  
+
+```r
+df &lt;- select(mpg, is.numeric)
+
+# Salida
+output &lt;- vector("double", ncol(df))  
+# Secuencia
+for (i in seq_along(df)) {            
+  # Cuerpo
+  output[[i]] &lt;- median(df[[i]])  
+}
+
+output
+## [1]    3.3 2003.5    6.0   17.0   24.0
+```
+
+---
+
+## Patrones de iteración
+
+1. Iterar sobre índices: en cada iteración el valor de `i` es un número entero, se usa la función `seq_along`
+
+2. Iterar sobre los elementos: en cada iteración el valor de `x` es cada uno de los elementos de la secuencia:
+    
+    ```r
+    for(x in df) {
+      print(mean(x))
+    }
+    ## [1] 3.471795
+    ## [1] 2003.5
+    ## [1] 5.888889
+    ## [1] 16.85897
+    ## [1] 23.44017
+    ```
+
+- En general podemos iterar sobre:
+
+  1. vectores
+  
+  2. listas
+  
+  3. dataframes, en cuyo caso iteramos sobre las **columnas**
+  
+---
+
+## Bucle while
+   
+* Es más general, todo bucle for se puede reescribir como un bucle `while`
+    
+    ```r
+    i &lt;- 1
+    while (i &lt;= ncol(df)) {
+      i &lt;- i + 1 
+    }
+    ```
+    
+* Se utiliza cuando no se conoce de antemano el número de repeticiones:
+    
+    ```r
+    set.seed(1)
+    
+    n_caras &lt;- 0
+    while(n_caras &lt; 3) {
+      moneda &lt;- sample(c("cara", "cruz"), size = 1)
+      print(paste("Lanzando moneda...", moneda))
+      
+      if(moneda == "cara") {
+        n_caras &lt;- n_caras + 1
+      }
+    }
+    ## [1] "Lanzando moneda... cara"
+    ## [1] "Lanzando moneda... cruz"
+    ## [1] "Lanzando moneda... cara"
+    ## [1] "Lanzando moneda... cara"
+    ```
+
+---
+
+## Familia de funciones map
+
+.col1-left[
+* Iteran sobre un vector realizando una operación sobre cada uno de sus elementos:
 
     - `map()`, crea una lista
     
@@ -340,39 +434,128 @@ while (i &lt;= length(df)) {
     - `map_chr()`, crea un vector de cadenas de caracteres
     
     - `map_df()`, crea un data frame
+
+* Sustituyen a los bucles en los casos de uso más comunes
+]
+
+.col1-right[
+.center-right[
+![](img/map.png)
+]
+]
+
+---
+
+## Ejemplo
+
+* El bucle que hemos visto anteriormente:
     
+    ```r
+    df &lt;- select(mpg, is.numeric)
+    
+    output &lt;- vector("double", ncol(df))  
+    for (i in seq_along(df)) {            
+      output[[i]] &lt;- mean(df[[i]])  
+    }
+    
+    output
+    ## [1]    3.471795 2003.500000    5.888889   16.858974   23.440171
+    ```
+
+* Se puede reemplazar por una llamada a la función `map_dbl`:
+    
+    ```r
+    map_dbl(df, mean)
+    ##       displ        year         cyl         cty         hwy 
+    ##    3.471795 2003.500000    5.888889   16.858974   23.440171
+    ```
+
+* Aunque el resultado es el mismo, en general preferimos la versión con `map` porque el código es más conciso y fácil de leer
+
 ---
 
+## Funciones propias
 
-```r
-df &lt;- select_if(mpg, is.numeric)
-map_dbl(df, mean, na.rm = TRUE)
-##       displ        year         cyl         cty         hwy 
-##    3.471795 2003.500000    5.888889   16.858974   23.440171
-```
+- `map_*` acepta functiones definidas por el usuario
+    
+    ```r
+    count_na &lt;- function(x, normalize = FALSE) {
+      if (normalize) {
+        mean(is.na(x))
+      } else {
+        sum(is.na(x))
+      }
+    }
+    
+    map_dbl(airquality, count_na)
+    ##   Ozone Solar.R    Wind    Temp   Month     Day 
+    ##      37       7       0       0       0       0
+    ```
+
+
+.col1-left[
+
+* Si las funciones tienen parámetros opcionales, se los podemos pasar como argumentos a map
+    
+    ```r
+    map_dbl(airquality, count_na, 
+            normalize=TRUE)
+    ##      Ozone    Solar.R       Wind       Temp      Month        Day 
+    ## 0.24183007 0.04575163 0.00000000 0.00000000 0.00000000 0.00000000
+    ```
+]
+
+.col1-right[
+![:scale 95%](img/map-arg.png)
+]
 
 ---
 
-`map_*()` acepta functiones definidas por el usuario y tiene una sintáxis especial para declarar funciones anónimas
+## Funciones anónimas
 
+- `purrr` incluye una sintáxis especial para crear funciones anónimas
+    
+    ```r
+    map_df(df, ~(. - min(.)) / ((max(.) - min(.))))
+    ## # A tibble: 234 x 5
+    ##     displ  year   cyl   cty   hwy
+    ##     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+    ##  1 0.0370     0   0   0.346 0.531
+    ##  2 0.0370     0   0   0.462 0.531
+    ##  3 0.0741     1   0   0.423 0.594
+    ##  4 0.0741     1   0   0.462 0.562
+    ##  5 0.222      0   0.5 0.269 0.438
+    ##  6 0.222      0   0.5 0.346 0.438
+    ##  7 0.278      1   0.5 0.346 0.469
+    ##  8 0.0370     0   0   0.346 0.438
+    ##  9 0.0370     0   0   0.269 0.406
+    ## 10 0.0741     1   0   0.423 0.5  
+    ## # ... with 224 more rows
+    ```
 
-```r
-map_df(df, ~(. - min(.) / (max(.) - min(.))))
-## # A tibble: 234 x 5
-##    displ  year   cyl   cty   hwy
-##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1  1.50 1777.     3  17.7  28.6
-##  2  1.50 1777.     3  20.7  28.6
-##  3  1.70 1786.     3  19.7  30.6
-##  4  1.70 1786.     3  20.7  29.6
-##  5  2.50 1777.     5  15.7  25.6
-##  6  2.50 1777.     5  17.7  25.6
-##  7  2.80 1786.     5  17.7  26.6
-##  8  1.50 1777.     3  17.7  25.6
-##  9  1.50 1777.     3  15.7  24.6
-## 10  1.70 1786.     3  19.7  27.6
-## # ... with 224 more rows
-```
+- Más información: [`map`](https://purrr.tidyverse.org/reference/map.html)
+
+---
+
+## R base vs purrr
+
+- Existen funciones en R base similares a la familia `map` 
+
+- En general, se recomienda el uso de las funciones de `purrr` porque sus argumentos y nombres son más consistentes
+
+- Por tanto, intentar evitar el uso de funciones como:
+
+  - `lapply` (equivalente a `map`)
+  
+  - `vapply` (equivalente a `map_dbl`, `map_chr`, `map_lgl`, etc.)
+  
+  - `sapply` (no tenemos control sobre el tipo del vector de salida)
+  
+  - `apply` (devuelve un array, no un dataframe)
+
+- [Diferencias entre R base y purrr](https://stackoverflow.com/questions/45101045/why-use-purrrmap-instead-of-lapply)
+
+- [Tutorial de purrr](https://jennybc.github.io/purrr-tutorial/index.html)
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -421,6 +604,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -438,17 +647,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

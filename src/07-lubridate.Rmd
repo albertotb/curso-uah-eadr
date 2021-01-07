@@ -24,57 +24,205 @@ library(lubridate)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
 ```
 
-# lubridate
-
 ## Fechas
 
 - El paquete `lubridate` implementa dos tipos principales de fechas/horas:
+
     + Fechas, `<date>`
+
     + Fecha-hora, `<dttm>` (*timestamps*)
     
-- Se pueden creara partir de:
-    + cadenas: `ymd()`, `mdy()`, `dmy()`, `ymd_hms()`, etc.
-    + componentes: `make_datetime()`
+- Se pueden crear a partir de:
+
+    + cadenas de caracteres: `ymd()`, `mdy()`, `dmy()`, `ymd_hms()`, etc.
+
+    + componentes: `make_date` y `make_datetime()`
+
     + otros objetos que representan fechas: `as_datetime()`, `as_date()`
 
 ---
 
-```{r}
-ymd("20181012")
-```
+## Creación a partir de cadenas
 
-```{r}
-dmy("1 de Enero de 2017")
-```
+- El nombre de la función representa el orden de los componentes de la fecha:
+    ```{r}
+    ymd("20181012")
+    ```
+    ```{r}
+    ydm("20181012")
+    ```
 
-```{r}
-make_date(2015, 10, 20)
-```
+
+- Mientras el orden sea correcto, se reconocen tambien formatos específicos de la localización
+    ```{r}
+    Sys.getlocale("LC_TIME")
+    ```
+    ```{r}
+    dmy("20 de Enero de 2017")
+    ```
+
+- Así como fechas en inglés
+    ```{r}
+    mdy("January 5th 2017")
+    ```
 
 ---
 
-## Operaciones con fechas
+## Más ejemplos
 
-- Obtener componentes de una fecha:
-    + `year()`, año
-    + `month()`, mes
-    + `mday()`, dia del mes; `wday()`, dia de la semana; `yday()`, dia del año
-    + `hour()`, hora
-    + `minute()`, minuto
-    + `second()`, segundo
+- Todas las funciones están vectorizadas (aplican sobre vectores elemento a elemento)
+    ```{r}
+    ymd(c('20200401', '2020402', '20200403'))
+    ```
 
-- Redondear a a la unidad de tiempo mas cercana:
-    + `round_date()`
-    + `floor_date()` (hacia abajo) 
-    + `ceiling_date()` (hacia arriba)
+- Si un elemento del vector representa una fecha incorrecta se cambia por `NA`
+
+---
+
+## Creación a partir de sus componentes
+
+- `make_date` se usa para crear fechas a partir de los componentes por separado
+    ```{r}
+    make_date(2015, 10, 20)
+    ```
+
+- Los componentes pueden ser numéricos o cadenas de caracteres
+    ```{r}
+    make_date('2015', 10, 20)
+    ```
+
+- `make_date` y `make_datetime` también aceptan vectores
+    ```{r}
+    make_date(2020, c(1, 2, 4), 5:7)
+    ```
+
+---
+
+## Funciones as_date y as_datetime
+
+- Útiles para convertir otros formatos de fechas
+
+- El ejemplo más común son fechas/horas codificadas en formato "Unix epoch" (segundos desde el 1 de Enero de 1970)
+    ```{r}
+    as_datetime(c(1587399491, 1587399492))
+    ```
+
+---
+
+## R base
+
+- Es importante no confundir las clases del paquete `lubridate` con las que existen en R base:
+
+  1. clase `Date`, para fechas
+  
+  2. clases `POSIXct`, `POSIXlt` para fechas y horas
+  
+- Se recomienda limitarse a las funciones de la librería `lubridate`
+
+- Por tanto, evitar usar funciones de R base como
+
+  1. `as.Date`
+  2. `as.POSIXct`
+  3. `strftime`
+  4. `strptime`
+  
+---
+
+## Obtener componentes de una fecha
+
+- `year()`, año
+    
+- `month()`, mes
+    
+- `mday()`, dia del mes; `wday()`, dia de la semana; `yday()`, dia del año
+    
+- `hour()`, hora
+    
+- `minute()`, minuto
+    
+- `second()`, segundo
+
     
 ---
 
+## Ejemplos
+
+- Dia del mes
+    ```{r}
+    fecha <- ymd(c("20181205", "20181208", "20181210", "20181220"))
+    mday(fecha)
+    ```
+
+- Día de la semana
+    ```{r}
+    wday(fecha)
+    ```
+
+- Nombre de los días, empezando en lunes
+    ```{r}
+    wday(fecha, label = TRUE, abbr = FALSE, week_start = 1)
+    ```
+
+- Asignar un nuevo valor
+    ```{r}
+    hour(fecha) <- 18
+    fecha
+    ```
+
+
+---
+
+## Aritmética con fechas
+
+- `lubridate` implementa las funciones `hours`, `days`, `months`, etc. para representar períodos
+
+- Con estas funciones podemos hacer operaciones con fechas:
+    ```{r}
+    ymd("2011-01-01") + years(1)
+    ymd("2020-03-01") + months(3)
+    
+    # 5 reuniones semanales, empezando el 1 de abril de 2020
+    ymd("2020-04-01") + weeks(0:4)
+    
+    today()
+    today() + days(15)
+    ```
+
+---
+
+## Operadores especiales
+
+- Al realizar una operación, si la fecha no existe `lubridate` devuelve `NA`
+    ```{r}
+    ymd("2013-01-31") + months(0:4)
+    ```
+
+- Existen operadores especiales que devuelven la última fecha válida del mes
+    ```{r}
+    # suma
+    ymd("2013-01-31") %m+% months(0:4)
+    ```
+    ```{r}
+    # resta
+    ymd("2013-01-31") %m-% months(0:4)
+    ```
+
+
+---
+
+## Redondear fechas
+
+- `round_date()`
+
+- `floor_date()` (hacia abajo) 
+
+- `ceiling_date()` (hacia arriba)
+
 ```{r}
-fecha <- ymd(c("20181205", "20181208", "20181210", "20181220"))
-mday(fecha)
+fecha <- ymd(c("20181205", "20181209", "20181210", "20181220"))
+floor_date(fecha, "week")
 ```
 
 ```{r}
-floor_date(fecha, "week")
-```
+fecha <- ymd(c("20181205", "20181209", "20181210", "20181220"))
+floor_date(fecha, "week", week_start = 1)

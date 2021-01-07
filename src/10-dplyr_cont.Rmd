@@ -24,8 +24,10 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 
 ## Operaciones agrupadas
 
-- La función `group_by()` convierte un data frame en otro agrupado por una o más variables.
-- En los data frames agrupados todas las operaciones anteriores se realizan "por grupo".
+- La función `group_by()` convierte un data frame en otro agrupado por una o más variables
+
+- En los data frames agrupados todas las operaciones anteriores se realizan "por grupo"
+
 - `ungroup()` elimina la agrupación.
 
 ---
@@ -38,55 +40,42 @@ mpg %>%
   group_by(cyl) %>%
   slice(1:2)
 ```
+
 ---
 
 ## Select con group_by
 
 - `select()` mantiene siempre las variables agrupadas, aunque no se indique explicitamente.
-```{r,eval=F}
-dim(mpg)
+```{r, warning=TRUE, message=TRUE}
 data <- mpg %>%
   group_by(cyl) %>%
   select(cty)
-dim(data)
-```
-```{r,eval=T}
-data <- mpg %>%
-  group_by(cyl) %>%
-  select(cty)
+
 glimpse(data)
 ```
+
 ---
 
 ## arrange con group_by
 
-- `arrange()` ordena por la(s) variable(s) especificadas como parámetros.
+- `arrange()` ignora la agrupación, a no ser que el parámetro `.by_group` sea `TRUE`
 
-```{r,eval=T}
-data <- mpg %>%
-  group_by(cyl) %>%
-  arrange(manufacturer)
-glimpse(data)
-```
-
-
----
-## summarize con group_by
-
-Un `summarize()` sobre un data frame agrupado devuelve otro con tantas filas como grupos (valores distintos de la/s variable/s usadas para agrupar).
-
-```{r, echo=T}
+.pull-left[
+```{r}
 mpg %>%
-  group_by(cyl) %>%
-  summarize(avg_cty = mean(cty))
+  select(year, cty) %>%
+  group_by(year) %>%
+  arrange(cty)
 ```
+]
 
----
-
-## Metodología split-apply-combine
-
-.center[
-![:scale 90%](./img/split-apply-combine.svg)
+.pull-right[
+```{r}
+mpg %>%
+  select(year, cty) %>%
+  group_by(year) %>%
+  arrange(cty, .by_group = TRUE)
+```
 ]
 
 ---
@@ -95,13 +84,77 @@ mpg %>%
 
 Un `mutate()` sobre un data frame agrupado devuelve siempre otro data frame con el mismo número de filas que el original.
 
+.pull-left[
 ```{r, echo=T}
-data <- mpg %>%
-  group_by(cyl) %>%
-  mutate(avg_cty = mean(cty))
-glimpse(data)
-```
+mpg %>%
+  # sin group_by
+  mutate(avg_cty = mean(cty)) %>%
+  # ungroup no necesario
+  select(cyl, cty, avg_cty)
 
+```
+]
+
+.pull-right[
+```{r, echo=T}
+mpg %>%
+  group_by(cyl) %>%
+  mutate(avg_cty = mean(cty)) %>%
+  ungroup() %>%
+  select(cyl, cty, avg_cty)
+
+```
+]
+
+---
+
+## Metodología split-apply-combine
+
+.center[
+![:scale 60%](img/split-apply-combine.svg)
+
+.footnotesize[[Jake VanderPlas. Group-by From Scratch](https://jakevdp.github.io/blog/2017/03/22/group-by-from-scratch/)]
+]
+
+---
+
+## group_by + summarize
+
+- La metodología anterior se implementa con `group_by + summarize`
+    ```{r, echo=T}
+    mpg %>%
+       group_by(cyl) %>%
+       summarize(avg_cty = mean(cty))
+    ```
+
+- Devuelve un dataframe con tantas filas como grupos (valores distintos de la/s variable/s usadas para agrupar).
+
+
+---
+
+## Agrupar por múltiples columnas
+
+- Podemos agrupar por múltiples columnas
+    ```{r, highlight.output = 2 }
+    mpg %>%
+      group_by(drv, year) %>%
+      summarize(avg_hwy = mean(hwy))
+    ```
+ 
+- `summarize` elimina un nivel de la agrupación (empezando por la derecha), por lo que hay que tener cuidado si realizamos operaciones posteriores sobre el resultado
+
+---
+
+## Número de grupos
+
+- El número de grupos es el número de combinaciones posibles de los valores distintos
+    ```{r}
+    mpg %>%
+      summarize(n_year = n_distinct(year), 
+                n_trans = n_distinct(drv),
+                n_comb = n_distinct(year, drv))
+
+    ```
 
 ---
 
@@ -116,12 +169,12 @@ glimpse(data)
   + `semi_join(x,y)`: Devuelve solo las filas de x que crucen con y (pero no y).
   + `anti_join(x,y)`: Devuelve solo las filas de x que NO crucen con y.
 
-- Diagrama de Venn [R for Data Science]
-<center>
-```{r, echo=FALSE, message=TRUE, warning=TRUE, out.width="80%"}
-knitr::include_graphics("img/join-venn.png")
-```
-</center>
+- Diagrama de Venn. [R for Data Science. Relational data](https://r4ds.had.co.nz/relational-data.html)
+
+.center[
+![:scale 70%](img/join-venn.png)
+]
+
 
 ---
 
@@ -134,34 +187,186 @@ knitr::include_graphics("img/join-venn.png")
 |`right_join(x, y, by = "z")` |	`SELECT * FROM x RIGHT OUTER JOIN y USING (z)` |
 |`full_join(x, y, by = "z")`  |	`SELECT * FROM x FULL OUTER JOIN y USING (z)`  |
 
-[R for Data Science]
+.center[
+Fuente: [R for Data Science. Relational data](https://r4ds.had.co.nz/relational-data.html)
+]
 
 ---
 
-## Ejemplo
+## Ejemplo (I)
+
+- **t4a**: Número de casos de tuberculosis en Afganistán, Brasil y China durante los años 1999 y 2000
+
+- **t4b**: Población de Afganistán, Brasil y China durante los años 1999 y 2000
+
+```{r include=FALSE}
+t4a <- gather(table4a, key = "year", 
+              value = "cases", num_range("", 1999:2000))
+t4b <- gather(table4b, key = "YEAR", 
+              value = "population", `1999`:`2000`)
+```
+
+.col-left[
+```{r}
+t4a
+
+t4b
+```
+]
+
+.col-right[
+```{r}
+join <- inner_join(t4a, t4b, 
+                   by=c("year" = "YEAR", "country"))
+join
+```
+]
+---
+
+## Ejemplo (II)
+
+```{r, echo=TRUE}
+x <- tibble(x1=c("A","B","C"),x2=1:3)
+x
+y <- tibble(x1=c("B","C","D"),x3=2:4)
+y
+left_join(x,y,by=c("x1"))
+```
+
+---
+
+## Ejemplo (III)
+
+```{r, echo=TRUE}
+right_join(x,y,by=c("x1"))
+full_join(x,y,by=c("x1"))
+semi_join(x,y,by=c("x1"))
+anti_join(x,y,by=c("x1"))
+```
+
+---
+
+## Operaciones sobre múltiples columnas
+
+- Una misma operación sobre múltiples columnas
+    ```{r}
+    summarize(mpg, 
+              avg_hwy = mean(hwy), 
+              avg_cty = mean(cty), 
+              avg_displ = mean(displ))
+    ```
+    
+- Se puede reescribir de forma más compacta usando la función `across` (dplyr >= 1.0)
+    ```{r}
+    summarize(mpg, across(c(hwy, cty, displ), mean))
+    ```
+
+- Más información: [Column-wise operations](https://dplyr.tidyverse.org/dev/articles/colwise.html)
+
+
+---
+
+## Función across
+
+- Recibe dos argumentos:
+
+   1. Selección de columnas (nombre, posición o tipo, al igual que [`select`](https://dplyr.tidyverse.org/dev/reference/dplyr_tidy_select.html))
+
+   2. Lista de funciones a aplicar sobre las columnas
+   
+```{r}
+summarize(mpg, across(is.numeric, mean)) 
+```
+    
+```{r}
+summarize(mpg, across(is.character, n_distinct))
+```
 
 ```{r}
-t4a <- gather(table4a, key = "year", value = "cases", num_range("", 1999:2000))
-head(t4a,4)
-t4b <- gather(table4b, key = "YEAR", value = "population", `1999`:`2000`)
-head(t4b,4)
+summarize(mpg, across(c(year, cyl), range))
 ```
 
 ---
 
-## Ejemplo (cont.)
-```{r, eval=T}
-inner_join(t4a, t4b, by=c("year" = "YEAR", "country"))
-```
+## Múltiples funciones
+
+- `across` acepta varias funciones mediante una lista
+    ```{r}
+    summarize(mpg, across(c(year, cyl), list(min, max))) 
+    ```
+
+- Es recomendable nombrar los elementos de la lista, para que las columnas de salida tengan el nombre `"columna_función"`
+    ```{r}
+    summarize(mpg, across(is.numeric, list(media = mean, desv = sd)))
+    ```
+
 ---
 
+- El formato anterior se puede cambiar modificando el parámetro opcional `.names`
+    ```{r}
+    summarize(mpg, across(c(year, cyl), list(menor = min, mayor = max),
+                          .names = "{fn}-{col}"))
+    ```
+    
+---
 
-## Operaciones de conjuntos con dplyr
+## Group_by + across
 
-- `dplyr` implementa la lógica de operaciones con conjuntos sobre tibbles.
-  + `intersect(x,y)`: Filas que aparecen tanto en x como en y.
-  + `union(x,y)`: Filas que aparecen en x, en y, o en ambos.
-  + `setdiff(x,y)`: Filas que aparecen en x, pero no en y.
+- `across` no aplica sobre las variables que se usan para agrupar
+    ```{r}
+    iris %>%
+      group_by(Species) %>%
+      summarize(across(is.numeric, mean))
+    ```
+
+---
+
+## Errores comunes
+
+- `summarize` realiza las operaciones de izquierda a derecha, hay que tener cuidado cuando se combina `across` con otras operaciones:
+    ```{r}
+    iris %>%
+      group_by(Species) %>%
+      summarize(n = n(), across(is.numeric, sd))
+    ```
+    ```{r}
+    iris %>%
+      group_by(Species) %>%
+      summarize(across(is.numeric, sd), n = n())
+    ```
+    
+    
+---
+
+## Otras funciones de dplyr + across
+
+`across` se puede usar también en otras funciones. Ejemplos: 
+
+ * Seleccionar filas donde las columnas Ozone **y** Solar.R son `NA`
+      ```{r}
+      filter(airquality, across(c(Ozone, Solar.R), is.na))
+      ```
+      ```{r}
+      # version sin across, equivalente
+      filter(airquality, is.na(Ozone), is.na(Solar.R))
+      ```
+---
+ 
+ * Calcular el logaritmo de todas las columnas numéricas
+      ```{r}
+      iris %>% 
+        mutate(across(is.numeric, log)) %>%
+        head()
+      ```
+
+---
+
+## Operaciones de conjuntos
+
+- `dplyr` implementa la lógica de operaciones con conjuntos sobre tibbles
+  + `intersect(x,y)`: Filas que aparecen tanto en x como en y
+  + `union(x,y)`: Filas que aparecen en x, en y, o en ambos
+  + `setdiff(x,y)`: Filas que aparecen en x, pero no en y
   
 ```{r,eval=F}
 x <- tibble(
@@ -180,12 +385,11 @@ dplyr::setdiff(x,y)
 
 ---
 
+## Añadir filas
 
-## Añadir filas y/o columnas en dplyr
+- `dplyr` implementa las funciones `bind_rows` y `bind_cols` para añadir filas o columnas a un tibble, respectivamente
 
-- `dplyr` implementa las funciones `bind_rows` y `bind_cols` para añadir filas o columnas a un tibble, respectivamente.
-- Las funciones de `dplyr` son **más eficientes** que las funciones `rbind` y `cbind` de R base. 
-- En `bind_rows` las columnas se combinan por nombre y las columnas que no están en alguno de los dataframes se rellenan con NAs.
+- En `bind_rows` las columnas se combinan por nombre y las columnas que no están en alguno de los dataframes se rellenan con NAs
 
 ```{r, eval=T}
 bind_rows(
@@ -194,11 +398,12 @@ bind_rows(
   c(a = 7, b = 8)
 )
 ```
+
 ---
 
-## Añadir filas y/o columnas en dplyr (cont.)
+## Añadir columnas
 
-- En `bind_cols` se unen las subtablas por posición -> todos los dataframes deben tener el mismo número de filas.
+- En `bind_cols` se unen las subtablas por posición -> todos los dataframes deben tener el mismo número de filas
   + Para unir por valores, usar `join`.
 
 ```{r,eval=T}
@@ -209,24 +414,3 @@ bind_cols(
   tibble(logical = c(T, F))
 )
 ```
-
----
-
-## Operar en múltiples columnas
-
-- dplyr tiene [variantes](https://dplyr.tidyverse.org/reference/scoped.html) de sus funciones principales que operan sobre múltiples columnas
-- La selección de columnas puede ser:
-    + Todas, funciones que terminan en `_all`
-    + Con un predicado, funciones que terminan en `_if`
-    + Vector con nombres, posiciones o función [`vars()`](https://dplyr.tidyverse.org/reference/vars.html)
-
----
-
-```{r}
-summarize_all(mpg, funs(sum(is.na(.))))
-```
-
-```{r}
-mutate_if(mpg, is.numeric, log)
-```
-

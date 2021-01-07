@@ -19,6 +19,8 @@ output:
 
 ```{r setup, include=FALSE}
 library(tidyverse)
+library(kableExtra)
+library(gapminder)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE, fig.align='center')
 ```
 
@@ -29,11 +31,15 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 - Importados los datos, es importante estructurarlos para que el análisis sea lo más fácil posible
 
 - Las librerías del tidyverse están construidas alrededor del concepto de datos ordenados o *tidy data*:
-    + Cada variable forma una columna
-    + Cada observación forma una fila
-    + Cada tipo de observación forma una tabla
+    1. Cada variable forma una columna
     
-- Datos tabulares/rectangulares no implican datos ordenados!!
+    2. Cada observación forma una fila
+    
+    3. Cada celda contiene un único valor
+
+- Todas las librerías del tidyverse están construidas alrededor de este concepto
+    
+- Datos tabulares/rectangulares no implican datos ordenados!!!
 
 ---
 
@@ -41,30 +47,21 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
 
 Distintas formas de almacenar los mismos datos [R for Data Science]:
 
-```{r}
-table1
+![:vspace 10]
+
+.pull-left[
+```{r echo=FALSE}
+table4a %>% kable(format='html')
 ```
+]
 
----
+--
 
-```{r}
-table2
+.pull-right[
+```{r echo=FALSE}
+table1 %>% select(-population) %>% kable(format='html')
 ```
-
----
-
-```{r}
-table3
-```
-
----
-
-```{r}
-table4a
-```
-```{r}
-table4b
-```
+]
 
 ---
 
@@ -78,32 +75,70 @@ table4b
 
 ## Operaciones con datos ordenados
 
+* Tabla 1
+    ```{r, echo=FALSE}
+    table_1 <- table1 
+    
+    table_1 %>%
+      kable(format = "html")
+    ```
+
+* Tabla 2
+    ```{r, echo=FALSE}
+    table_2 <-
+      table1 %>%
+        pivot_wider(names_from = year, values_from = c(cases, population))
+    
+    table_2 %>%
+      kable(format = "html")
+    ```
+
+---
+
+## Crear una nueva variable
+
+* Crear una nueva variable es fácil con la tabla 1
 ```{r}
-table1 %>%
+table_1 %>%
   mutate(ratio = cases / population * 10000)
 ```
 
----
-
-```{r}
-table1 %>%
-  group_by(year) %>%
-  summarize(total = sum(cases))
-```
+* ¿Como podríamos hacer lo mismo con la tabla 2?
 
 ---
 
-```{r}
-table1 %>%
+## Operaciones agrupadas
+
+- Tabla 1: calcular el total de casos por año
+    ```{r}
+    table_1 %>%
+      group_by(year) %>%
+      summarize(total = sum(cases))
+    ```
+
+- Tabla 2: el resultado final está en un formato que es más dificil de procesar
+    ```{r}
+    table_2 %>%
+      summarize(across(starts_with("cases"), sum))
+    ```
+
+---
+
+## Gráficos
+
+```{r, fig.asp=2/3}
+table_1 %>%
   mutate(ratio = cases / population * 10000,
          year = as.character(year)) %>%
   ggplot(mapping = aes(x = country, y = ratio, fill = year)) +
-    geom_bar(stat = "identity", position = "dodge")
+    geom_col(position = "dodge")
 ```
 
 ---
     
-# tidyr 1.0
+# Librería tidyr
+
+* Implementa funciones para transformar entre los formatos anteriores
 
 * Desde la versión 1.0 de tidyr, se han creado versiones más potentes de las antiguas `spread` y `gather`
 
@@ -115,20 +150,9 @@ table1 %>%
 | melt    | gather     | pivot_longer   | melt       | melt     |
 
 ---
-
-## pivot_wider
-
-```{r}
-head(table2)
-```
-
-```{r}
-pivot_wider(table2, names_from = type, values_from = count)
-```
-
----
-
 ## pivot_longer
+
+- Pivota una dataframe para que cada variable tenga su propia columna ([documentación](https://tidyr.tidyverse.org/reference/pivot_longer.html))
 
 ```{r}
 table4a
@@ -140,16 +164,194 @@ pivot_longer(table4a, names_to = "year", values_to = "cases", -country)
 
 ---
 
-## Ejemplo
+## Animación
 
 .center[
 <video width="640" height="480" controls>
-  <source src="img/pivot.mp4" type="video/mp4">
+  <source src="./img/pivot.mp4" type="video/mp4">
 </video>
 ]
+
+---
+
+## Ejemplo pivot_longer
+
+- Queremos representar las siguientes series temporales, que representan 4 indicadores económicos:
+    ```{r}
+    eu <- EuStockMarkets %>%
+      data.frame() %>%
+      mutate(index = 1:n())
+    head(eu)
+    ```
+    
+- Las 4 variables tienen las mismas unidades, por lo que podemos representar 4 líneas en un único gráfico:
+    ```{r eu_plot, eval=FALSE}
+    ggplot(eu, aes(x = index)) + 
+      geom_line(aes(y = DAX), color = "red") + 
+      geom_line(aes(y = SMI), color = "blue") + 
+      geom_line(aes(y = CAC), color = "green") + 
+      geom_line(aes(y = FTSE), color = "orange")
+    ```
+    
+---
+
+```{r, ref.label="eu_plot", echo=FALSE}
+```
+
+---
+
+- Pivotamos a formato "largo"
+    ```{r}
+    eu_long <-
+      eu %>%
+        pivot_longer(-index, names_to = "name", values_to = "value")
+    
+    head(eu_long, 8)
+    ```
+
+- Repetimos el gráfico anterior, asignando el nombre del indicador a la propiedad `color`
+    ```{r eu_plot_long, eval=FALSE}
+    ggplot(eu_long, aes(x = index, y = value, color = name)) +
+      geom_line()
+    ```
+
+- Ventajas:
+
+   1. código más conciso
+   
+   2. colores elegidos de forma automática a partir de una paleta
+   
+   3. leyenda automática
+
+---
+
+```{r ref.label="eu_plot_long", echo=FALSE}
+```
+
+---
+
+## Ejemplo avanzado
+
+```{r}
+stats <-
+  mpg %>%
+    summarize(across(is.numeric, list(mean = mean, sd = sd)))
+
+stats
+```
+
+```{r}
+pivot_longer(stats, everything(), names_sep = "_", names_to = c("var", ".value"))
+```
+
+---
+
+## pivot_wider
+
+- Realiza la operación inversa a `pivot_longer` ([documentación](https://tidyr.tidyverse.org/reference/pivot_wider.html))
+
+.pull-left[
+```{r}
+library(tidyr)
+table2
+```
+]
+
+.pull-right[
+```{r}
+pivot_wider(table2, 
+            names_from = type, 
+            values_from = count)
+```
+]
+
+---
+
+## Ejemplos pivot_wider
+
+- Dependiendo del uso, a veces es útil transformar nuestros datos en un formato no ordenado
+
+- Es raro tener que usar `pivot_wider` para transformar una dataframe en datos ordenados (cada columna representa una variable)
+
+- Se usa bastante para dos tareas:
+
+  1. crear tablas resumen
+  
+  2. transformar datos para modelización
+
+- Más ejemplos: [vignette *pivoting*](https://tidyr.tidyverse.org/articles/pivot.html)
+
+---
+
+## Ejemplo tabla resumen
+
+```{r}
+cty <-
+  mpg %>% 
+    group_by(year, class) %>% 
+    summarize(avg_cty = mean(cty))
+
+head(cty)
+```
+
+
+```{r}
+pivot_wider(cty, names_from = class, values_from = avg_cty)
+```
+
+---
+
+## Ejemplo tabla resumen múltiple
+
+.col-left[
+```{r}
+cty <-
+  mpg %>% 
+    group_by(year, class) %>% 
+    summarize(avg_cty = mean(cty), 
+              sd_cty = sd(cty))
+
+head(cty)
+```
+]
+
+.col-right[
+```{r}
+pivot_wider(cty, 
+            names_from = year, 
+            values_from = c(avg_cty, sd_cty))
+```
+]
+
+---
+
+## Ejemplo modelización
+
+- En este ejemplo tenemos 6 variables: país, continente, año, esperanza de vida, población, PIB per cápita
+
+```{r}
+gapminder
+```
+
+- Diríamos que estos datos están ordenados, ya que cada variable se corresponde con una columna
+
+- Este format es útil, entre otras cosas, para realizar gráficos 
+
+---
+
+- Si quisiéramos, por ejemplo, realizar un modelo para predecir la esperanza de vida de China basándonos en el resto de paises de su continente, necesitamos una columna para cada país
+
+```{r}
+gapminder %>% 
+  filter(continent == "Asia") %>% 
+  pivot_wider(id_cols = year, names_from = country, values_from = lifeExp)
+```
+
 ---
 
 ## separate
+
+- Múltiples variables codificadas en una única columna
 
 ```{r}
 table3
@@ -169,18 +371,171 @@ separate(table3, rate, into = c("cases", "population"), sep = "/", convert = TRU
 
 ---
 
-## unite
+## Ejemplo
 
 ```{r}
-unite(mpg, make, manufacturer, model, sep = " ")
+separate(economics, date, into = c("year", "month", "day"), sep = "-", convert = TRUE)
 ```
 
 ---
 
-## Otras funciones
+## unite
+
+- Una única variable que está codificada en varias columnas
+
+```{r}
+unite(mpg, make, manufacturer, model, sep = "_")
+```
+
+---
+
+## Ejemplo
+
+```{r}
+storms %>%
+  unite(date, year, month, day, sep = "-", remove = FALSE, na.rm = TRUE) %>%
+  select(date, year, month, day)
+``` 
+
+---
+
+## Missing values en R
+
+- `NA` es una constante que representa valores que faltan (*missing values*)
+
+- Puede estar contenida dentro de vectores (columnas) de cualquier tipo
+
+- `is.na()` devuelve `TRUE` si el valor es `NA` y `FALSE` en caso contrario
+
+- Muchas funciones de R tienen un parámetro opcional `na.rm` que ignora `NA`s
+
+---
+
+```{r, highlight.output = c(6, 11)}
+airquality %>%
+  mutate(Ozone_NA = is.na(Ozone)) %>%
+  select(Ozone, Ozone_NA) %>%
+  slice(1:15)
+```
+
+```{r}
+dia <-
+  diamonds %>% 
+    mutate(y_new = ifelse(!between(y, 3, 20), NA, y))
+
+dia %>% 
+  summarize(y_na = sum(is.na(y_new)))
+```
+
+---
+
+```{r}
+dia %>%
+  filter(is.na(y_new)) %>%
+  select(y, y_new)
+``` 
+
+
+.pull-left[
+```{r}
+dia %>%
+  summarize(avg = mean(y_new))
+```
+]
+
+.pull-right[
+```{r}
+dia %>%
+  summarize(avg = mean(y_new, 
+                       na.rm = TRUE)) #<<
+```
+]
+---
+
+## Funciones para gestionar NA
 
 tidyr también tiene otras funciones útiles para trabajar con `NA`s:
 
-- `drop_na()`, elimina filas que tengan algún `NA`
-- `fill()`, completa `NA`s con el valor anterior
-- `replace_na()`, reemplaza `NA`s por un valor
+  - `drop_na()`, elimina filas que tengan algún `NA`
+
+  - `fill()`, completa `NA`s con el valor anterior
+
+  - `replace_na()`, reemplaza `NA`s por un valor
+
+---
+
+## drop_na
+
+```{r, highlight.output = 1}
+str(airquality)
+```
+
+```{r, highlight.output = 8}
+summary(airquality)
+```
+
+---
+
+```{r, highlight.output = 1}
+airquality %>%
+  drop_na() %>%
+  str()
+```
+
+```{r}
+filter(airquality, is.na(Ozone), is.na(Solar.R))
+```
+
+```{r, highlight.output = 1}
+airquality %>%
+  drop_na(Ozone) %>%
+  str()
+```
+
+---
+
+## fill
+.pull-left[
+```{r, highlight.output = c(6, 11, 14:21)}
+airquality %>%
+  # no fill
+  slice(c(1:10, 50:59)) %>%
+  select(-c(Temp, Wind))
+```
+]
+
+.pull-right[
+```{r, highlight.output = c(6, 11, 14:21)}
+airquality %>%
+  fill(Ozone, .direction = "down") %>%
+  slice(c(1:10, 50:59)) %>%
+  select(-c(Temp, Wind))
+```
+]
+
+---
+
+## replace_na
+
+```{r, highlight.output = c(6, 11, 14:17)}
+airquality %>%
+  mutate(O3_noNA = replace_na(Ozone, mean(Ozone, na.rm = T)), .after = Ozone) %>%
+  slice(c(1:10, 50:55)) %>%
+  select(-c(Wind, Temp, Solar.R))
+```
+
+<!--
+---
+
+## Reemplazo agrupado
+
+```{r, highlight.output = c(8, 13, 16:19)}
+airquality %>%
+  group_by(Month) %>%
+  mutate(O3_noNA = replace_na(Ozone, mean(Ozone, na.rm = T)), .after = Ozone) %>%
+  ungroup() %>%
+  slice(c(1:10, 50:55)) %>%
+  select(-c(Wind, Temp, Solar.R))
+```
+
+-->

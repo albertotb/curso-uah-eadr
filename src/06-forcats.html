@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>forcats</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2020-01-14" />
+    <meta name="date" content="2021-01-07" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # forcats
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2020-01-14
+### 2021-01-07
 
 ---
 
@@ -38,8 +38,6 @@ MathJax.Hub.Config({
 
 
 
-# forcats
-
 ## Factores
 
 - Representan variables categóricas, con un número posible de valores:
@@ -47,7 +45,7 @@ MathJax.Hub.Config({
     + *pequeño*
     + conocido
 
-- Ejemplos: meses del año, provincias, sexo, etc.
+- Ejemplos: meses del año, provincias, paises de la Unión Europea, etc.
 
 - Muchas funciones de R convierten los vectores de cadenas de caracteres a factores automáticamente
 
@@ -60,100 +58,282 @@ MathJax.Hub.Config({
 - Función `factor()`
 
 - Necesita dos argumentos:
+
     + Datos a convertir (típicamente vector de cadenas)
-    + Valores posibles (**niveles**)
+    
+    + Opcionalmente también los valores posibles (**niveles**)
+    
+    ```r
+    x &lt;- c("Primavera", "Verano", "Verano", "Verano", "Otoño")
+    f &lt;- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
+    f
+    ## [1] Primavera Verano    Verano    Verano    Otoño    
+    ## Levels: Primavera Verano Otoño Invierno
+    ```
 
+- Los niveles se pueden ver con la función `levels`
+    
+    ```r
+    levels(f)
+    ## [1] "Primavera" "Verano"    "Otoño"     "Invierno"
+    ```
 
-
-```r
-x &lt;- c("Primavera", "Verano", "Verano", "Verano", "Otoño")
-f &lt;- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
-f
-## [1] Primavera Verano    Verano    Verano    Otoño    
-## Levels: Primavera Verano Otoño Invierno
-```
 
 ---
 
 - Si un valor no está en los niveles se convierte a `NA`
-
-
-```r
-x &lt;- c("Primavera", "Verano", "Verano", "Verano", "Otono")
-f1 &lt;- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
-f1
-## [1] Primavera Verano    Verano    Verano    &lt;NA&gt;     
-## Levels: Primavera Verano Otoño Invierno
-```
+    
+    ```r
+    x &lt;- c("Primavera", "Verano", "Verano", "Verano", "Otono")
+    f1 &lt;- factor(x, levels = c("Primavera", "Verano", "Otoño", "Invierno"))
+    f1
+    ## [1] Primavera Verano    Verano    Verano    &lt;NA&gt;     
+    ## Levels: Primavera Verano Otoño Invierno
+    ```
 
 - Si no se indican los niveles, se toman como los valores únicos del vector
-
-
-```r
-unique(x)
-## [1] "Primavera" "Verano"    "Otono"
-```
-
-
-```r
-factor(x)
-## [1] Primavera Verano    Verano    Verano    Otono    
-## Levels: Otono Primavera Verano
-```
+    
+    ```r
+    unique(x)
+    ## [1] "Primavera" "Verano"    "Otono"
+    ```
+    
+    ```r
+    factor(x)
+    ## [1] Primavera Verano    Verano    Verano    Otono    
+    ## Levels: Otono Primavera Verano
+    ```
 
 ---
 
-También se pueden crear a partir de una variable numérica
+## Orden de los niveles
 
+- Por defecto los niveles están en orden creciente:
+    
+    ```r
+    sort(unique(x))
+    ## [1] "Otono"     "Primavera" "Verano"
+    ```
+    
+- En la mayoría de los casos el orden de los factores es irrelevante
 
-```r
-edad &lt;- c(20, 25, 15, 38)
-cut(edad, breaks = c(10, 20, 30, 40))
-## [1] (10,20] (20,30] (10,20] (30,40]
-## Levels: (10,20] (20,30] (30,40]
-```
+- Dos ejemplos donde importa el orden:
+
+  1. realizar gráficos, el orden de las escalas es el orden de los niveles del factor
+  
+  2. realizar modelos, donde el primer nivel se considera el nivel de referencia
+
 
 ---
 
-## Algunas funciones útiles
+## Función cut
 
-- `fct_reorder()` para reordenar los niveles (se mueven al principio)
+* Crea un factor a partir de una variable numérica
+    
+    ```r
+    edad &lt;- c(10, 15, 20, 25, 38)  
+    cut(edad, breaks = c(10, 20, 30, 40))
+    ## [1] &lt;NA&gt;    (10,20] (10,20] (20,30] (30,40]
+    ## Levels: (10,20] (20,30] (30,40]
+    ```
 
+* Incluir el valor de la izquierda del primer intervalo
+    
+    ```r
+    cut(edad, breaks = c(10, 20, 30, 40), include.lowest = TRUE)
+    ## [1] [10,20] [10,20] [10,20] (20,30] (30,40]
+    ## Levels: [10,20] (20,30] (30,40]
+    ```
 
-```r
-fct_relevel(f, "Invierno", "Primavera")
-## [1] Primavera Verano    Verano    Verano    Otoño    
-## Levels: Invierno Primavera Verano Otoño
-```
+* Cerrar los intervalos por la izquierda, no la derecha
+    
+    ```r
+    cut(edad, breaks = c(10, 20, 30, 40), right = FALSE)
+    ## [1] [10,20) [10,20) [20,30) [20,30) [30,40)
+    ## Levels: [10,20) [20,30) [30,40)
+    ```
+    
+---
 
-- `fct_recode()` para cambiar el nombre de los niveles o eliminarlos (asignando el valor `NULL`)
+* Cambiar nombre de los niveles
+    
+    ```r
+    cut(edad, breaks = c(10, 20, 30, 40), labels = c("10-20", "20-30", "30-40"))
+    ## [1] &lt;NA&gt;  10-20 10-20 20-30 30-40
+    ## Levels: 10-20 20-30 30-40
+    ```
+    
+---
 
+## Creación factor de ejemplo
 
-```r
-fct_recode(f, Inv = "Invierno", Prim = "Primavera", Ver = "Verano", Oto = "Otoño")
-## [1] Prim Ver  Ver  Ver  Oto 
-## Levels: Prim Ver Oto Inv
-```
+- Creamos un factor de ejemplo con los tipos de coche de `mpg`
+    
+    ```r
+    f &lt;- factor(mpg$class)
+    length(f)
+    ## [1] 234
+    ```
+
+- Niveles:
+    
+    ```r
+    levels(f)
+    ## [1] "2seater"    "compact"    "midsize"    "minivan"    "pickup"    
+    ## [6] "subcompact" "suv"
+    ```
+
+- Frecuencia de cada uno de los niveles
+    
+    ```r
+    fct_count(f) %&gt;% arrange(desc(n))
+    ## # A tibble: 7 x 2
+    ##   f              n
+    ##   &lt;fct&gt;      &lt;int&gt;
+    ## 1 suv           62
+    ## 2 compact       47
+    ## 3 midsize       41
+    ## 4 subcompact    35
+    ## 5 pickup        33
+    ## 6 minivan       11
+    ## 7 2seater        5
+    ```
 
 ---
+
+## Reordenar niveles de un factor
+
+- `fct_relevel()`, para reordenar los niveles a mano (se mueven al principio)
+    
+    ```r
+    f1 &lt;- fct_relevel(f, "minivan", "compact") 
+    levels(f1)
+    ## [1] "minivan"    "compact"    "2seater"    "midsize"    "pickup"    
+    ## [6] "subcompact" "suv"
+    ```
+
+- `fct_infreq()`, para reordenar los niveles de acuerdo a su frecuencia
+    
+    ```r
+    f2 &lt;- fct_infreq(f)
+    levels(f2)
+    ## [1] "suv"        "compact"    "midsize"    "subcompact" "pickup"    
+    ## [6] "minivan"    "2seater"
+    ```
+
+---
+
+## Reordenar de acuerdo a otra variable
+
+- `fct_reorder()`, para reordenar los niveles de acuerdo a otra variable
+    
+    ```r
+    f3 &lt;- fct_reorder(f, .x = mpg$cty, .fun = mean)
+    levels(f3)
+    ## [1] "pickup"     "suv"        "2seater"    "minivan"    "midsize"   
+    ## [6] "compact"    "subcompact"
+    ```
+
+- El orden de los niveles es creciente en `.fun(.x)`
+    
+    ```r
+    consumo_medio &lt;-
+      mpg %&gt;%
+        group_by(class) %&gt;%
+        summarize(avg_cty = mean(cty))
+      
+    arrange(consumo_medio, avg_cty)
+    ## # A tibble: 7 x 2
+    ##   class      avg_cty
+    ##   &lt;chr&gt;        &lt;dbl&gt;
+    ## 1 pickup        13  
+    ## 2 suv           13.5
+    ## 3 2seater       15.4
+    ## 4 minivan       15.8
+    ## 5 midsize       18.8
+    ## 6 compact       20.1
+    ## 7 subcompact    20.4
+    ```
+
+---
+
+La función `fct_reorder` es útil para ordenar los ejes en gráficos
+
+
+```r
+ggplot(consumo_medio, aes(x = class, y = avg_cty)) + geom_col()
+```
+
+![](06-forcats_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+
+---
+
+
+```r
+ggplot(consumo_medio, aes(x = fct_reorder(class, avg_cty), y = avg_cty)) +
+  geom_col() +
+  xlab("class")
+```
+
+![](06-forcats_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+
+## Renombrar niveles
+
+- `fct_recode()` cambia el nombre de los niveles o los elimina (asignando el valor `NULL`)
+    
+    ```r
+    f4 &lt;- fct_recode(f, todoterreno = "suv", `2plazas` = "2seater", 
+                        NULL = "pickup")
+    levels(f4)
+    ## [1] "2plazas"     "compact"     "midsize"     "minivan"    
+    ## [5] "subcompact"  "todoterreno"
+    ```
 
 - `fct_recode()` también puede colapsar niveles asignando el mismo nombre
+    
+    ```r
+    f5 &lt;- fct_recode(f, `4seater` = "compact", `4seater` = "subcompact", 
+                        `4seater` = "midsize")
+    levels(f5)
+    ## [1] "2seater" "4seater" "minivan" "pickup"  "suv"
+    ```
 
+---
 
-```r
-fct_recode(f, Frio = "Invierno", Calor = "Primavera", Calor = "Verano", Frio = "Otoño")
-## [1] Calor Calor Calor Calor Frio 
-## Levels: Calor Frio
-```
+## Otras funciones
 
-- Otra alternativa es `fct_collapse()`
+- Otra alternativa es `fct_collapse`
+    
+    ```r
+    f6 &lt;- fct_collapse(f, `4seater` = c("compact", "subcompact", "midsize"),
+                          `2seater` = c("2seater",   "pickup"))
+    levels(f6)
+    ## [1] "2seater" "4seater" "minivan" "suv"
+    ```
 
-
-```r
-fct_collapse(f, Frio = c("Invierno", "Otoño"), Calor = c("Primavera", "Verano"))
-## [1] Calor Calor Calor Calor Frio 
-## Levels: Calor Frio
-```
+- O `fct_lump`, que colapsa los niveles menos frecuentes
+    
+    ```r
+    fct_count(f) %&gt;% arrange(desc(n))
+    ## # A tibble: 7 x 2
+    ##   f              n
+    ##   &lt;fct&gt;      &lt;int&gt;
+    ## 1 suv           62
+    ## 2 compact       47
+    ## 3 midsize       41
+    ## 4 subcompact    35
+    ## 5 pickup        33
+    ## 6 minivan       11
+    ## 7 2seater        5
+    ```
+    
+    ```r
+    f7 &lt;- fct_lump(f, n = 3)
+    levels(f7)
+    ## [1] "compact" "midsize" "suv"     "Other"
+    ```
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -202,6 +382,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -219,17 +425,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

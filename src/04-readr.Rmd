@@ -22,8 +22,6 @@ library(tidyverse)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE, fig.align='center')
 ```
 
-# readr
-
 ## Introducción
 
 - Paquete para importar y exportar ficheros de texto
@@ -35,6 +33,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
     + `read_table()`, para ficheros ASCII delimitados por espacios
 
 - Exportar datos: `write_csv()`. `write_csv2()`, etc.
+
+- Más información: [*vignette* readr](https://readr.tidyverse.org/articles/readr.html)
 
 ---
 
@@ -51,76 +51,160 @@ head(mpg1)
 ## Directorio de trabajo
 
 - Directorio donde apunta RStudio
+    ```{r}
+    getwd()
+    ```
 
-```{r}
-getwd()
-```
+- Se puede cambiar con `setwd()` 
 
-- Se puede cambiar con `setwd()` o en la pestaña `Files` de RStudio
+- Normalmente es el directorio que aparece en la pestaña `Files` de RStudio 
+
+  1. Se puede cambiar de directorio haciendo click en `...`
+  
+  2. Se puede asignar ese nuevo directorio como directorio de trabajo con `More > Set as working directory`
+
 - Directorio por defecto donde se buscan los ficheros a importar
-- Alternativamente, podemos especificar el path completo o usar la herramienta gráfica de RStudio
 
----
+- Alternativamente, podemos especificar el la ruta completa o la ruta relativa:
 
-## Missing values en R
+  1. `.` hace referencia al directorio actual
 
-- `NA` es una constante que representa valores que faltan (*missing values*)
-- Puede estar contenida dentro de vectores (columnas) de cualquier tipo
-- `is.na()` devuelve `TRUE` si el valor es `NA` y `FALSE` en caso contrario
-- Muchas funciones de R tienen un parámetro opcional `na.rm` que ignora `NA`s
-
-```{r}
-dia <-
-  diamonds %>% 
-    mutate(y = ifelse(!between(y, 3, 20), NA, y))
-
-dia %>% 
-  summarize(y_na = sum(is.na(y)))
-```
-
----
-
-```{r}
-dia %>%
-  summarize(avg_y = mean(y))
-```
-
-```{r}
-dia %>%
-  summarize(avg_y = mean(y, na.rm = TRUE))
-```
+  2. `..` hace referencia al directorio anterior
 
 ---
 
 ## Parámetros opcionales
 
-- `col_names`, si TRUE, la primera fila es el nombre de las variables. También se le puede pasar un vector de cadenas de caracteres con los nombres.
+- `col_names`, si TRUE, la primera fila es el nombre de las variables. También se le puede pasar un vector de cadenas de caracteres con los nombres
+
 - `delim`, carácter que separa las columnas (solo en `read_delim()`)
-- `na`, vector con cadenas que se interpretan como missing values. Por defecto `NA` y la cadena vacía.
+
+- `na`, vector con cadenas que se interpretan como missing values. Por defecto `NA` y la cadena vacía
+
 - `col_types`, vector de clases para las columnas (ver documentación de `col()`). Por defecto se intenta adivinar el tipo de cada columna a partir de las 1000 primeras líneas.
+
 - `n_max`, número máximo de líneas a leer del fichero
-- `skip`, número de líneas a ignorar al princpio del fichero.
+
+- `skip`, número de líneas a ignorar al princpio del fichero
+
 - `locale`, parámetro que nos permite cambiar el enconding, separador decimal y formato de fechas (ver documentación de `locale()`)
+
+<!--
 - `comment`, una cadena de caracteres que identifica líneas de texto a ignorar (comentarios)
+
 - `trim_ws`, si vale TRUE, se eliminan los espacios en blanco al principio y al final de cada campo
+-->
+
+---
+
+## Funciones de R base
+
+- Es muy importante no confundir las funciones de R base `read.csv`, `read.csv2`, `read.table`, etc., con su equivalente de `readr`
+
+- Similitudes:
+
+  1. mismo nombre, pero cambiando la `_` por `.`
+  
+  2. realizan la misma operación básica, importar un fichero de texto en R
+  
+- Diferencias: 
+
+  1. nombre de los parámetros opcionales
+  
+  2. tipo de retorno (`data.frame` vs `tibble`)
+  
+  3. funciones de `readr` son más rápidas
+  
+  
+- Se recomienda usar las funciones de la librería `readr`
+
+---
+
+## Ejemplos accidentes bicicletas Madrid
+
+.small[
+[Fuente](https://datos.madrid.es/portal/site/egob/menuitem.c05c1f754a33a9fbe4b2e4b284f1a5a0/?vgnextoid=20f4a87ebb65b510VgnVCM1000001d4a900aRCRD&vgnextchannel=374512b9ace9f310VgnVCM100000171f5a0aRCRD&vgnextfmt=default)
+]
+
+```{r}
+accidentes <- read_csv2('../data/AccidentesBicicletas_2017.csv', 
+                        skip = 2, locale = locale(encoding = 'latin1'))
+```
+
+```{r}
+head(accidentes, 4)
+```
+
+---
+
+## Ejemplos jugadores mundial
+
+.small[
+[Fuente](https://opendata.stackexchange.com/questions/1791/any-open-data-sets-for-the-football-world-cup-in-brazil-2014)
+]
+
+```{r}
+worldcup <- read_tsv('../data/worldcupplayerinfo_20140701.tsv')
+```
+
+---
+
+```{r}
+worldcup <- read_tsv('../data/worldcupplayerinfo_20140701.tsv', 
+                     col_types = list("X11" = col_skip(), "X12" = col_skip())) #<<
+
+worldcup
+```
+
+---
+
+## Ejemplo espacios
+
+.small[
+[Fuente](https://github.com/tidyverse/readr/blob/master/inst/extdata/massey-rating.txt) (ligeramente modificado)
+]
+
+```{r}
+massey <- read_table('../data/massey-rating.txt')
+```
+
+---
+
+```{r, highlight.output = c(6, 8)}
+massey
+```
+
+---
+
+```{r}
+massey <- read_table('../data/massey-rating.txt', na = c("-"))
+```
+
+```{r}
+massey
+```
 
 ---
 
 ## Libreria readxl
 
+  * Fichero de ejemplo que viene con la librería
+    ```{r}
+    library(readxl)
+    excel_ex <- readxl_example("datasets.xlsx")
+    excel_ex
+    ```
+
   * Podemos listar las hojas de un fichero Excel:
+    ```{r}
+    excel_sheets(excel_ex)
+    ```
 
-```{r}
-library(readxl)
-excel_ex <- readxl_example("datasets.xlsx")
-excel_sheets(excel_ex)
-```
-
-* Leer como tibble/dataframe:
-
-```{r}
-read_excel(excel_ex, sheet = "mtcars")
-```
+  * Leer como tibble/dataframe:
+    ```{r}
+    cars <- read_excel(excel_ex, sheet = "mtcars")
+    head(cars)
+    ```
 
 ---
 
@@ -140,9 +224,14 @@ read_excel(excel_ex, sheet = "mtcars")
 
 ## Otros formatos
 
-- `readr` solo tiene funciones para importar ficheros de texto
+- `readr` y `readxl` solo tienen funciones para importar ficheros de texto/Excel
+
 - Para otros formatos, existen librerías específicas:
-    + `haven`, para ficheros de SPSS, Stata y SaS
-    + `DBI` junto con otro paquete específico dependiendo de la BD (`RMySQL`, `RSQLite`, etc.) nos permite hacer *querys* contra una BD
-    + `jsonlite`, para ficheros JSON
-    + `xml2`, para ficheros XML
+
+  + `haven`, para ficheros de SPSS, Stata y SaS
+    
+  + `DBI` junto con otro paquete específico dependiendo de la BD (`RMySQL`, `RSQLite`, etc.) nos permite hacer *querys* contra una BD
+    
+  + `jsonlite`, para ficheros JSON
+    
+  + `xml2`, para ficheros XML

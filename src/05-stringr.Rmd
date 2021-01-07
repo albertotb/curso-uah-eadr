@@ -24,55 +24,17 @@ library(lubridate)
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = TRUE)
 ```
 
-# stringr
-
-## Cadenas de caracteres
-
-- Las cadenas de caracteres se crean con comillas dobles `""` o simples `''`
-- La `\` se usa para escapar ciertos caracteres especiales: `"\""`, `"\\"`, `"\n"`, etc.
-
----
-
-## Operaciones con cadenas
-
-```{r}
-str_length(c("hola", "alberto", NA))
-```
-
-```{r}
-str_c("a", "b", "c")
-```
-
-```{r}
-str_c("a", "b", "c", sep = ", ")
-```
-
-```{r}
-str_c("pre-", c("a", "b", "c"), "-suf")
-```
-
----
-
-## Indexando cadenas
-
-Se puede obtener una subcadena a partir de las posiciones
-```{r}
-str_sub("hola", 2, 3)
-```
-
-También se puede modificar si le asignamos un nuevo valor
-```{r}
-x <- c("hola", "que", "tal")
-str_sub(x, 2, 4) <- str_to_upper(str_sub(x, 2, 4))
-```
-
----
-
 ## Expresiones regulares
 
 - Lenguaje que describe patrones en cadenas de caracteres
-- La mayoría de lenguajes implementan expresiones regulares
+
+- La mayoría de lenguajes de programación implementan expresiones regulares
+
 - La sintaxis difiere ligeramente
+
+- [Expresiones regulares en R](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html)
+
+- [*Vignette* expresiones regulares](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html)
 
 ---
 
@@ -91,12 +53,25 @@ str_view(x, ".o")
 
 ---
 
+```{r}
+str_view_all(x, ".o")
+```
+
+---
+
 ## Caracteres especiales
 
-- El `.` es un carácter especial de las regexp que hace `match` con cualquiera
-- Como hacer match con el carácter `"."`?
-- Se escapa el `.` en la regexp con el carácter `"\"`
-- Como las regexp se representan como cadenas de caracteres, a su vez hay que escapar el `\`
+- El `.` es un carácter especial de las expresiones regulares que concuerda con todos
+
+- ¿Como podemos concordar con el carácter `"."`?
+
+- Hay que "escapar" el `.` en la expresión regular con la barra invertida `"\"`
+
+- Las expresiones regulares se representan con cadenas de caracteres:
+
+  * la barra invertida también es un carácter especial de las cadenas de caracteres
+  
+  * tenemos que escapar la barra invertida con otra barra invertida
 
 ```{r}
 writeLines("\\.")
@@ -106,7 +81,7 @@ writeLines("\\.")
 str_view(c("hola.", "adios."), "a\\.")
 ```
 
----
+<!-- 
 
 ```{r}
 writeLines("\\\\")
@@ -115,6 +90,7 @@ writeLines("\\\\")
 ```{r}
 str_view("carpeta\\fichero", "\\\\")
 ```
+-->
 
 ---
 
@@ -128,36 +104,69 @@ str_view(c("tapar", "destapar"), "^tapar")
 
 ---
 
-## Clases
+## Clases de caracteres
 
-Otros patrones especiales:
- 
-- `\d`: cualquier dígito
-- `\s`: espacios, tabulación y saltos de línea (e.g. space, tab, newline)
-- `[abc]`: a, b, o c
-- `[^abc]`: cualquier cosa excepto a, b, o c
-- `ab|cd`: "ab" o "cd", pero no "abd" ni "acd"
+* Listas de caracteres. Se concuerda con cualquier carácter de la lista:
+
+  - `[abc]`: a, b, o c
+
+  - `[^abc]`: cualquier cosa excepto a, b, o c
+
+  - `ab|cd`: "ab" o "cd", pero no "abd" ni "acd"
+
+
+* Listas de caracteres predefinidas:
+
+  - `[:alpha:]`, caracteres del alfabeto, `[A-z]`
+  
+  - `[:alnum:]`, caracteres alfanuméricos
+  
+  - `\\d` o `[:digit:]`: cualquier dígito
+
+  - `\\s` o `[:space:]`: espacios, tabulación, saltos de línea y retorno de carro
 
 ---
 
 ## Repetición
 
+.col-left[
 - `?`: 0 o 1 vez
-- `+`: 1 o más
-- `*`: 0 o más
-- `{n}`: exactamente n veces
-- `{n,}`: n veces o más
-- `{,m}`: como mucho m veces
-- `{n,m}`: entre n y m veces
 
+- `+`: 1 o más
+
+- `*`: 0 o más
+
+- `{n}`: exactamente n veces
+
+- `{n,}`: n veces o más
+
+- `{,m}`: como mucho m veces
+
+- `{n,m}`: entre n y m veces
+]
+
+.col-right[
+```{r}
+n <- c("4.5", "6", ".5", "5.", "a", "4.a")
+str_view(n, "^\\d+\\.?\\d*$")
+```
+]
 ---
 
 ## Ejemplos
 
 ```{r}
 str_view(c("test@test.com", "test@test12.com", "test@test", 
-           "test@test.es", "@test.com", "te st@test.com"),
+           "test@test.es", "@test.com", "te st@test.com", "test@test.com hola"),
          ".+@[^\\d\\s]+\\.(com|es)")
+```
+
+---
+
+```{r}
+str_view(c("test@test.com", "test@test12.com", "test@test", 
+           "test@test.es", "@test.com", "te st@test.com", "test@test.com hola"),
+         ".+@[^\\d\\s]+\\.(com|es)$")
 ```
 
 ---
@@ -176,62 +185,113 @@ str_view(c("981945678", "981 945678", "+34 981945678", "981 94 56 78"),
 
 ---
 
-## Concordancia con un patrón
+## Cadenas de caracteres
+
+- Las cadenas de caracteres se crean con comillas dobles `""` o simples `''`
+
+- La `\` se usa para escapar ciertos caracteres especiales: `"\""`, `"\\"`, `"\n"`, etc.
+
+---
+
+## Librería stringr
+
+- Implementa muchas operaciones con cadenas de caracteres
+
+- Todas las funciones comienzan con el prefijo común `str_`
+
+- Muchas de ellas tienen como entrada las expresiones regulares que vimos anteriormente
+
+---
+
+## Operaciones básicas con cadenas
+
+- Longitud
+    ```{r}
+    str_length(c("hola", "alberto", NA))
+    ```
+
+- Concatenar cadenas
+    ```{r}
+    str_c("a", "b", "c")
+    ```
+    ```{r}
+    str_c("a", "b", "c", sep = ", ")
+    ```
+    ```{r}
+    str_c("pre-", c("a", "b", "c"), "-suf")
+    ```
+
+---
+
+## Indexando cadenas
+
+- Se puede obtener una subcadena a partir de las posiciones
+    ```{r}
+    str_sub("hola", 2, 3)
+    ```
+
+- También se puede modificar si le asignamos un nuevo valor
+    ```{r}
+    x <- c("hola", "que", "tal")
+    str_sub(x, 2, 4) <- str_to_upper(str_sub(x, 2, 4))
+    x
+    ```
+
+---
+
+## Operaciones con expresiones regulares
 
 - `str_detect()` devuelve un vector lógico indicando si la expresión regular concuerda con la cadena o no
-
-```{r}
-str_detect(c("aba", "ebf", "atp"), "^a")
-```
+    ```{r}
+    str_detect(c("aba", "ebf", "atp"), "^a")
+    ```
 
 - `str_count()` devuelve **cuántas** concordancias hay en cada cadena
-
-```{r}
-str_count(c("aba", "ebf", "atp"), "a")
-```
+    ```{r}
+    str_count(c("aba", "ebf", "atp"), "a")
+    ```
 
 ---
 
 ## Extraer concordancias
 
-- `str_extract()`: extrae la parte de la cadena que concuerda con la expresión regula (solo se devuelve la primera)
-
-```{r}
-str_extract(c("ab (cd)", "ef (gh)", "ij (kl)"), "\\(.*\\)")
-```
+- `str_extract()`: extrae la parte de la cadena que concuerda con la expresión regular (únicamente la primera concordancia)
+    ```{r}
+    str_extract(c("ab (cd)", "ef (gh)", "ij (kl)"), "\\(.*\\)")
+    ```
 
 - `str_extract_all()`: devuelve todas las concordancias
-
-```{r}
-str_extract_all(c("a b c", "a f g"), "[abc]")
-```
+    ```{r}
+    str_extract_all(c("a b c", "a f g"), "[abc]")
+    ```
 
 ---
 
 ## Reemplazar concordancias
 
-- `str_replace()`: reemplaza las concordancias por una cadena (solo la primera)
-
-```{r}
-x <- c("coche", "moto", "autobus")
-str_replace(x, "[aeiou]", "-")
-```
+- `str_replace()`: reemplaza la primera concordancia por otra cadena de texto
+    ```{r}
+    x <- c("coche", "moto", "autobus")
+    str_replace(x, "[aeiou]", "-")
+    ```
 
 - `str_replace_all()`: reemplaza **todas** las concordancias
-
-```{r}
-str_replace_all(x, "[aeiou]", "-")
-```
+    ```{r}
+    str_replace_all(x, "[aeiou]", "-")
+    ```
 
 ---
 
 ## Dividir una cadena
 
 - `str_split()` divide una cadena de acuerdo con una expresión regular
+    ```{r}
+    str_split(c("a b c", "a f g"), "\\s")
+    ```
 
-```{r}
-str_split(c("a b c", "a f g"), "\\s")
-```
+- `str_split_fixed()` es una variante donde se especifica exactamente cuantas partes se devuelven
+    ```{r}
+    str_split_fixed(c("a b c", "a f g"), "\\s", n = 3)
+    ```
 
-- `tidyr::separate()` realiza esta misma operación sobre las columnas de un data frame
-
+- `tidyr::separate()` realiza esta misma operación sobre las columnas de un data frame, acepta expresiones regulares

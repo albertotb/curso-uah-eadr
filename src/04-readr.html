@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>readr</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2020-01-14" />
+    <meta name="date" content="2021-01-07" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="custom.css" type="text/css" />
   </head>
@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 # readr
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2020-01-14
+### 2021-01-07
 
 ---
 
@@ -38,8 +38,6 @@ MathJax.Hub.Config({
 
 
 
-# readr
-
 ## Introducción
 
 - Paquete para importar y exportar ficheros de texto
@@ -52,6 +50,8 @@ MathJax.Hub.Config({
 
 - Exportar datos: `write_csv()`. `write_csv2()`, etc.
 
+- Más información: [*vignette* readr](https://readr.tidyverse.org/articles/readr.html)
+
 ---
 
 ## Ejemplo
@@ -62,14 +62,15 @@ write_csv(mpg, "mpg.csv")
 mpg1 &lt;- read_csv("mpg.csv")
 head(mpg1)
 ## # A tibble: 6 x 11
-##   manufacturer model displ  year   cyl trans      drv     cty   hwy fl    class  
-##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;  
-## 1 audi         a4      1.8  1999     4 auto(l5)   f        18    29 p     compact
-## 2 audi         a4      1.8  1999     4 manual(m5) f        21    29 p     compact
-## 3 audi         a4      2    2008     4 manual(m6) f        20    31 p     compact
-## 4 audi         a4      2    2008     4 auto(av)   f        21    30 p     compact
-## 5 audi         a4      2.8  1999     6 auto(l5)   f        16    26 p     compact
-## 6 audi         a4      2.8  1999     6 manual(m5) f        18    26 p     compact
+##   manufacturer model displ  year   cyl trans drv     cty   hwy fl   
+##   &lt;chr&gt;        &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;
+## 1 audi         a4      1.8  1999     4 auto~ f        18    29 p    
+## 2 audi         a4      1.8  1999     4 manu~ f        21    29 p    
+## 3 audi         a4      2    2008     4 manu~ f        20    31 p    
+## 4 audi         a4      2    2008     4 auto~ f        21    30 p    
+## 5 audi         a4      2.8  1999     6 auto~ f        16    26 p    
+## 6 audi         a4      2.8  1999     6 manu~ f        18    26 p    
+## # ... with 1 more variable: class &lt;chr&gt;
 ```
 
 ---
@@ -77,110 +78,233 @@ head(mpg1)
 ## Directorio de trabajo
 
 - Directorio donde apunta RStudio
+    
+    ```r
+    getwd()
+    ## [1] "C:/Users/alberto/Desktop/curso-uah-eadr/src"
+    ```
 
+- Se puede cambiar con `setwd()` 
 
-```r
-getwd()
-## [1] "C:/Users/alberto/Desktop/curso-uah-eadr/src"
-```
+- Normalmente es el directorio que aparece en la pestaña `Files` de RStudio 
 
-- Se puede cambiar con `setwd()` o en la pestaña `Files` de RStudio
+  1. Se puede cambiar de directorio haciendo click en `...`
+  
+  2. Se puede asignar ese nuevo directorio como directorio de trabajo con `More &gt; Set as working directory`
+
 - Directorio por defecto donde se buscan los ficheros a importar
-- Alternativamente, podemos especificar el path completo o usar la herramienta gráfica de RStudio
 
----
+- Alternativamente, podemos especificar el la ruta completa o la ruta relativa:
 
-## Missing values en R
+  1. `.` hace referencia al directorio actual
 
-- `NA` es una constante que representa valores que faltan (*missing values*)
-- Puede estar contenida dentro de vectores (columnas) de cualquier tipo
-- `is.na()` devuelve `TRUE` si el valor es `NA` y `FALSE` en caso contrario
-- Muchas funciones de R tienen un parámetro opcional `na.rm` que ignora `NA`s
-
-
-```r
-dia &lt;-
-  diamonds %&gt;% 
-    mutate(y = ifelse(!between(y, 3, 20), NA, y))
-
-dia %&gt;% 
-  summarize(y_na = sum(is.na(y)))
-## # A tibble: 1 x 1
-##    y_na
-##   &lt;int&gt;
-## 1     9
-```
-
----
-
-
-```r
-dia %&gt;%
-  summarize(avg_y = mean(y))
-## # A tibble: 1 x 1
-##   avg_y
-##   &lt;dbl&gt;
-## 1    NA
-```
-
-
-```r
-dia %&gt;%
-  summarize(avg_y = mean(y, na.rm = TRUE))
-## # A tibble: 1 x 1
-##   avg_y
-##   &lt;dbl&gt;
-## 1  5.73
-```
+  2. `..` hace referencia al directorio anterior
 
 ---
 
 ## Parámetros opcionales
 
-- `col_names`, si TRUE, la primera fila es el nombre de las variables. También se le puede pasar un vector de cadenas de caracteres con los nombres.
+- `col_names`, si TRUE, la primera fila es el nombre de las variables. También se le puede pasar un vector de cadenas de caracteres con los nombres
+
 - `delim`, carácter que separa las columnas (solo en `read_delim()`)
-- `na`, vector con cadenas que se interpretan como missing values. Por defecto `NA` y la cadena vacía.
+
+- `na`, vector con cadenas que se interpretan como missing values. Por defecto `NA` y la cadena vacía
+
 - `col_types`, vector de clases para las columnas (ver documentación de `col()`). Por defecto se intenta adivinar el tipo de cada columna a partir de las 1000 primeras líneas.
+
 - `n_max`, número máximo de líneas a leer del fichero
-- `skip`, número de líneas a ignorar al princpio del fichero.
+
+- `skip`, número de líneas a ignorar al princpio del fichero
+
 - `locale`, parámetro que nos permite cambiar el enconding, separador decimal y formato de fechas (ver documentación de `locale()`)
+
+&lt;!--
 - `comment`, una cadena de caracteres que identifica líneas de texto a ignorar (comentarios)
+
 - `trim_ws`, si vale TRUE, se eliminan los espacios en blanco al principio y al final de cada campo
+--&gt;
+
+---
+
+## Funciones de R base
+
+- Es muy importante no confundir las funciones de R base `read.csv`, `read.csv2`, `read.table`, etc., con su equivalente de `readr`
+
+- Similitudes:
+
+  1. mismo nombre, pero cambiando la `_` por `.`
+  
+  2. realizan la misma operación básica, importar un fichero de texto en R
+  
+- Diferencias: 
+
+  1. nombre de los parámetros opcionales
+  
+  2. tipo de retorno (`data.frame` vs `tibble`)
+  
+  3. funciones de `readr` son más rápidas
+  
+  
+- Se recomienda usar las funciones de la librería `readr`
+
+---
+
+## Ejemplos accidentes bicicletas Madrid
+
+.small[
+[Fuente](https://datos.madrid.es/portal/site/egob/menuitem.c05c1f754a33a9fbe4b2e4b284f1a5a0/?vgnextoid=20f4a87ebb65b510VgnVCM1000001d4a900aRCRD&amp;vgnextchannel=374512b9ace9f310VgnVCM100000171f5a0aRCRD&amp;vgnextfmt=default)
+]
+
+
+```r
+accidentes &lt;- read_csv2('../data/AccidentesBicicletas_2017.csv', 
+                        skip = 2, locale = locale(encoding = 'latin1'))
+```
+
+
+```r
+head(accidentes, 4)
+## # A tibble: 4 x 8
+##   Fecha `TRAMO HORARIO` `Nm Tot Victima~ DISTRITO Lugar Numero
+##   &lt;chr&gt; &lt;chr&gt;                      &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;dbl&gt;
+## 1 01/0~ DE 6:00 A 6:59                 1 ARGANZU~ CALL~    120
+## 2 02/0~ DE 21:00 A 21:~                1 SAN BLAS CALL~     14
+## 3 03/0~ DE 19:00 A 19:~                1 CENTRO   CALL~      8
+## 4 04/0~ DE 21:00 A 21:~                1 CENTRO   CALL~     13
+## # ... with 2 more variables: `Tipo Accidente` &lt;chr&gt;, `Tipo
+## #   Vehiculo` &lt;chr&gt;
+```
+
+---
+
+## Ejemplos jugadores mundial
+
+.small[
+[Fuente](https://opendata.stackexchange.com/questions/1791/any-open-data-sets-for-the-football-world-cup-in-brazil-2014)
+]
+
+
+```r
+worldcup &lt;- read_tsv('../data/worldcupplayerinfo_20140701.tsv')
+```
+
+---
+
+
+```r
+worldcup &lt;- read_tsv('../data/worldcupplayerinfo_20140701.tsv', 
+*                    col_types = list("X11" = col_skip(), "X12" = col_skip()))
+
+worldcup
+## # A tibble: 736 x 10
+##    Group Country  Rank Jersey Position   Age Selections Club  Player
+##    &lt;chr&gt; &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+##  1 A     Brazil      3      1 Goalie      31          9 Bota~ Jeffe~
+##  2 A     Brazil      3     12 Goalie      34         80 Toro~ Julio~
+##  3 A     Brazil      3     22 Goalie      31          6 Atle~ Victor
+##  4 A     Brazil      3      2 Defender    31         75 Barc~ Dani ~
+##  5 A     Brazil      3     13 Defender    30         12 Baye~ Dante 
+##  6 A     Brazil      3      4 Defender    27         36 Chel~ David~
+##  7 A     Brazil      3     15 Defender    27          5 Napo~ Henri~
+##  8 A     Brazil      3     23 Defender    32         72 Roma  Maicon
+##  9 A     Brazil      3      6 Defender    26         31 Real~ Marce~
+## 10 A     Brazil      3     14 Defender    32          9 Pari~ Maxwe~
+## # ... with 726 more rows, and 1 more variable: Captain &lt;chr&gt;
+```
+
+---
+
+## Ejemplo espacios
+
+.small[
+[Fuente](https://github.com/tidyverse/readr/blob/master/inst/extdata/massey-rating.txt) (ligeramente modificado)
+]
+
+
+```r
+massey &lt;- read_table('../data/massey-rating.txt')
+```
+
+---
+
+
+```r
+massey
+## # A tibble: 10 x 11
+##      UCC   PAY   LAZ   KPK RT      COF   BIH   DII ACU   Team      Conf 
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;
+##  1     1     1     1     1 1         1     1     1 1     Ohio St   B10  
+##  2     2     2     2     2 2         2     2     2 2     Oregon    P12  
+*##  3     3     4     3     4 -         4     3     4 3     Alabama   SEC  
+##  4     4     3     4     3 4         3     5     3 4     TCU       B12  
+*##  5     6     6     6     5 5         7     6     5 -     Michigan~ B10  
+##  6     7     7     7     6 7         6    11     8 8     Georgia   SEC  
+##  7     5     5     5     7 -         8     4     6 5     Florida ~ ACC  
+##  8     8     8     9     9 10        5     7     7 7     Baylor    B12  
+##  9     9    11     8    13 11       11    12     9 -     Georgia ~ ACC  
+## 10    13    10    13    11 8         9    10    11 10    Mississi~ SEC
+```
+
+---
+
+
+```r
+massey &lt;- read_table('../data/massey-rating.txt', na = c("-"))
+```
+
+
+```r
+massey
+## # A tibble: 10 x 11
+##      UCC   PAY   LAZ   KPK    RT   COF   BIH   DII   ACU Team      Conf 
+##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;
+##  1     1     1     1     1     1     1     1     1     1 Ohio St   B10  
+##  2     2     2     2     2     2     2     2     2     2 Oregon    P12  
+##  3     3     4     3     4    NA     4     3     4     3 Alabama   SEC  
+##  4     4     3     4     3     4     3     5     3     4 TCU       B12  
+##  5     6     6     6     5     5     7     6     5    NA Michigan~ B10  
+##  6     7     7     7     6     7     6    11     8     8 Georgia   SEC  
+##  7     5     5     5     7    NA     8     4     6     5 Florida ~ ACC  
+##  8     8     8     9     9    10     5     7     7     7 Baylor    B12  
+##  9     9    11     8    13    11    11    12     9    NA Georgia ~ ACC  
+## 10    13    10    13    11     8     9    10    11    10 Mississi~ SEC
+```
 
 ---
 
 ## Libreria readxl
 
+  * Fichero de ejemplo que viene con la librería
+    
+    ```r
+    library(readxl)
+    excel_ex &lt;- readxl_example("datasets.xlsx")
+    excel_ex
+    ## [1] "C:/Users/alberto/Documents/R/win-library/4.0/readxl/extdata/datasets.xlsx"
+    ```
+
   * Podemos listar las hojas de un fichero Excel:
+    
+    ```r
+    excel_sheets(excel_ex)
+    ## [1] "iris"     "mtcars"   "chickwts" "quakes"
+    ```
 
-
-```r
-library(readxl)
-excel_ex &lt;- readxl_example("datasets.xlsx")
-excel_sheets(excel_ex)
-## [1] "iris"     "mtcars"   "chickwts" "quakes"
-```
-
-* Leer como tibble/dataframe:
-
-
-```r
-read_excel(excel_ex, sheet = "mtcars")
-## # A tibble: 32 x 11
-##      mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
-##    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
-##  1  21       6  160    110  3.9   2.62  16.5     0     1     4     4
-##  2  21       6  160    110  3.9   2.88  17.0     0     1     4     4
-##  3  22.8     4  108     93  3.85  2.32  18.6     1     1     4     1
-##  4  21.4     6  258    110  3.08  3.22  19.4     1     0     3     1
-##  5  18.7     8  360    175  3.15  3.44  17.0     0     0     3     2
-##  6  18.1     6  225    105  2.76  3.46  20.2     1     0     3     1
-##  7  14.3     8  360    245  3.21  3.57  15.8     0     0     3     4
-##  8  24.4     4  147.    62  3.69  3.19  20       1     0     4     2
-##  9  22.8     4  141.    95  3.92  3.15  22.9     1     0     4     2
-## 10  19.2     6  168.   123  3.92  3.44  18.3     1     0     4     4
-## # ... with 22 more rows
-```
+  * Leer como tibble/dataframe:
+    
+    ```r
+    cars &lt;- read_excel(excel_ex, sheet = "mtcars")
+    head(cars)
+    ## # A tibble: 6 x 11
+    ##     mpg   cyl  disp    hp  drat    wt  qsec    vs    am  gear  carb
+    ##   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+    ## 1  21       6   160   110  3.9   2.62  16.5     0     1     4     4
+    ## 2  21       6   160   110  3.9   2.88  17.0     0     1     4     4
+    ## 3  22.8     4   108    93  3.85  2.32  18.6     1     1     4     1
+    ## 4  21.4     6   258   110  3.08  3.22  19.4     1     0     3     1
+    ## 5  18.7     8   360   175  3.15  3.44  17.0     0     0     3     2
+    ## 6  18.1     6   225   105  2.76  3.46  20.2     1     0     3     1
+    ```
 
 ---
 
@@ -200,12 +324,17 @@ read_excel(excel_ex, sheet = "mtcars")
 
 ## Otros formatos
 
-- `readr` solo tiene funciones para importar ficheros de texto
+- `readr` y `readxl` solo tienen funciones para importar ficheros de texto/Excel
+
 - Para otros formatos, existen librerías específicas:
-    + `haven`, para ficheros de SPSS, Stata y SaS
-    + `DBI` junto con otro paquete específico dependiendo de la BD (`RMySQL`, `RSQLite`, etc.) nos permite hacer *querys* contra una BD
-    + `jsonlite`, para ficheros JSON
-    + `xml2`, para ficheros XML
+
+  + `haven`, para ficheros de SPSS, Stata y SaS
+    
+  + `DBI` junto con otro paquete específico dependiendo de la BD (`RMySQL`, `RSQLite`, etc.) nos permite hacer *querys* contra una BD
+    
+  + `jsonlite`, para ficheros JSON
+    
+  + `xml2`, para ficheros XML
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -254,6 +383,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -271,17 +426,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

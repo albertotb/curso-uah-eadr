@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
   <head>
     <title>stringr</title>
     <meta charset="utf-8" />
     <meta name="author" content="Alberto Torres Barrán" />
-    <meta name="date" content="2020-01-14" />
+    <meta name="date" content="2021-01-07" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
-    <script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+    <script src="libs/htmlwidgets-1.5.2/htmlwidgets.js"></script>
     <link href="libs/str_view-0.1.0/str_view.css" rel="stylesheet" />
     <script src="libs/str_view-binding-1.4.0/str_view.js"></script>
     <link rel="stylesheet" href="custom.css" type="text/css" />
@@ -18,7 +18,7 @@ class: center, middle, inverse, title-slide
 # stringr
 ## Entornos de Análisis de Datos: R
 ### Alberto Torres Barrán
-### 2020-01-14
+### 2021-01-07
 
 ---
 
@@ -41,66 +41,17 @@ MathJax.Hub.Config({
 
 
 
-# stringr
-
-## Cadenas de caracteres
-
-- Las cadenas de caracteres se crean con comillas dobles `""` o simples `''`
-- La `\` se usa para escapar ciertos caracteres especiales: `"\""`, `"\\"`, `"\n"`, etc.
-
----
-
-## Operaciones con cadenas
-
-
-```r
-str_length(c("hola", "alberto", NA))
-## [1]  4  7 NA
-```
-
-
-```r
-str_c("a", "b", "c")
-## [1] "abc"
-```
-
-
-```r
-str_c("a", "b", "c", sep = ", ")
-## [1] "a, b, c"
-```
-
-
-```r
-str_c("pre-", c("a", "b", "c"), "-suf")
-## [1] "pre-a-suf" "pre-b-suf" "pre-c-suf"
-```
-
----
-
-## Indexando cadenas
-
-Se puede obtener una subcadena a partir de las posiciones
-
-```r
-str_sub("hola", 2, 3)
-## [1] "ol"
-```
-
-También se puede modificar si le asignamos un nuevo valor
-
-```r
-x &lt;- c("hola", "que", "tal")
-str_sub(x, 2, 4) &lt;- str_to_upper(str_sub(x, 2, 4))
-```
-
----
-
 ## Expresiones regulares
 
 - Lenguaje que describe patrones en cadenas de caracteres
-- La mayoría de lenguajes implementan expresiones regulares
+
+- La mayoría de lenguajes de programación implementan expresiones regulares
+
 - La sintaxis difiere ligeramente
+
+- [Expresiones regulares en R](https://stat.ethz.ch/R-manual/R-devel/library/base/html/regex.html)
+
+- [*Vignette* expresiones regulares](https://cran.r-project.org/web/packages/stringr/vignettes/regular-expressions.html)
 
 ---
 
@@ -112,8 +63,8 @@ x &lt;- c("moto", "coche", "autobus")
 str_view(x, "co")
 ```
 
-<div id="htmlwidget-917539b6c486b8cc2a07" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-917539b6c486b8cc2a07">{"x":{"html":"<ul>\n  <li>moto<\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>autobus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-10763e8c7e6d06d96219" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-10763e8c7e6d06d96219">{"x":{"html":"<ul>\n  <li>moto<\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>autobus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -122,17 +73,34 @@ str_view(x, "co")
 str_view(x, ".o")
 ```
 
-<div id="htmlwidget-79927a6f1c9b4e5d470a" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-79927a6f1c9b4e5d470a">{"x":{"html":"<ul>\n  <li><span class='match'>mo<\/span>to<\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>au<span class='match'>to<\/span>bus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-f0a7e6ae1e5e39c94bfa" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-f0a7e6ae1e5e39c94bfa">{"x":{"html":"<ul>\n  <li><span class='match'>mo<\/span>to<\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>au<span class='match'>to<\/span>bus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+```r
+str_view_all(x, ".o")
+```
+
+<div id="htmlwidget-4691149b7d9637b4f5be" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4691149b7d9637b4f5be">{"x":{"html":"<ul>\n  <li><span class='match'>mo<\/span><span class='match'>to<\/span><\/li>\n  <li><span class='match'>co<\/span>che<\/li>\n  <li>au<span class='match'>to<\/span>bus<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
 ## Caracteres especiales
 
-- El `.` es un carácter especial de las regexp que hace `match` con cualquiera
-- Como hacer match con el carácter `"."`?
-- Se escapa el `.` en la regexp con el carácter `"\"`
-- Como las regexp se representan como cadenas de caracteres, a su vez hay que escapar el `\`
+- El `.` es un carácter especial de las expresiones regulares que concuerda con todos
+
+- ¿Como podemos concordar con el carácter `"."`?
+
+- Hay que "escapar" el `.` en la expresión regular con la barra invertida `"\"`
+
+- Las expresiones regulares se representan con cadenas de caracteres:
+
+  * la barra invertida también es un carácter especial de las cadenas de caracteres
+  
+  * tenemos que escapar la barra invertida con otra barra invertida
 
 
 ```r
@@ -145,10 +113,10 @@ writeLines("\\.")
 str_view(c("hola.", "adios."), "a\\.")
 ```
 
-<div id="htmlwidget-3f9a9a79e9a8aefdd82a" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3f9a9a79e9a8aefdd82a">{"x":{"html":"<ul>\n  <li>hol<span class='match'>a.<\/span><\/li>\n  <li>adios.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-40ace37c45314ac04b2d" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-40ace37c45314ac04b2d">{"x":{"html":"<ul>\n  <li>hol<span class='match'>a.<\/span><\/li>\n  <li>adios.<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
----
+&lt;!-- 
 
 
 ```r
@@ -161,8 +129,9 @@ writeLines("\\\\")
 str_view("carpeta\\fichero", "\\\\")
 ```
 
-<div id="htmlwidget-38e23590f06d1f242190" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-38e23590f06d1f242190">{"x":{"html":"<ul>\n  <li>carpeta<span class='match'>\\<\/span>fichero<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-d30167f59f451ae69363" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-d30167f59f451ae69363">{"x":{"html":"<ul>\n  <li>carpeta<span class='match'>\\<\/span>fichero<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+--&gt;
 
 ---
 
@@ -175,33 +144,62 @@ str_view("carpeta\\fichero", "\\\\")
 str_view(c("tapar", "destapar"), "^tapar")
 ```
 
-<div id="htmlwidget-f10fbd510ba19bb4212e" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f10fbd510ba19bb4212e">{"x":{"html":"<ul>\n  <li><span class='match'>tapar<\/span><\/li>\n  <li>destapar<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-293d58caf495aa2b376a" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-293d58caf495aa2b376a">{"x":{"html":"<ul>\n  <li><span class='match'>tapar<\/span><\/li>\n  <li>destapar<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-## Clases
+## Clases de caracteres
 
-Otros patrones especiales:
- 
-- `\d`: cualquier dígito
-- `\s`: espacios, tabulación y saltos de línea (e.g. space, tab, newline)
-- `[abc]`: a, b, o c
-- `[^abc]`: cualquier cosa excepto a, b, o c
-- `ab|cd`: "ab" o "cd", pero no "abd" ni "acd"
+* Listas de caracteres. Se concuerda con cualquier carácter de la lista:
+
+  - `[abc]`: a, b, o c
+
+  - `[^abc]`: cualquier cosa excepto a, b, o c
+
+  - `ab|cd`: "ab" o "cd", pero no "abd" ni "acd"
+
+
+* Listas de caracteres predefinidas:
+
+  - `[:alpha:]`, caracteres del alfabeto, `[A-z]`
+  
+  - `[:alnum:]`, caracteres alfanuméricos
+  
+  - `\\d` o `[:digit:]`: cualquier dígito
+
+  - `\\s` o `[:space:]`: espacios, tabulación, saltos de línea y retorno de carro
 
 ---
 
 ## Repetición
 
+.col-left[
 - `?`: 0 o 1 vez
-- `+`: 1 o más
-- `*`: 0 o más
-- `{n}`: exactamente n veces
-- `{n,}`: n veces o más
-- `{,m}`: como mucho m veces
-- `{n,m}`: entre n y m veces
 
+- `+`: 1 o más
+
+- `*`: 0 o más
+
+- `{n}`: exactamente n veces
+
+- `{n,}`: n veces o más
+
+- `{,m}`: como mucho m veces
+
+- `{n,m}`: entre n y m veces
+]
+
+.col-right[
+
+```r
+n &lt;- c("4.5", "6", ".5", "5.", "a", "4.a")
+str_view(n, "^\\d+\\.?\\d*$")
+```
+
+<div id="htmlwidget-802f9a331fc0ecc2b278" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-802f9a331fc0ecc2b278">{"x":{"html":"<ul>\n  <li><span class='match'>4.5<\/span><\/li>\n  <li><span class='match'>6<\/span><\/li>\n  <li>.5<\/li>\n  <li><span class='match'>5.<\/span><\/li>\n  <li>a<\/li>\n  <li>4.a<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+]
 ---
 
 ## Ejemplos
@@ -209,12 +207,24 @@ Otros patrones especiales:
 
 ```r
 str_view(c("test@test.com", "test@test12.com", "test@test", 
-           "test@test.es", "@test.com", "te st@test.com"),
+           "test@test.es", "@test.com", "te st@test.com", "test@test.com hola"),
          ".+@[^\\d\\s]+\\.(com|es)")
 ```
 
-<div id="htmlwidget-5bdc8bb16151cc1227a4" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5bdc8bb16151cc1227a4">{"x":{"html":"<ul>\n  <li><span class='match'>test@test.com<\/span><\/li>\n  <li>test@test12.com<\/li>\n  <li>test@test<\/li>\n  <li><span class='match'>test@test.es<\/span><\/li>\n  <li>@test.com<\/li>\n  <li><span class='match'>te st@test.com<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1186ceab3b63e3c47b67" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1186ceab3b63e3c47b67">{"x":{"html":"<ul>\n  <li><span class='match'>test@test.com<\/span><\/li>\n  <li>test@test12.com<\/li>\n  <li>test@test<\/li>\n  <li><span class='match'>test@test.es<\/span><\/li>\n  <li>@test.com<\/li>\n  <li><span class='match'>te st@test.com<\/span><\/li>\n  <li><span class='match'>test@test.com<\/span> hola<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+
+---
+
+
+```r
+str_view(c("test@test.com", "test@test12.com", "test@test", 
+           "test@test.es", "@test.com", "te st@test.com", "test@test.com hola"),
+         ".+@[^\\d\\s]+\\.(com|es)$")
+```
+
+<div id="htmlwidget-90cb8ebf3c96d654177b" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-90cb8ebf3c96d654177b">{"x":{"html":"<ul>\n  <li><span class='match'>test@test.com<\/span><\/li>\n  <li>test@test12.com<\/li>\n  <li>test@test<\/li>\n  <li><span class='match'>test@test.es<\/span><\/li>\n  <li>@test.com<\/li>\n  <li><span class='match'>te st@test.com<\/span><\/li>\n  <li>test@test.com hola<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -224,8 +234,8 @@ str_view(c("981945678", "981 945678", "+34 981945678"),
          "(\\+34\\s)?\\d{9}")
 ```
 
-<div id="htmlwidget-a9e30b4a97404dd253bf" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a9e30b4a97404dd253bf">{"x":{"html":"<ul>\n  <li><span class='match'>981945678<\/span><\/li>\n  <li>981 945678<\/li>\n  <li><span class='match'>+34 981945678<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-0c7da1f66c3fb3146eb1" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0c7da1f66c3fb3146eb1">{"x":{"html":"<ul>\n  <li><span class='match'>981945678<\/span><\/li>\n  <li>981 945678<\/li>\n  <li><span class='match'>+34 981945678<\/span><\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
@@ -235,91 +245,159 @@ str_view(c("981945678", "981 945678", "+34 981945678", "981 94 56 78"),
          "(\\+34\\s)?\\d{3}\\s?\\d{6}")
 ```
 
-<div id="htmlwidget-661f747a94ca77b38021" style="width:960px;height:100%;" class="str_view html-widget"></div>
-<script type="application/json" data-for="htmlwidget-661f747a94ca77b38021">{"x":{"html":"<ul>\n  <li><span class='match'>981945678<\/span><\/li>\n  <li><span class='match'>981 945678<\/span><\/li>\n  <li><span class='match'>+34 981945678<\/span><\/li>\n  <li>981 94 56 78<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1a763dfc28dd7706fe8a" style="width:960px;height:100%;" class="str_view html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1a763dfc28dd7706fe8a">{"x":{"html":"<ul>\n  <li><span class='match'>981945678<\/span><\/li>\n  <li><span class='match'>981 945678<\/span><\/li>\n  <li><span class='match'>+34 981945678<\/span><\/li>\n  <li>981 94 56 78<\/li>\n<\/ul>"},"evals":[],"jsHooks":[]}</script>
 
 ---
 
-## Concordancia con un patrón
+## Cadenas de caracteres
+
+- Las cadenas de caracteres se crean con comillas dobles `""` o simples `''`
+
+- La `\` se usa para escapar ciertos caracteres especiales: `"\""`, `"\\"`, `"\n"`, etc.
+
+---
+
+## Librería stringr
+
+- Implementa muchas operaciones con cadenas de caracteres
+
+- Todas las funciones comienzan con el prefijo común `str_`
+
+- Muchas de ellas tienen como entrada las expresiones regulares que vimos anteriormente
+
+---
+
+## Operaciones básicas con cadenas
+
+- Longitud
+    
+    ```r
+    str_length(c("hola", "alberto", NA))
+    ## [1]  4  7 NA
+    ```
+
+- Concatenar cadenas
+    
+    ```r
+    str_c("a", "b", "c")
+    ## [1] "abc"
+    ```
+    
+    ```r
+    str_c("a", "b", "c", sep = ", ")
+    ## [1] "a, b, c"
+    ```
+    
+    ```r
+    str_c("pre-", c("a", "b", "c"), "-suf")
+    ## [1] "pre-a-suf" "pre-b-suf" "pre-c-suf"
+    ```
+
+---
+
+## Indexando cadenas
+
+- Se puede obtener una subcadena a partir de las posiciones
+    
+    ```r
+    str_sub("hola", 2, 3)
+    ## [1] "ol"
+    ```
+
+- También se puede modificar si le asignamos un nuevo valor
+    
+    ```r
+    x &lt;- c("hola", "que", "tal")
+    str_sub(x, 2, 4) &lt;- str_to_upper(str_sub(x, 2, 4))
+    x
+    ## [1] "hOLA" "qUE"  "tAL"
+    ```
+
+---
+
+## Operaciones con expresiones regulares
 
 - `str_detect()` devuelve un vector lógico indicando si la expresión regular concuerda con la cadena o no
-
-
-```r
-str_detect(c("aba", "ebf", "atp"), "^a")
-## [1]  TRUE FALSE  TRUE
-```
+    
+    ```r
+    str_detect(c("aba", "ebf", "atp"), "^a")
+    ## [1]  TRUE FALSE  TRUE
+    ```
 
 - `str_count()` devuelve **cuántas** concordancias hay en cada cadena
-
-
-```r
-str_count(c("aba", "ebf", "atp"), "a")
-## [1] 2 0 1
-```
+    
+    ```r
+    str_count(c("aba", "ebf", "atp"), "a")
+    ## [1] 2 0 1
+    ```
 
 ---
 
 ## Extraer concordancias
 
-- `str_extract()`: extrae la parte de la cadena que concuerda con la expresión regula (solo se devuelve la primera)
-
-
-```r
-str_extract(c("ab (cd)", "ef (gh)", "ij (kl)"), "\\(.*\\)")
-## [1] "(cd)" "(gh)" "(kl)"
-```
+- `str_extract()`: extrae la parte de la cadena que concuerda con la expresión regular (únicamente la primera concordancia)
+    
+    ```r
+    str_extract(c("ab (cd)", "ef (gh)", "ij (kl)"), "\\(.*\\)")
+    ## [1] "(cd)" "(gh)" "(kl)"
+    ```
 
 - `str_extract_all()`: devuelve todas las concordancias
-
-
-```r
-str_extract_all(c("a b c", "a f g"), "[abc]")
-## [[1]]
-## [1] "a" "b" "c"
-## 
-## [[2]]
-## [1] "a"
-```
+    
+    ```r
+    str_extract_all(c("a b c", "a f g"), "[abc]")
+    ## [[1]]
+    ## [1] "a" "b" "c"
+    ## 
+    ## [[2]]
+    ## [1] "a"
+    ```
 
 ---
 
 ## Reemplazar concordancias
 
-- `str_replace()`: reemplaza las concordancias por una cadena (solo la primera)
-
-
-```r
-x &lt;- c("coche", "moto", "autobus")
-str_replace(x, "[aeiou]", "-")
-## [1] "c-che"   "m-to"    "-utobus"
-```
+- `str_replace()`: reemplaza la primera concordancia por otra cadena de texto
+    
+    ```r
+    x &lt;- c("coche", "moto", "autobus")
+    str_replace(x, "[aeiou]", "-")
+    ## [1] "c-che"   "m-to"    "-utobus"
+    ```
 
 - `str_replace_all()`: reemplaza **todas** las concordancias
-
-
-```r
-str_replace_all(x, "[aeiou]", "-")
-## [1] "c-ch-"   "m-t-"    "--t-b-s"
-```
+    
+    ```r
+    str_replace_all(x, "[aeiou]", "-")
+    ## [1] "c-ch-"   "m-t-"    "--t-b-s"
+    ```
 
 ---
 
 ## Dividir una cadena
 
 - `str_split()` divide una cadena de acuerdo con una expresión regular
+    
+    ```r
+    str_split(c("a b c", "a f g"), "\\s")
+    ## [[1]]
+    ## [1] "a" "b" "c"
+    ## 
+    ## [[2]]
+    ## [1] "a" "f" "g"
+    ```
 
+- `str_split_fixed()` es una variante donde se especifica exactamente cuantas partes se devuelven
+    
+    ```r
+    str_split_fixed(c("a b c", "a f g"), "\\s", n = 3)
+    ##      [,1] [,2] [,3]
+    ## [1,] "a"  "b"  "c" 
+    ## [2,] "a"  "f"  "g"
+    ```
 
-```r
-str_split(c("a b c", "a f g"), "\\s")
-## [[1]]
-## [1] "a" "b" "c"
-## 
-## [[2]]
-## [1] "a" "f" "g"
-```
-
-- `tidyr::separate()` realiza esta misma operación sobre las columnas de un data frame
+- `tidyr::separate()` realiza esta misma operación sobre las columnas de un data frame, acepta expresiones regulares
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
@@ -368,6 +446,32 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
     deleted = true;
   });
 })();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
 // adds .remark-code-has-line-highlighted class to <pre> parent elements
 // of code chunks containing highlighted lines with class .remark-code-line-highlighted
 (function(d) {
@@ -385,17 +489,6 @@ if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   }
   preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
 })(document);</script>
-
-<script>
-(function() {
-  var links = document.getElementsByTagName('a');
-  for (var i = 0; i < links.length; i++) {
-    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
-      links[i].target = '_blank';
-    }
-  }
-})();
-</script>
 
 <script>
 slideshow._releaseMath = function(el) {

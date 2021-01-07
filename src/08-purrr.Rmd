@@ -1,5 +1,5 @@
 ---
-title: "purrr"
+title: "Programación en R"
 subtitle: "Entornos de Análisis de Datos: R"
 author: "Alberto Torres Barrán"
 date: "`r Sys.Date()`"
@@ -38,10 +38,9 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE, collapse = 
     * longitud, función `length()`
     
   * Los elementos de un vector pueden tener nombre
-  
-```{r}
-c(a = 1, b = 2, c = 3)
-```
+    ```{r}
+    c(a = 1, b = 2, c = 3) 
+    ```
 
 ---
 
@@ -52,19 +51,17 @@ c(a = 1, b = 2, c = 3)
   * Convertir de un tipo a otro: `as.logical()`, `as.integer()`, `as.double()`, `as.character()`
   
   * Cuando combinamos elementos de distinto tipo, existe una conversión implícita al tipo más genérico
-  
-```{r}
-5 + TRUE
-
-c(4.5, "hola")
-```
+    ```{r}
+    5 + TRUE 
+    c(4.5, "hola")
+    ```
 
 ---
 
 ## Listas
 
-  * Pueden contener elementos de distinto tipo, incluido otras listas
-  
+Pueden contener elementos de distinto tipo, incluido otras listas
+
 ```{r}
 l <- list(a = "a", b = 10.2, c = TRUE, d = 1:10, e = list(1, 2))
 str(l)
@@ -77,25 +74,22 @@ str(l)
 Distintas formas de indexar elementos:
 
   1. `[` extrae una sub-lista
-  
-```{r}
-l[1:3]
-```
+    ```{r}
+    l[1:3]
+    ```
   
   2. `[[` extrae un elemento
-
-```{r}
-l[[4]]
+    ```{r}
+    l[[4]]
     
-l[["d"]]
-```
+    l[["d"]]
+    ```
 
  
   3. `$` similar a `[[` pero solo se puede usar con la etiqueta del elemento (no posicion)
-
-```{r}
-l$d
-```
+    ```{r}
+    l$d
+    ```
 
 ---
 
@@ -110,93 +104,111 @@ l$d
     * *Tibbles* y *data.frames*, a partir de listas
 
   * Podemos comprobar estos tipos aumentados con la función `class()`
-  
-```{r}
-class(mpg)
-    
-typeof(mpg)
-```
+    ```{r}
+    class(mpg)
+     
+    typeof(mpg)
+    ```
   
 ---
 
 ## Funciones
 
-* Las funciones evitan la repetición de código
+* Escribir funciones evita la repetición de código
 
-* Al igual que las funciones de R, tienen argumentos de entrada y un valor de retorno
+* Al igual que las funciones incluidas en R, tienen argumentos de entrada y un valor de retorno
 
 * Útiles cuando copiamos y pegamos el **mismo** código para usarlo con distintas variables
 
----
-
-```{r}
-# Función que cuenta el número de valores NA en un vector
-count_na <- function(x) {
-  sum(is.na(x))
-}
-
-count_na(c(4, 6, NA, 3))
-```
+* Ejemplo: función que cuenta el número de valores NA en un vector
+    ```{r}
+    count_na <- function(x) {
+      sum(is.na(x))
+    }
+    
+    count_na(c(4, 6, NA, 3))
+    ```
 
 ---
 
 ## Ejecución condicional
 
-La sentencia `if` permite ejecutar código dependiendo de una condición
+* La sentencia `if` permite ejecutar código dependiendo de una condición (la parte del `else` es opcional)
+    ```{r eval=FALSE}
+    if (condicion) {
+      # codigo que se ejecuta si condicion es TRUE
+    } else {
+      # codigo que se ejecuta si condicion es FALSE
+    }
+    ```
 
-```{r eval=FALSE}
-if (condicion) {
-  # codigo que se ejecuta si condicion es TRUE
-} else {
-  # codigo que se ejecuta si condicion es FALSE
-}
-```
+* Es común usar los operadores lógicos: 
 
-Se puede usar `&&` (AND lógico) y `||` (OR lógico) para combinar múltiples expresiones
+| Operador | Descripción       |
+|----------|-------------------|
+| `<`      | menor que         |
+| `<=`     | menor o igual     |
+| `>`      | mayor que         |
+| `>=`     | mayor o igual     |
+| `==`     | igual             |
+| `!=`     | distinto          |
+| `!x`     | negación (no `x`) |
 
 ---
 
 ## Múltiples condiciones
 
-```{r eval=FALSE}
-if (condicion1) {
-  # condigo a ejecutar si condicion1 es TRUE
-} else if (condicion2) {
-  # codigo a ejecutar si condicion1 es FALSE pero condicion2 es TRUE
-} else {
-  # si ambas son FALSE
-}
-```
+* Primero se comprueba la primera condición, y solo si es falsa se comprueba la segunda
+    ```{r eval=FALSE}
+    if (condicion1) {
+      # condigo a ejecutar si condicion1 es TRUE
+    } else if (condicion2) {
+      # codigo a ejecutar si condicion1 es FALSE pero condicion2 es TRUE
+    } else {
+      # si ambas son FALSE
+    }
+    ```
+
+* También podemos usar `&&` (AND lógico) y `||` (OR lógico) para combinar múltiples condiciones en una
 
 ---
 
-## Sentencia ifelse()
+## Sentencia if_else()
 
-Es una sentencia condicional vectorizada
+Sentencia condicional vectorizada (librería `dplyr`)
 
 ```{r}
 mpg %>%
-  mutate(consumo = ifelse(cty < 20, "bajo", "alto")) %>%
+  mutate(consumo = if_else(cty < 20, "bajo", "alto")) %>%
   select(cty, consumo)
-
 ```
 
 ---
 
-## Valores por defecto
+## Argumentos opcionales
 
-```{r}
-# Función que cuenta el número de valores NA en un vector
-count_na <- function(x, normalize = FALSE) {
-  if (normalize) {
-    mean(is.na(x))
-  } else {
-    sum(is.na(x))
-  }
-}
+* Podemos añadir argumentos opcionales asignándoles un valor por defecto
+    ```{r}
+    count_na <- function(x, normalize = FALSE) {
+      if (normalize) {
+        mean(is.na(x))
+      } else {
+        sum(is.na(x))
+      }
+    }
+    ```
 
-count_na(c(NA, NA, 3, 5, NA, 2), normalize = TRUE)
-```
+* Ejemplo:
+    ```{r}
+    count_na(c(NA, NA, 3, 5, NA, 2), normalize = TRUE)
+    ```
+
+
+* Si falta un argumento no opcional, R devuelve un error
+    ```{r, error=TRUE}
+    count_na()
+    ```
+
 
 ---
 
@@ -205,58 +217,122 @@ count_na(c(NA, NA, 3, 5, NA, 2), normalize = TRUE)
  * Por defecto, las funciones devuelven el resultado de la última linea de código
  
  * También se puede usar la sentencia `return()`
- 
-```{r}
-# Función que cuenta el número de valores NA en un vector
-count_na <- function(x, normalize = FALSE) {
-  if (!is.atomic(x)) {
-    return(NA)
-  }
+    ```{r}
+    # Función que cuenta el número de valores NA en un vector
+    count_na <- function(x, normalize = FALSE) {
+      if (!is.vector(x)) {
+        return(NA)
+      }
   
-  if (normalize) {
-    mean(is.na(x))
-  } else {
-    sum(is.na(x))
-  }
-}
-
-count_na(mpg)
-```
+      if (normalize) {
+        mean(is.na(x))
+      } else {
+        sum(is.na(x))
+      }
+    }
+    ```
+    ```{r}
+    count_na(mpg)
+    ```
+    ```{r}
+    count_na(list(1, 2, 3, NA))
+    ```
 
 ---
 
 ## Iteración
 
-* Se utiliza para aplicar el mismo código a varias entradas
+* Repetir el mismo código con varios elementos de un vector o lista
 
-* La forma más conocida son los bucles:
+* Existen dos tipos principales de bucles en R:
 
-    - for
+    - `for` (número predeterminado de repeticiones)
     
-    - while
-      
-```{r eval=FALSE}
-output <- vector("double", ncol(df))  
-for (i in seq_along(df)) {            
-  output[[i]] <- median(df[[i]])  
-}
-```
-    
-   
-```{r eval=FALSE}
-i <- 1
-while (i <= length(df)) {
-  i <- i + 1 
-}
-```
-    
-* Hemos visto otra forma "oculta" de iteración, las funciones `summarize_all()` y `summarize_if()`
+    - `while` (número variable de repeticiones)
+
+* Hemos visto otra forma "oculta" de iteración, la función `across` de la librería `dplyr`
 
 ---
 
-## purrr
+## Bucle for
 
-* La librería proporciona funciones que sustituyen a los bucles en la mayoría de los casos más comunes:
+Los bucles for tienen 3 partes:
+
+  1. **Salida**: el número de repeticiones es conocido, con lo que podemos crear de antemano el vector que almacena los resultados
+  
+  2. **Secuencia**: determina el número de repeticiones y el valor de `i` en cada una de ellas
+  
+  3. **Cuerpo**: entre corchetes (`{}`), es el código que se va a repetir para cada uno de los valores de `i`
+  
+```{r}
+df <- select(mpg, is.numeric)
+
+# Salida
+output <- vector("double", ncol(df))  
+# Secuencia
+for (i in seq_along(df)) {            
+  # Cuerpo
+  output[[i]] <- median(df[[i]])  
+}
+
+output
+```
+
+---
+
+## Patrones de iteración
+
+1. Iterar sobre índices: en cada iteración el valor de `i` es un número entero, se usa la función `seq_along`
+
+2. Iterar sobre los elementos: en cada iteración el valor de `x` es cada uno de los elementos de la secuencia:
+    ```{r}
+    for(x in df) {
+      print(mean(x))
+    }
+    ```
+
+- En general podemos iterar sobre:
+
+  1. vectores
+  
+  2. listas
+  
+  3. dataframes, en cuyo caso iteramos sobre las **columnas**
+  
+---
+
+## Bucle while
+   
+* Es más general, todo bucle for se puede reescribir como un bucle `while`
+    ```{r}
+    i <- 1
+    while (i <= ncol(df)) {
+      i <- i + 1 
+    }
+    ```
+    
+* Se utiliza cuando no se conoce de antemano el número de repeticiones:
+    ```{r}
+    set.seed(1)
+    
+    n_caras <- 0
+    while(n_caras < 3) {
+      moneda <- sample(c("cara", "cruz"), size = 1)
+      print(paste("Lanzando moneda...", moneda))
+      
+      if(moneda == "cara") {
+        n_caras <- n_caras + 1
+      }
+    }
+    
+    ```
+
+---
+
+## Familia de funciones map
+
+.col1-left[
+* Iteran sobre un vector realizando una operación sobre cada uno de sus elementos:
 
     - `map()`, crea una lista
     
@@ -269,18 +345,99 @@ while (i <= length(df)) {
     - `map_chr()`, crea un vector de cadenas de caracteres
     
     - `map_df()`, crea un data frame
+
+* Sustituyen a los bucles en los casos de uso más comunes
+]
+
+.col1-right[
+.center-right[
+![](img/map.png)
+]
+]
+
+---
+
+## Ejemplo
+
+* El bucle que hemos visto anteriormente:
+    ```{r}
+    df <- select(mpg, is.numeric)
+
+    output <- vector("double", ncol(df))  
+    for (i in seq_along(df)) {            
+      output[[i]] <- mean(df[[i]])  
+    }
     
+    output
+    ```
+
+* Se puede reemplazar por una llamada a la función `map_dbl`:
+    ```{r}
+    map_dbl(df, mean)
+    ```
+
+* Aunque el resultado es el mismo, en general preferimos la versión con `map` porque el código es más conciso y fácil de leer
+
 ---
 
-```{r}
-df <- select_if(mpg, is.numeric)
-map_dbl(df, mean, na.rm = TRUE)
-```
+## Funciones propias
+
+- `map_*` acepta functiones definidas por el usuario
+    ```{r}
+    count_na <- function(x, normalize = FALSE) {
+      if (normalize) {
+        mean(is.na(x))
+      } else {
+        sum(is.na(x))
+      }
+    }
+    
+    map_dbl(airquality, count_na)
+    ```
+
+
+.col1-left[
+
+* Si las funciones tienen parámetros opcionales, se los podemos pasar como argumentos a map
+    ```{r}
+    map_dbl(airquality, count_na, 
+            normalize=TRUE)
+    ```
+]
+
+.col1-right[
+![:scale 95%](img/map-arg.png)
+]
 
 ---
 
-`map_*()` acepta functiones definidas por el usuario y tiene una sintáxis especial para declarar funciones anónimas
+## Funciones anónimas
 
-```{r}
-map_df(df, ~(. - min(.) / (max(.) - min(.))))
-```
+- `purrr` incluye una sintáxis especial para crear funciones anónimas
+    ```{r}
+    map_df(df, ~(. - min(.)) / ((max(.) - min(.))))
+    ```
+
+- Más información: [`map`](https://purrr.tidyverse.org/reference/map.html)
+
+---
+
+## R base vs purrr
+
+- Existen funciones en R base similares a la familia `map` 
+
+- En general, se recomienda el uso de las funciones de `purrr` porque sus argumentos y nombres son más consistentes
+
+- Por tanto, intentar evitar el uso de funciones como:
+
+  - `lapply` (equivalente a `map`)
+  
+  - `vapply` (equivalente a `map_dbl`, `map_chr`, `map_lgl`, etc.)
+  
+  - `sapply` (no tenemos control sobre el tipo del vector de salida)
+  
+  - `apply` (devuelve un array, no un dataframe)
+
+- [Diferencias entre R base y purrr](https://stackoverflow.com/questions/45101045/why-use-purrrmap-instead-of-lapply)
+
+- [Tutorial de purrr](https://jennybc.github.io/purrr-tutorial/index.html)

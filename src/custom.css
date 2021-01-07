@@ -45,22 +45,43 @@ code { /* changes inline code highlighting */
 }
 
 
-/* Required: Clear floats after the columns */
-.multicolrow:after {
-content: "";
-display: table;
-clear: both;
+.col-left {
+  float: left;
+  width: 37%;
+}
+.col-right {
+  float: right;
+  width: 57%;
 }
 
-/*Optional: Color header boxes*/
-.multicolhead {
-background-color:#4B9CD3;
-color: #FFFFFF;
+.col2-left {
+  float: left;
+  width: 42%;
+}
+.col2-right {
+  float: right;
+  width: 52%;
 }
 
-.wordwrap {
-white-space: pre-wrap;      /* CSS3 */
-white-space: -moz-pre-wrap; /* Firefox */
-white-space: -o-pre-wrap;   /* Opera 7 */
-word-wrap: break-word;      /* IE */
+.col1-left {
+  float: left;
+  width: 57%;
 }
+.col1-right {
+  float: right;
+  width: 37%;
+}
+
+.center-right {
+  position:          relative;
+  top:               50%;
+  transform:         translateY(40%);
+}
+
+.huge { font-size: 160% }
+.Large { font-size: 144% }
+.large { font-size: 120% }
+.small { font-size: 90% }
+.footnotesize { font-size: 80% }
+.scriptsize { font-size: 70% }
+.tiny { font-size: 60% }
