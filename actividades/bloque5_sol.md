@@ -51,8 +51,17 @@ Actividades
 
 ### Fechas
 
-1. `accidentes <- mutate(accidentes, Fecha_hora = dmy_hm(Fecha))`
-2. `accidentes <- mutate(accidentes, Fecha = as_date(Fecha_hora))`
+1. Solución
+
+   ```{r}
+   library(readr)
+   accidentes <- read_csv2('AccidentesBicicletas_2017.csv',
+                           skip = 2, 
+                           locale = locale(encoding = 'latin1'))
+   ```
+
+2. `accidentes <- mutate(accidentes, Fecha_hora = dmy_hm(Fecha))`
+3. `accidentes <- mutate(accidentes, Fecha = as_date(Fecha_hora))`
 
 ### Funciones lubridate
 

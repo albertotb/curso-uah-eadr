@@ -50,16 +50,11 @@ Actividades
 
 ### Fechas
 
-Leer el fichero `AccidentesBicicletas_2017.csv` usando el código:
+1. Leer el fichero `AccidentesBicicletas_2017.csv` en un dataframe
 
-```{r}
-library(readr)
-accidentes <- read_csv2('AccidentesBicicletas_2017.csv',
-skip = 2, locale = locale(encoding = 'latin1'))
-```
+2. Convertir la columna Fecha, que es de tipo character, a una columna de tipo `datetime`.
 
-1. Convertir la columna Fecha, que es de tipo character, a una columna de tipo `datetime`.
-2. Como se puede ver la información de la hora no aporta ninguna información, ya que todas las fechas se corresponden con la hora 00:00. Por tanto, convertir la columna anterior del tipo `datetime` a tipo `date`.
+3. Como se puede ver la información de la hora no aporta ninguna información, ya que todas las fechas se corresponden con la hora 00:00. Por tanto, convertir la columna anterior del tipo `datetime` a tipo `date`.
 
 ### Funciones lubridate
 
