@@ -45,6 +45,8 @@ Actividades
 
 ## Importar ficheros de texto con readr
 
+### Ejercicio 1
+
 El siguiente código genera un fichero de texto en el directorio de trabajo
 
 ```{r}
@@ -60,9 +62,14 @@ Dado el fichero de texto anterior:
 2. ¿Y el siguiente código?
    `mpg1 <- read.csv("mpg.csv", col_names = FALSE)`
 
+### Ejercicio 2
+
+1. Importar en R el fichero de datos `movies.csv`. 
+
+2. Realizar la operación que se describe en la animación de la diapositiva 11, es decir, pivotarlo para crear dos nuevas columnas `movies` y `seen`.
+
 ## Ejemplos de importar ficheros
 
-Actividades
 Descargar el fichero `data > Sales-all-vehicles-2017.csv`
 
 1. Abrir el fichero de texto con un editor y ver sus características
