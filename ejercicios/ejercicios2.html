@@ -6,9 +6,16 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Alberto Torres Barrán" />
-  <meta name="date" content="2020-01-29" />
-  <title>Ejercicios sesión 2</title>
-  <style type="text/css">code{white-space: pre;}</style>
+  <meta name="date" content="2020-12-15" />
+  <title>Ejercicios bloque 3</title>
+  <style type="text/css">
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+              </style>
   <style type="text/css">
 body
 {
@@ -374,26 +381,11 @@ list-style-type: none;
 </head>
 <body>
 <div class="slide titlepage">
-  <h1 class="title">Ejercicios sesión 2</h1>
+  <h1 class="title">Ejercicios bloque 3</h1>
   <p class="author">
 Alberto Torres Barrán
   </p>
-  <p class="date">2020-01-29</p>
-</div>
-<div id="nba-shots" class="slide section level2">
-<h1>NBA shots</h1>
-<p>Descargar los datos que se encuentran en Kaggle sobre tiros de la NBA en la temporada 14-15:</p>
-<ol style="list-style-type: decimal">
-<li>Cargar los datos en R</li>
-<li>Identificar que representa cada una de las filas y ver las variables (columnas) disponibles.</li>
-<li>Vamos a comparar las estadísticas de tiro de dos jugadores, por ejemplo Kobe Bryant y James Harden. Por tanto, lo primero es seleccionar las filas que contienen la información de dichos jugadores.</li>
-<li>A continuación vamos a crear una nueva variable, (<code>total_touch_time</code>), que acumula el tiempo total que cada jugador ha tocado el balón antes de cada tiro (<code>TOUCH_TIME</code>) en cada partido. Pista: función <code>cumsum()</code>.</li>
-<li>¿Cuántas filas tiene el <code>data.frame</code> resultado de la operación anterior?</li>
-<li>Vamos a resumir ahora el <code>data.frame</code> anterior calculando una nueva variable, <code>points_per_tt</code> dividiendo la suma total de puntos de cada jugador/partido (variable <code>PTS</code>) por el tiempo total que ha tocado la pelota (máximo de la variable anterior, <code>total_touch_time</code>).</li>
-<li>Ahora podemos volver a resumir el <code>data.frame</code> anterior para obtener un valor por cada jugador, calculando la media de la variable <code>points_per_tt</code> para todos los partidos.</li>
-<li>Por último, hacer un histograma de la distancia de tiro (<code>SHOT_DIST</code>), ¿qué se puede observar en la distribución?</li>
-<li>Comprobar la hipótesis anterior coloreando el histograma por la variable <code>PTS_TYPE</code>.</li>
-</ol>
+  <p class="date">2020-12-15</p>
 </div>
 <div id="pew" class="slide section level2">
 <h1>pew</h1>
@@ -403,9 +395,6 @@ Alberto Torres Barrán
 <li>¿Cuáles son las variables en esos datos? ¿Se corresponden las columnas del data frame con las variables?</li>
 <li>Convertir el data frame a otro “ordenado”</li>
 <li>Hacer un gráfico de barras para cada religión, donde el eje x representa el rango salarial y el eje y el número de personas.</li>
-<li>Calcular el número total de personas por religión</li>
-<li>Agrupar todas las religiones en una única categoria “Others”, excepto las 5 con más personas</li>
-<li>Repetir el gráfico del ejercicio con estos datos pero hacer las barras horizontales</li>
 </ol>
 </div>
 <div id="weather" class="slide section level2">
@@ -417,9 +406,6 @@ Alberto Torres Barrán
 <li>Agrupar las variables d1–d31 en dos variables día y temperatura.</li>
 <li>Convertir las columnas element y temperatura en dos variables <code>TMAX</code> y <code>TMIN</code>.</li>
 <li>Separar la columna id en dos variables, país e id.</li>
-<li>Eliminar la “d” de la columna dia</li>
-<li>Juntar las columnas dia, mes y año en otra de tipo fecha</li>
-<li>Calcular la temperatura máxima y mínima media para cada semana</li>
 </ol>
 </div>
 <div id="tb" class="slide section level2">
@@ -429,11 +415,8 @@ Alberto Torres Barrán
 <li>Identificar si se trata de datos “ordenados”, donde cada columna representa una variable.</li>
 <li>Eliminar las columnas <code>new_sp</code>, <code>new_sp_m04</code>, <code>new_sp_m514</code>, <code>new_sp_f04</code>, <code>new_sp_f514</code>.</li>
 <li>Convertir el data.frame a formato “ancho”, creando dos nuevas variables “Edad-Sexo” y “NCasos”.</li>
-<li>Eliminar la cadena <code>new_sp_</code> de la columna “Edad-Sexo”</li>
 <li>Separar la variable “Edad-Sexo” en dos.</li>
 <li>Representar en un gráfico de lineas con la evolución anual de los casos totales para los paises España (ES), Francia (FR), Italia (IT) y Reino Unido (GB)</li>
-<li>Crear distintos gráficos como el anterior para los diferentes grupos de edad</li>
-<li>Mejorar el gráfico anterior para que la escala del eje y sea independiente en cada sub-gráfico</li>
 </ol>
 </div>
 <div id="ventas" class="slide section level2">
@@ -441,16 +424,11 @@ Alberto Torres Barrán
 <ol style="list-style-type: decimal">
 <li>Cargar el conjunto de datos <code>ventas.csv</code> en R.</li>
 <li>Ver que columnas tiene y su tipo. ¿Ha identificado readr bien el tipo de todas ellas?. ¿Por qué?</li>
-<li>Convertir la columna <code>Codigo</code> a factor.</li>
 <li>Calcular la diferencia media en valor absoluto entre las ventas y su previsión.</li>
 <li>Eliminar la variable <code>Prevision</code>.</li>
 <li>Calcular la matriz de correlación de las Ventas para todos los distintos productos (identificados con su código). Pista: la matriz con tantas filas y columnas como códigos de productos distintos.</li>
 <li>Transformar la matriz de correlación anterior en un data.frame que esté en formato largo. Pista: identificar que variables deberían ir en las columnas.</li>
 <li>Hacer un heatmap que represente la matriz de correlación anterior. Pista: <code>geom_tile()</code>.</li>
-<li>Con los datos iniciales, convertir la columna <code>Fecha</code> a tipo “date”</li>
-<li>Filtrar los 5 productos con más ventas (ignorar ventas negativas)</li>
-<li>Calcular las ventas mensuales para cada uno de los productos anteriores y representar su evolución con un gráfico de barras (ignorar ventas negativas)</li>
-<li>Mejorar el gráfico anterior rotando las etiquetas 90 grados</li>
 </ol>
 </div>
 

@@ -1,0 +1,85 @@
+---
+title: "Ejercicios bloque 5"
+author: "Alberto Torres Barrán"
+date: "`r Sys.Date()`"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, include = FALSE)
+```
+
+## pew
+
+Continuando con el ejercicio `pew` de `ejercicios2`:
+
+1. Calcular el número total de personas por religión
+2. Agrupar todas las religiones en una única categoria "Others", excepto las 5 con más personas
+3. Repetir el gráfico del ejercicio con estos datos pero hacer las barras horizontales
+
+## weather
+
+Continuando con el ejercicio `weather` de `ejercicios2`:
+
+1. Eliminar la "d" de la columna dia
+2. Juntar las columnas dia, mes y año en otra de tipo fecha
+3. Calcular la temperatura máxima y mínima media para cada semana
+
+## tb
+
+Continuando con el ejercicio `tb` de `ejercicios2`:
+
+1. Eliminar la cadena `new_sp_` de la columna "Edad-Sexo"
+2. Crear distintos gráficos como el anterior para los diferentes grupos de edad
+3. Mejorar el gráfico anterior para que la escala del eje y sea independiente en cada sub-gráfico
+
+## ventas
+
+Continuando con el ejercicio `ventas` de `ejercicios2`:
+
+1. Convertir la columna `Codigo` a factor.
+2. Con los datos iniciales, convertir la columna `Fecha` a tipo "date"
+3. Filtrar los 5 productos con más ventas (ignorar ventas negativas)
+4. Calcular las ventas mensuales para cada uno de los productos anteriores y representar su evolución con un gráfico de barras (ignorar ventas negativas)
+5. Mejorar el gráfico anterior rotando las etiquetas 90 grados
+
+## gapminder
+
+  1. Instalar el paquete `gapminder`
+  
+  2. Calcular cuantos niveles distintos tienen las columnas `country` y `continent`
+  
+  3. ¿Cuántas filas del data.frame hay para cada una de las columnas anteriores?
+  
+  4. Crea un data.frame con las continentes que empiezan por "A"
+  
+  5. Realiza un gráfico de barras **ordenadas** de mayor a menos, donde el eje x representa los continentes y el eje y el número de paises (registros)
+  
+  6. Representa en un gráfico de puntos la esperanza de vida (`lifeExp`) en el eje x para cada uno de los paises de Asia (eje y). Usa los datos de 2007 y ordena los puntos de menor a mayor.
+
+  7. Representa la evolución de la esperanza de vida para los paises "Egypt", "Haiti", "Romania", "Thailand" y "Venezuela". Realizar un único gráfico con una línea de un color distinto para cada país. Ordenar la leyenda para que el país con más esperanza de vida esté de primero (usar `fct_reorder2()`).
+  
+  8. Cálcula la longitud media de los nombres de los países en los datos para cada continente.
+  
+  9. Contar cuantas veces aparece cada vocal en los nombres de los paises (columna "country")
+  
+## Puerto Rico
+
+El fichero `mortality_report.csv` contiene datos diarios de mortalidad en Puerto Rico desde el 1 de Enero de 2015 al 31 de Mayo de 2018 (ejercicio adaptado de [Introduction to Data Science](https://rafalab.github.io/dsbook/parsing-dates-and-times.html#exercises-42):
+
+  1. Leer los datos en R
+
+  2. Convertir la columna "month" a su valor numérico
+  
+  3. Crear una columna con la fecha (tipo `date`) a partir de las columnas "day", "month" y "year"
+  
+  4. Realizar un gráfico de líneas de las muertes (eje y) frente a la fechas (eje x)
+  
+  5. Ignorar fechas posteriores al 1 de Mayo de 2018 
+  
+  6. Repetir un gráfico de barras pero ahora representar en el eje x el día del año.
+  
+  7. Repetir el gráfico del ej 4 pero usar dos colores distintos para antes y después del 20 de septiembre de 2017 (no poner ninguna leyenda)
+  
+  8. Repetir el mismo gráfico del ejercicio 6 pero representar ahora medias mensuales (pista: `round_date()`)
+  

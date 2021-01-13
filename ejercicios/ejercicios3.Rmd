@@ -1,5 +1,5 @@
 ---
-title: "Ejercicios sesión 3"
+title: "Ejercicios bloque 4"
 author: "Alberto Torres Barrán"
 date: "`r Sys.Date()`"
 output: slidy_presentation
@@ -9,159 +9,111 @@ output: slidy_presentation
 knitr::opts_chunk$set(eval = FALSE, include = FALSE)
 ```
 
-## diamonds
 
-Con el conjunto de datos diamonds:
+## diamonds (1)
 
-  1. Ver el tipo de cada una de las variables.
+Continuando con el ejercicio `diamonds (1)` de `ejercicios1`:
 
-  2. Realizar un análisis estadístico de las variables numéricas: calcular la media, varianza, mediana y rangos ¿Tienen las distintas variables rangos muy diferentes?.
-
-  3. Hacer un gráfico de cajas de la variable price para cada uno de los distintos valores de color.
-  
-  4. Hacer el mismo gráfico del punto anterior pero con un gráfico de cajas para cada uno de los valores de la variable cut.
-  
-  5. Calcular la correlación de todas las variables numéricas con la variable
-price.
-
-  6. Crear un histograma de la variable carat para cada uno de los distintos valores de color. ¿Son muy diferentes las distribuciones?.
+1. Agrupar los diamantes por color.
+2. Calcular la media del precio/quilate para cada uno de los grupos anteriores.
 
 
-  
-  7. Realizar un gráfico de dispersión para las variables que tienen más y
-menos correlación con price y comentar los resultados. ¿Como seria el gráfico de dispersión entre dos vectores con correlación 1?.
+## Lahman
 
-  8. Definimos los outliers como los elementos (filas) de los datos para los que cualquiera de las variables (numéricas) está por encima o por debajo de la mediana más/menos 3 veces el MAD (Median Absolute Deviation). Identificar estos outliers y quitarlos.
-  
-  9. Separar el conjunto de datos en dos subconjuntos disjuntos de forma
-aleatoria, el primero conteniendo un 70% de los datos y el segundo un 30%.
+1. Instalar el paquete Lahman y ver que data.frames contiene (en la documentación).
+2. Usando los datos contenidos en el data.frame Batting, calcular el número de partidos totales de cada uno de los jugadores.
+3. Ordenar a los jugadores de mayor a menor de acuerdo a la cantidad de partidos disputados.
+4. Mostrar el top 5.
 
-  10. Escalar los datos para que tengan media 0 y varianza 1, es decir, restar
-a cada variable numérica su media y dividir por la desviación típica. Calcular la media y desviación en el conjunto de train, y utilizar esa misma media y desviación para escalar el conjunto de test.
-
-
-```{r eval=FALSE, include=FALSE}
+```{r}
 library(dplyr)
 library(ggplot2)
-library(tidyr)
+library(Lahman)
 
-# Ejercicio 1
-str(diamonds)
-
-# Ejercicio 2
-summary(diamonds)
-
-# indice de las variables numericas
-idx_num <- sapply(diamonds, is.numeric)
-
-# la varianza solo tiene sentido para las variables numericas
-# y no la proporciona summary
-diag(var(diamonds[idx_num]))
-
-#Ejercicio 3
-# ggplot2
-ggplot(diamonds, aes(x=color, y=price)) + geom_boxplot()
-
-# R base
-boxplot(price ~ color, data=diamonds)
-
-# Ejercicio 4
-# ggplot2
-ggplot(diamonds, aes(x=cut, y=price)) + geom_boxplot()
-
-# R base
-boxplot(price ~ cut, data=diamonds)
-
-# Ejercicio 5
-cor_y <- cor(diamonds$price, diamonds[idx_num & names(diamonds) != "price"])
-
-# Ejercicio 6
-n <- 3
-# ggplot2
-ggplot(diamonds, aes(x=carat)) + geom_histogram() + facet_wrap(~color, ncol=n)
-
-# base R
-colors <- unique(diamonds$color)
-par(mfcol=c(ceiling(length(colors)/n), n))
-for (color in colors) hist(diamonds$carat[diamonds$color == color], xlab="carat", main=color)
-
-# Ejercicio 7
-# de los nombres de las variables escogemos las de mayor y menor valor absoluto
-vars <- colnames(cor_y)[c(which.min(abs(cor_y)), which.max(abs(cor_y)))]
-
-# ggplot2
-diamonds %>%
-  select(vars, price) %>%
-  gather("Var", "X", -price) %>%
-  ggplot(aes(x=X, y=price)) + geom_point() + facet_wrap(~ Var, scales="free")
-
-# R base
-par(mfcol=c(1,2))
-for (var in vars) plot(pull(diamonds, var), diamonds$price, xlab=var, ylab="price", pch=20)
-
-# Ejercicio 8
-# hay mas formas, una posible
-is_outlier <- function(x, const=3) {
-  x < median(x) - const*mad(x) | x > median(x) + const*mad(x)
-}
-
-mask <- sapply(diamonds[idx_num], is_outlier)
-outliers <- apply(mask, 1, any)
-d_no_out <- diamonds[!outliers, ]
-
-# Ejercicio 9
-idx <- sample(nrow(d_no_out), 0.7*nrow(d_no_out))
-d_big   <- d_no_out[ idx, ]
-d_small <- d_no_out[-idx, ]
-
-# Ejercicio 10
-# tambien varias formas, esta es una de ellas:
-mean_d <- lapply(d_big[idx_num], mean)
-sd_d   <- lapply(d_big[idx_num], sd)
-
-d_big[idx_num]   <- (  d_big[idx_num] - mean_d) / sd_d
-d_small[idx_num] <- (d_small[idx_num] - mean_d) / sd_d
-
-# otra forma concisa es usar la funcion scale 
+Batting %>%
+  group_by(playerID) %>%
+  summarize(total_G=sum(G)) %>%  
+  arrange(desc(total_G)) %>%
+  head(5)
 ```
 
-## gapminder
+## nycflights13 (1)
 
-  1. Instalar el paquete `gapminder`
-  
-  2. Calcular cuantos niveles distintos tienen las columnas `country` y `continent`
-  
-  3. ¿Cuántas filas del data.frame hay para cada una de las columnas anteriores?
-  
-  4. Crea un data.frame con las continentes que empiezan por "A"
-  
-  5. Realiza un gráfico de barras **ordenadas** de mayor a menos, donde el eje x representa los continentes y el eje y el número de paises (registros)
-  
-  6. Representa en un gráfico de puntos la esperanza de vida (`lifeExp`) en el eje x para cada uno de los paises de Asia (eje y). Usa los datos de 2007 y ordena los puntos de menor a mayor.
+Con el data frame flights (paquete nycflights13) vamos a intentar ver si el retraso medio depende o no de la hora del día:
 
-  7. Representa la evolución de la esperanza de vida para los paises "Egypt", "Haiti", "Romania", "Thailand" y "Venezuela". Realizar un único gráfico con una línea de un color distinto para cada país. Ordenar la leyenda para que el país con más esperanza de vida esté de primero (usar `fct_reorder2()`).
-  
-  8. Cálcula la longitud media de los nombres de los países en los datos para cada continente.
-  
-  9. Contar cuantas veces aparece cada vocal en los nombres de los paises (columna "country")
-  
-## Puerto Rico
+1. Crear una nueva variable time a partir de las variables hour y minute que represente la hora y minutos como un número con un decimal.
+2. Calcular el retraso medio a la llegada (arr delay) y el número de vuelos para cada uno de los valores de la variable time.
+3. Guardar las tres variables anteriores en un nuevo data.frame con nombre delay.per.time.
+4. Representar el retraso medio con respecto a la variable time, escalando además el tama˜ no de los puntos de acuerdo con el número de vuelos.
 
-El fichero `mortality_report.csv` contiene datos diarios de mortalidad en Puerto Rico desde el 1 de Enero de 2015 al 31 de Mayo de 2018 (ejercicio adaptado de [Introduction to Data Science](https://rafalab.github.io/dsbook/parsing-dates-and-times.html#exercises-42):
+```{r}
+library(dplyr)
+library(ggplot2)
+library(nycflights13)
 
-  1. Leer los datos en R
+flights %>%
+  mutate(time=round(hour + minute/60, 1)) %>%
+  group_by(time) %>%
+  summarize(avg_delay=mean(arr_delay, na.rm=T), n_flights=n()) -> delay.per.time
 
-  2. Convertir la columna "month" a su valor numérico
-  
-  3. Crear una columna con la fecha (tipo `date`) a partir de las columnas "day", "month" y "year"
-  
-  4. Realizar un gráfico de líneas de las muertes (eje y) frente a la fechas (eje x)
-  
-  5. Ignorar fechas posteriores al 1 de Mayo de 2018 
-  
-  6. Repetir un gráfico de barras pero ahora representar en el eje x el día del año.
-  
-  7. Repetir el gráfico del ej 4 pero usar dos colores distintos para antes y después del 20 de septiembre de 2017 (no poner ninguna leyenda)
-  
-  8. Repetir el mismo gráfico del ejercicio 6 pero representar ahora medias mensuales (pista: `round_date()`)
+ggplot(delay.per.time, aes(x=time, y=avg_delay, size=n_flights)) + geom_point()
+```
+
+## nycflights13 (2)
+
+Con el data frame flights (paquete nycflights13), vamos a intentar ver si hay grandes diferencias en cuanto a retrasos de la llegada dependiendo del aeropuerto destino:
+
+1. Calcular el retraso medio a la llegada (arr delay) y el número de vuelos para cada uno de los destinos (variable dest).
+2. Hacer un merge del data.frame anterior con airports (contenido en el mismo paquete) para añadir las coordenadas de cada aeropuerto. Pista: función left join.
+3. Representar la latitud con respecto a la longitud, escalando además el tama˜ no de los puntos de acuerdo con el número de vuelos.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(nycflights13)
+
+flights %>%
+  group_by(dest) %>%
+  summarize(avg_delay=mean(arr_delay, na.rm=T), n_flights=n()) -> delay.per.dest
+
+delay.per.dest %>% 
+  left_join(airports, by=c("dest" = "faa")) %>%
+  ggplot(aes(x=lon, y=lat, size=n_flights)) + geom_point()
+```
+
+## NBA shots
+
+Descargar los datos que se encuentran en Kaggle sobre tiros de la NBA en la temporada 14-15:
+
+1. Cargar los datos en R 
+2. Identificar que representa cada una de las filas y ver las variables (columnas) disponibles.
+3. Vamos a comparar las estadísticas de tiro de dos jugadores, por ejemplo Kobe Bryant y James Harden. Por tanto, lo primero es seleccionar las filas que contienen la información de dichos jugadores.
+4. A continuación vamos a crear una nueva variable, (`total_touch_time`), que acumula el tiempo total que cada jugador ha tocado el balón antes de cada tiro (`TOUCH_TIME`) en cada partido. Pista: función `cumsum()`. 
+5. ¿Cuántas filas tiene el `data.frame` resultado de la operación anterior?
+6. Vamos a resumir ahora el `data.frame` anterior calculando una nueva variable, `points_per_tt` dividiendo la suma total de puntos de cada jugador/partido (variable `PTS`) por el tiempo total que ha tocado la pelota (máximo de la variable anterior, `total_touch_time`).
+7. Ahora podemos volver a resumir el `data.frame` anterior para obtener un valor por cada jugador, calculando la media de la variable `points_per_tt` para todos los partidos.
+8. Por último, hacer un histograma de la distancia de tiro (`SHOT_DIST`), ¿qué se puede observar en la distribución?
+9. Comprobar la hipótesis anterior coloreando el histograma por la variable `PTS_TYPE`.
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+nba.shots <- read_csv("../data/shot_logs.csv")
+
+colnames(nba.shots)
+
+nba.shots %>% 
+  filter(player_name %in% c("kobe bryant", "james harden")) %>%
+  group_by(player_name, GAME_ID) %>%
+  mutate(total_touch_time=cumsum(TOUCH_TIME)) %>%
+  summarize(points_per_tt=sum(PTS)/max(total_touch_time)) %>%
+  group_by(player_name) %>%
+  summarize(avg_pts_per_tt=mean(points_per_tt))
+
+ggplot(nba.shots, aes(x=SHOT_DIST, fill=factor(PTS_TYPE))) + geom_histogram()
+```
+
+
   

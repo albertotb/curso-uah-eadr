@@ -1,5 +1,5 @@
 ---
-title: "Ejercicios sesión 1"
+title: "Ejercicios bloques 1 y 2"
 author: "Alberto Torres Barrán"
 date: "`r Sys.Date()`"
 output: slidy_presentation
@@ -44,25 +44,6 @@ summarize(df, mean(gear))
 ggplot(mtcars, aes(x=mpg, y=wt)) + geom_point()
 ```
 
-## Lahman
-
-1. Instalar el paquete Lahman y ver que data.frames contiene (en la documentación).
-2. Usando los datos contenidos en el data.frame Batting, calcular el número de partidos totales de cada uno de los jugadores.
-3. Ordenar a los jugadores de mayor a menor de acuerdo a la cantidad de partidos disputados.
-4. Mostrar el top 5.
-
-```{r}
-library(dplyr)
-library(ggplot2)
-library(Lahman)
-
-Batting %>%
-  group_by(playerID) %>%
-  summarize(total_G=sum(G)) %>%  
-  arrange(desc(total_G)) %>%
-  head(5)
-```
-
 ## diamonds (1)
 
 Con el conjunto de datos de diamantes, realizar las siguientes operaciones:
@@ -71,9 +52,7 @@ Con el conjunto de datos de diamantes, realizar las siguientes operaciones:
 2. Filtrar los diamantes con corte "Ideal".
 3. Seleccionar las columnas carat, cut, color, price y clarity.
 4. Crear una nueva columna precio/quilate.
-5. Agrupar los diamantes por color.
-6. Calcular la media del precio/quilate para cada uno de los grupos anteriores.
-7. Ordenar por precio/quilate de forma descendente.
+5. Ordenar por precio/quilate de forma descendente.
 
 ```{r}
 resultado <-
@@ -85,7 +64,6 @@ resultado <-
     summarize(avg_pq = mean(pq)) %>%
     arrange(avg_pq) 
 ```
-
 
 ## diamonds (2)
 
@@ -127,47 +105,4 @@ ggplot(dia) +
   facet_wrap(~cut)
 ```
 
-## nycflights13 (1)
 
-Con el data frame flights (paquete nycflights13) vamos a intentar ver si el retraso medio depende o no de la hora del día:
-
-1. Crear una nueva variable time a partir de las variables hour y minute que represente la hora y minutos como un número con un decimal.
-2. Calcular el retraso medio a la llegada (arr delay) y el número de vuelos para cada uno de los valores de la variable time.
-3. Guardar las tres variables anteriores en un nuevo data.frame con nombre delay.per.time.
-4. Representar el retraso medio con respecto a la variable time, escalando además el tama˜ no de los puntos de acuerdo con el número de vuelos.
-
-```{r}
-library(dplyr)
-library(ggplot2)
-library(nycflights13)
-
-flights %>%
-  mutate(time=round(hour + minute/60, 1)) %>%
-  group_by(time) %>%
-  summarize(avg_delay=mean(arr_delay, na.rm=T), n_flights=n()) -> delay.per.time
-
-ggplot(delay.per.time, aes(x=time, y=avg_delay, size=n_flights)) + geom_point()
-```
-
-
-## nycflights13 (2)
-
-Con el data frame flights (paquete nycflights13), vamos a intentar ver si hay grandes diferencias en cuanto a retrasos de la llegada dependiendo del aeropuerto destino:
-
-1. Calcular el retraso medio a la llegada (arr delay) y el número de vuelos para cada uno de los destinos (variable dest).
-2. Hacer un merge del data.frame anterior con airports (contenido en el mismo paquete) para añadir las coordenadas de cada aeropuerto. Pista: función left join.
-3. Representar la latitud con respecto a la longitud, escalando además el tama˜ no de los puntos de acuerdo con el número de vuelos.
-
-```{r}
-library(dplyr)
-library(ggplot2)
-library(nycflights13)
-
-flights %>%
-  group_by(dest) %>%
-  summarize(avg_delay=mean(arr_delay, na.rm=T), n_flights=n()) -> delay.per.dest
-
-delay.per.dest %>% 
-  left_join(airports, by=c("dest" = "faa")) %>%
-  ggplot(aes(x=lon, y=lat, size=n_flights)) + geom_point()
-```

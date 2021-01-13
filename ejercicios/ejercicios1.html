@@ -6,9 +6,16 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Alberto Torres Barrán" />
-  <meta name="date" content="2020-01-29" />
-  <title>Ejercicios sesión 1</title>
-  <style type="text/css">code{white-space: pre;}</style>
+  <meta name="date" content="2020-12-15" />
+  <title>Ejercicios bloques 1 y 2</title>
+  <style type="text/css">
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+              </style>
   <style type="text/css">
 body
 {
@@ -374,11 +381,11 @@ list-style-type: none;
 </head>
 <body>
 <div class="slide titlepage">
-  <h1 class="title">Ejercicios sesión 1</h1>
+  <h1 class="title">Ejercicios bloques 1 y 2</h1>
   <p class="author">
 Alberto Torres Barrán
   </p>
-  <p class="date">2020-01-29</p>
+  <p class="date">2020-12-15</p>
 </div>
 <div id="mtcars" class="slide section level2">
 <h1>mtcars</h1>
@@ -392,15 +399,6 @@ Alberto Torres Barrán
 <li>Hacer una gráfica del peso (wt) con respecto al consumo (mpg).</li>
 </ol>
 </div>
-<div id="lahman" class="slide section level2">
-<h1>Lahman</h1>
-<ol style="list-style-type: decimal">
-<li>Instalar el paquete Lahman y ver que data.frames contiene (en la documentación).</li>
-<li>Usando los datos contenidos en el data.frame Batting, calcular el número de partidos totales de cada uno de los jugadores.</li>
-<li>Ordenar a los jugadores de mayor a menor de acuerdo a la cantidad de partidos disputados.</li>
-<li>Mostrar el top 5.</li>
-</ol>
-</div>
 <div id="diamonds-1" class="slide section level2">
 <h1>diamonds (1)</h1>
 <p>Con el conjunto de datos de diamantes, realizar las siguientes operaciones:</p>
@@ -409,8 +407,6 @@ Alberto Torres Barrán
 <li>Filtrar los diamantes con corte “Ideal”.</li>
 <li>Seleccionar las columnas carat, cut, color, price y clarity.</li>
 <li>Crear una nueva columna precio/quilate.</li>
-<li>Agrupar los diamantes por color.</li>
-<li>Calcular la media del precio/quilate para cada uno de los grupos anteriores.</li>
 <li>Ordenar por precio/quilate de forma descendente.</li>
 </ol>
 </div>
@@ -428,25 +424,6 @@ Alberto Torres Barrán
 <li>Calcular la correlación entre las variables precio y quilates (carat)</li>
 <li>Visualizar dicha correlación haciendo un gráfico de dispersión del precio sobre los quilates.</li>
 <li>Repetir el gráfico anterior pero para cada uno de los valores del corte</li>
-</ol>
-</div>
-<div id="nycflights13-1" class="slide section level2">
-<h1>nycflights13 (1)</h1>
-<p>Con el data frame flights (paquete nycflights13) vamos a intentar ver si el retraso medio depende o no de la hora del día:</p>
-<ol style="list-style-type: decimal">
-<li>Crear una nueva variable time a partir de las variables hour y minute que represente la hora y minutos como un número con un decimal.</li>
-<li>Calcular el retraso medio a la llegada (arr delay) y el número de vuelos para cada uno de los valores de la variable time.</li>
-<li>Guardar las tres variables anteriores en un nuevo data.frame con nombre delay.per.time.</li>
-<li>Representar el retraso medio con respecto a la variable time, escalando además el tama˜ no de los puntos de acuerdo con el número de vuelos.</li>
-</ol>
-</div>
-<div id="nycflights13-2" class="slide section level2">
-<h1>nycflights13 (2)</h1>
-<p>Con el data frame flights (paquete nycflights13), vamos a intentar ver si hay grandes diferencias en cuanto a retrasos de la llegada dependiendo del aeropuerto destino:</p>
-<ol style="list-style-type: decimal">
-<li>Calcular el retraso medio a la llegada (arr delay) y el número de vuelos para cada uno de los destinos (variable dest).</li>
-<li>Hacer un merge del data.frame anterior con airports (contenido en el mismo paquete) para añadir las coordenadas de cada aeropuerto. Pista: función left join.</li>
-<li>Representar la latitud con respecto a la longitud, escalando además el tama˜ no de los puntos de acuerdo con el número de vuelos.</li>
 </ol>
 </div>
 

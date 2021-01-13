@@ -71,9 +71,10 @@
 
 ## Ejercicios
 
-1. [dplyr y ggplot2](ejercicios/ejercicios1.html)
-2. [tidyr y readr](ejercicios/ejercicios2.html)
-3. [stringr, lubridate y forcats](ejercicios/ejercicios3.html)
+1. [Ejercicios bloques 1 y 2](ejercicios/ejercicios1.html)
+2. [Ejercicios bloque 3](ejercicios/ejercicios2.html)
+3. [Ejercicios bloque 4](ejercicios/ejercicios3.html)
+4. [Ejercicios bloques 5 y 6](ejercicios/ejercicios4.html)
 
 ## Enlaces
 

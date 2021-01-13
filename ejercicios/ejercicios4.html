@@ -6,8 +6,8 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Alberto Torres Barrán" />
-  <meta name="date" content="2020-12-15" />
-  <title>Ejercicios bloque 4</title>
+  <meta name="date" content="2021-01-07" />
+  <title>Ejercicios bloque 5</title>
   <style type="text/css">
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -381,61 +381,76 @@ list-style-type: none;
 </head>
 <body>
 <div class="slide titlepage">
-  <h1 class="title">Ejercicios bloque 4</h1>
+  <h1 class="title">Ejercicios bloque 5</h1>
   <p class="author">
 Alberto Torres Barrán
   </p>
-  <p class="date">2020-12-15</p>
+  <p class="date">2021-01-07</p>
 </div>
-<div id="diamonds-1" class="slide section level2">
-<h1>diamonds (1)</h1>
-<p>Continuando con el ejercicio <code>diamonds (1)</code> de <code>ejercicios1</code>:</p>
+<div id="pew" class="slide section level2">
+<h1>pew</h1>
+<p>Continuando con el ejercicio <code>pew</code> de <code>ejercicios2</code>:</p>
 <ol style="list-style-type: decimal">
-<li>Agrupar los diamantes por color.</li>
-<li>Calcular la media del precio/quilate para cada uno de los grupos anteriores.</li>
+<li>Calcular el número total de personas por religión</li>
+<li>Agrupar todas las religiones en una única categoria “Others”, excepto las 5 con más personas</li>
+<li>Repetir el gráfico del ejercicio con estos datos pero hacer las barras horizontales</li>
 </ol>
 </div>
-<div id="lahman" class="slide section level2">
-<h1>Lahman</h1>
+<div id="weather" class="slide section level2">
+<h1>weather</h1>
+<p>Continuando con el ejercicio <code>weather</code> de <code>ejercicios2</code>:</p>
 <ol style="list-style-type: decimal">
-<li>Instalar el paquete Lahman y ver que data.frames contiene (en la documentación).</li>
-<li>Usando los datos contenidos en el data.frame Batting, calcular el número de partidos totales de cada uno de los jugadores.</li>
-<li>Ordenar a los jugadores de mayor a menor de acuerdo a la cantidad de partidos disputados.</li>
-<li>Mostrar el top 5.</li>
+<li>Eliminar la “d” de la columna dia</li>
+<li>Juntar las columnas dia, mes y año en otra de tipo fecha</li>
+<li>Calcular la temperatura máxima y mínima media para cada semana</li>
 </ol>
 </div>
-<div id="nycflights13-1" class="slide section level2">
-<h1>nycflights13 (1)</h1>
-<p>Con el data frame flights (paquete nycflights13) vamos a intentar ver si el retraso medio depende o no de la hora del día:</p>
+<div id="tb" class="slide section level2">
+<h1>tb</h1>
+<p>Continuando con el ejercicio <code>tb</code> de <code>ejercicios2</code>:</p>
 <ol style="list-style-type: decimal">
-<li>Crear una nueva variable time a partir de las variables hour y minute que represente la hora y minutos como un número con un decimal.</li>
-<li>Calcular el retraso medio a la llegada (arr delay) y el número de vuelos para cada uno de los valores de la variable time.</li>
-<li>Guardar las tres variables anteriores en un nuevo data.frame con nombre delay.per.time.</li>
-<li>Representar el retraso medio con respecto a la variable time, escalando además el tama˜ no de los puntos de acuerdo con el número de vuelos.</li>
+<li>Eliminar la cadena <code>new_sp_</code> de la columna “Edad-Sexo”</li>
+<li>Crear distintos gráficos como el anterior para los diferentes grupos de edad</li>
+<li>Mejorar el gráfico anterior para que la escala del eje y sea independiente en cada sub-gráfico</li>
 </ol>
 </div>
-<div id="nycflights13-2" class="slide section level2">
-<h1>nycflights13 (2)</h1>
-<p>Con el data frame flights (paquete nycflights13), vamos a intentar ver si hay grandes diferencias en cuanto a retrasos de la llegada dependiendo del aeropuerto destino:</p>
+<div id="ventas" class="slide section level2">
+<h1>ventas</h1>
+<p>Continuando con el ejercicio <code>ventas</code> de <code>ejercicios2</code>:</p>
 <ol style="list-style-type: decimal">
-<li>Calcular el retraso medio a la llegada (arr delay) y el número de vuelos para cada uno de los destinos (variable dest).</li>
-<li>Hacer un merge del data.frame anterior con airports (contenido en el mismo paquete) para añadir las coordenadas de cada aeropuerto. Pista: función left join.</li>
-<li>Representar la latitud con respecto a la longitud, escalando además el tama˜ no de los puntos de acuerdo con el número de vuelos.</li>
+<li>Convertir la columna <code>Codigo</code> a factor.</li>
+<li>Con los datos iniciales, convertir la columna <code>Fecha</code> a tipo “date”</li>
+<li>Filtrar los 5 productos con más ventas (ignorar ventas negativas)</li>
+<li>Calcular las ventas mensuales para cada uno de los productos anteriores y representar su evolución con un gráfico de barras (ignorar ventas negativas)</li>
+<li>Mejorar el gráfico anterior rotando las etiquetas 90 grados</li>
 </ol>
 </div>
-<div id="nba-shots" class="slide section level2">
-<h1>NBA shots</h1>
-<p>Descargar los datos que se encuentran en Kaggle sobre tiros de la NBA en la temporada 14-15:</p>
+<div id="gapminder" class="slide section level2">
+<h1>gapminder</h1>
 <ol style="list-style-type: decimal">
-<li>Cargar los datos en R</li>
-<li>Identificar que representa cada una de las filas y ver las variables (columnas) disponibles.</li>
-<li>Vamos a comparar las estadísticas de tiro de dos jugadores, por ejemplo Kobe Bryant y James Harden. Por tanto, lo primero es seleccionar las filas que contienen la información de dichos jugadores.</li>
-<li>A continuación vamos a crear una nueva variable, (<code>total_touch_time</code>), que acumula el tiempo total que cada jugador ha tocado el balón antes de cada tiro (<code>TOUCH_TIME</code>) en cada partido. Pista: función <code>cumsum()</code>.</li>
-<li>¿Cuántas filas tiene el <code>data.frame</code> resultado de la operación anterior?</li>
-<li>Vamos a resumir ahora el <code>data.frame</code> anterior calculando una nueva variable, <code>points_per_tt</code> dividiendo la suma total de puntos de cada jugador/partido (variable <code>PTS</code>) por el tiempo total que ha tocado la pelota (máximo de la variable anterior, <code>total_touch_time</code>).</li>
-<li>Ahora podemos volver a resumir el <code>data.frame</code> anterior para obtener un valor por cada jugador, calculando la media de la variable <code>points_per_tt</code> para todos los partidos.</li>
-<li>Por último, hacer un histograma de la distancia de tiro (<code>SHOT_DIST</code>), ¿qué se puede observar en la distribución?</li>
-<li>Comprobar la hipótesis anterior coloreando el histograma por la variable <code>PTS_TYPE</code>.</li>
+<li><p>Instalar el paquete <code>gapminder</code></p></li>
+<li><p>Calcular cuantos niveles distintos tienen las columnas <code>country</code> y <code>continent</code></p></li>
+<li><p>¿Cuántas filas del data.frame hay para cada una de las columnas anteriores?</p></li>
+<li><p>Crea un data.frame con las continentes que empiezan por “A”</p></li>
+<li><p>Realiza un gráfico de barras <strong>ordenadas</strong> de mayor a menos, donde el eje x representa los continentes y el eje y el número de paises (registros)</p></li>
+<li><p>Representa en un gráfico de puntos la esperanza de vida (<code>lifeExp</code>) en el eje x para cada uno de los paises de Asia (eje y). Usa los datos de 2007 y ordena los puntos de menor a mayor.</p></li>
+<li><p>Representa la evolución de la esperanza de vida para los paises “Egypt”, “Haiti”, “Romania”, “Thailand” y “Venezuela”. Realizar un único gráfico con una línea de un color distinto para cada país. Ordenar la leyenda para que el país con más esperanza de vida esté de primero (usar <code>fct_reorder2()</code>).</p></li>
+<li><p>Cálcula la longitud media de los nombres de los países en los datos para cada continente.</p></li>
+<li><p>Contar cuantas veces aparece cada vocal en los nombres de los paises (columna “country”)</p></li>
+</ol>
+</div>
+<div id="puerto-rico" class="slide section level2">
+<h1>Puerto Rico</h1>
+<p>El fichero <code>mortality_report.csv</code> contiene datos diarios de mortalidad en Puerto Rico desde el 1 de Enero de 2015 al 31 de Mayo de 2018 (ejercicio adaptado de <a href="https://rafalab.github.io/dsbook/parsing-dates-and-times.html#exercises-42">Introduction to Data Science</a>:</p>
+<ol style="list-style-type: decimal">
+<li><p>Leer los datos en R</p></li>
+<li><p>Convertir la columna “month” a su valor numérico</p></li>
+<li><p>Crear una columna con la fecha (tipo <code>date</code>) a partir de las columnas “day”, “month” y “year”</p></li>
+<li><p>Realizar un gráfico de líneas de las muertes (eje y) frente a la fechas (eje x)</p></li>
+<li><p>Ignorar fechas posteriores al 1 de Mayo de 2018</p></li>
+<li><p>Repetir un gráfico de barras pero ahora representar en el eje x el día del año.</p></li>
+<li><p>Repetir el gráfico del ej 4 pero usar dos colores distintos para antes y después del 20 de septiembre de 2017 (no poner ninguna leyenda)</p></li>
+<li><p>Repetir el mismo gráfico del ejercicio 6 pero representar ahora medias mensuales (pista: <code>round_date()</code>)</p></li>
 </ol>
 </div>
 
