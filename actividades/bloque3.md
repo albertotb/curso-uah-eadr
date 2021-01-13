@@ -13,7 +13,17 @@ Actividades
 
    Realizar la operación que se propone en la diapositiva 6, es decir, crear dos nuevas columnas ratio_1999 y ratio_2000 con la operación `cases / population * 10000` para cada uno de los dos años. ¿Qué pasaría si en lugar de 2 años fueran 10?
 
-2. ¿Por qué se transforma la variable “year” a tipo “character”? Prueba a repetir la figura quitando esa línea. ¿Qué sucede en este caso?
+2. ¿Por qué se transforma la variable “year” a tipo “character” en la siguiente figura?
+   
+   ```{r}
+   table1 %>%
+     mutate(ratio = cases / population * 10000,
+            year = as.character(year)) %>%
+     ggplot(mapping = aes(x = country, y = ratio, fill = year)) +
+       geom_col(position = "dodge")
+   ```
+
+   Prueba a repetir la figura quitando esa línea. ¿Qué sucede en este caso?
 
 ## pivot_longer
 
