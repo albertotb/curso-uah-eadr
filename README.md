@@ -60,14 +60,14 @@
 
 ## Actividades
 
-[Ficheros de datos](https://github.com/albertotb/curso-uah-eadr/tree/master/data)
-
 1. Bloque 1: [actividades](actividades/bloque1.md) ([soluciones](actividades/bloque1_sol.md))
 2. Bloque 2: [actividades](actividades/bloque2.md) ([soluciones](actividades/bloque2_sol.md))
 3. Bloque 3: [actividades](actividades/bloque3.md) ([soluciones](actividades/bloque3_sol.md))
 4. Bloque 4: [actividades](actividades/bloque4.md) ([soluciones](actividades/bloque4_sol.md))
 5. Bloque 5: [actividades](actividades/bloque5.md) ([soluciones](actividades/bloque5_sol.md))
 6. Bloque 6: [actividades](actividades/bloque6.md) ([soluciones](actividades/bloque6_sol.md))
+
+[Ficheros de datos](https://github.com/albertotb/curso-uah-eadr/tree/master/data). Para descargar un fichero se hace click en el nombre, luego en `Raw` y por último click derecho y `Guardar como...`
 
 ## Ejercicios
 
