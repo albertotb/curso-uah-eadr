@@ -24,7 +24,7 @@
 3. **Bloque 3:** Importar y transformar datos
 
    - Transformar data.frames con `tidyr` [[slides]](./src/03-tidyr.html)
-     - Transformar entre formatos ancho y largo (`spread` y `gather`)
+     - Transformar entre formatos ancho y largo (`pivot_longer` y `pivot_wider`)
      - Separar o unir columnas (`separate` y `unite`)
 
    - Lectura de datos con `readr` y `readxl` [[slides]](./src/04-readr.html)
